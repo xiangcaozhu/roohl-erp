@@ -1,0 +1,24 @@
+<form id="dialog-attribute-form">
+<div class="buy-attribute">
+	<!-- BEGIN buy_attribute_list AS attribute -->
+	<!-- IF !attribute.hidden -->
+	<div class="buy-attribute-list clearfix" id="attr-box-{attribute.id}" type="attr-box" disable="{attribute.disable}" atype="{attribute.type}" <!-- IF attribute.disable -->style="display:none;"<!-- ENDIF -->>
+		<div class="left">
+		<span class="view-selected-attribute" id="attr-desc" title="{attribute.name}" >{attribute.name}</span>
+		<input type="hidden" id="s_attribute" name="s_attribute" value="noselect" />
+		</div>
+		<div class="right">
+
+				<input type="hidden" name="attr_store[{attribute.id}]" append="" value="" attr_name="{attribute.name}" attr_value_name="" attr_required="{attribute.required}"/>
+				<!-- BEGIN attribute.value_list AS value -->
+				<!-- IF !value.hidden -->
+				<div class="textblock" type="attr-value" id="attr-val-{value.id}" value_id="{value.id}" about="{value.about_disabled}" append="{value.append_price}" value_name="{value.name}"><div>{value.name}</div></div>
+				<!-- ENDIF -->
+				<!-- END attribute.value_list -->
+
+		</div>
+	</div>
+	<!-- ENDIF -->
+	<!-- END buy_attribute_list -->
+</div>
+</form>

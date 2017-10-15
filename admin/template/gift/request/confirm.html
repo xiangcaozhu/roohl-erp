@@ -1,0 +1,37 @@
+<h3>改变请求状态</h3>
+
+<form method="post">
+	<table class="datalist">
+	<thead>
+		<tr>
+			<td colspan="4">
+			修改状态:
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td align="right" width="15%"><b>动作:</b></td>
+			<td >
+				<!-- IF _POST.do=='ship' -->
+					确认送出
+				<!-- ELSEIF _POST.do=='cancel' -->
+					取消请求
+				<!-- ENDIF -->
+			</td>
+		</tr>
+		<tr>
+			<td align="right" width="15%"><b>操作原因(必填):</b></td>
+			<td >
+				<textarea name="comment"></textarea>
+				<input type="hidden" name="__post" value="1">
+				<input type="hidden" name="do" value="{_POST.do}">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" align="center"><input type="submit" value="提交修改"> <input type="button" value="取消返回" onclick="history.go(-1);"></td>
+		</tr>
+	</tbody>
+</table>
+
+</form>

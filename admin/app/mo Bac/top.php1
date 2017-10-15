@@ -1,0 +1,9 @@
+<?php
+
+global $__GroupSession;
+
+$tpl['group'] = $__GroupSession;
+
+Common::PageOut( 'top.html', $tpl, false, false );
+
+?>

@@ -1,0 +1,79 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">{warehouse_info.name} 采购收货</h3>
+	<p class="right">
+		
+	</p>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="60">采购单号</th>
+				<th>供应商</th>
+				<th width="80">库房</th>
+				<th width="40">状态</th>
+				<th width="60">收货状态</th>
+				<th width="60">类型</th>
+				<th width="60">产品类型</th>
+				<th width="60">采购员</th>
+				<th width="40">品种</th>
+				<th width="40">件数</th>
+				<th width="80">总金额</th>
+				<th width="100">添加时间</th>
+				<th width="100">操作</th>
+			</tr>
+			<tr class="filter">
+				<form method="get" id="search_form">
+				<th>
+					<div class="input-field">
+						<input type="hidden" name="mod" value="{_GET.mod}">
+						<input type="hidden" name="warehouse_id" value="{_GET.warehouse_id}">
+						<input type="text" name="id" id="id" value="{_GET.id}">
+					</div>
+				</th>
+				<th>
+					&nbsp;<!-- <input type="text" name="supplier_name" id="supplier_name" value="{_GET.supplier_name}"> -->
+				</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th><button type="button" onclick="$('#search_form').submit();">过滤</button></th>
+				</form>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td ><small>{val.id}</small></td>
+				<td >{val.supplier_name}</td>
+				<td align="center">{val.warehouse_name}</td>
+				<td align="center">{val.status_name}</td>
+				<td align="center">{val.receive_status_name}</td>
+				<td align="center">{val.type_name}</td>
+				<td align="center">{val.product_type_name}</td>
+				<td >{val.user_name_zh}</td>
+				<td align="center">{val.total_breed}</td>
+				<td align="center">{val.total_quantity}</td>
+				<td align="right">&yen;{val.total_money}</td>
+				<td align="center"><small>{val.add_time}</small></td>
+				<td align="center">
+					<a href="?mod=store.new.purchase{warehouse_uri}&id={val.id}">开始收货</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

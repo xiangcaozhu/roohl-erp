@@ -1,0 +1,55 @@
+
+
+<div class="HY-content-header clearfix">
+	<h3>首页模块</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+
+<div class="HY-form-table">
+	<div class="HY-form-table-header">
+		首页模块
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>推荐分类<span class="required"></span></label></td>
+					<td class="value"><textarea name="index_featured_category" id="index_featured_category" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{module.index_featured_category}</textarea></td>
+					<td class="note">
+						一行一个分类编号(ID)
+					</td>
+				</tr>
+				<tr>
+					<td class="label"><label>热销产品<span class="required"></span></label></td>
+					<td class="value"><textarea name="index_hot_product" id="index_hot_product" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{module.index_hot_product}</textarea></td>
+					<td class="note">
+						一行一个产品,格式如下"<font size="" color="#FF3300">123|奥迪</font>"<br>
+						前一个参数是产品ID,后面是重命名的标题(可以省略)
+					</td>
+				</tr>
+				<tr>
+					<td class="label"><label>推荐产品<span class="required"></span></label></td>
+					<td class="value"><textarea name="index_commend_product" id="index_commend_product" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{module.index_commend_product}</textarea></td>
+					<td class="note">
+						一行一个产品,格式如下"<font size="" color="#FF3300">123|奥迪</font>"<br>
+						前一个参数是产品ID,后面是重命名的标题(可以省略)
+					</td>
+				</tr>
+				<tr>
+					<td class="label"><label>商城动态<span class="required"></span></label></td>
+					<td class="value"><textarea name="index_article" id="index_article" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{module.index_article}</textarea></td>
+					<td class="note">
+						一行一个产品,格式如下"<font size="" color="#FF3300">123|买奥林巴斯相机即送三日游！ </font>"<br>
+						前一个参数是文章ID,后面是重命名的标题(可以省略)
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

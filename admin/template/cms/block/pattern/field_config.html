@@ -1,0 +1,222 @@
+
+<script type="text/javascript" src="script/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="script/uploader.js"></script>
+<script type="text/javascript" src="script/cms-block.js"></script>
+
+
+
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">
+		<!-- IF edit -->
+		编辑块模型 配置列表字段
+		<!-- ELSE -->
+		新建块模型 配置列表字段
+		<!-- ENDIF -->
+	</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		<!-- IF edit -->
+		编辑块模型 配置列表字段
+		<!-- ELSE -->
+		新建块模型 配置列表字段
+		<!-- ENDIF -->
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>模型名称<span class="required">*</span></label></td>
+					<td class="value">
+						<input name="name" value="{name}" class="input-text" type="text" style=""/>
+						<input type="hidden" name="step" value="done">
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>模型类型<span class="required">*</span></label></td>
+					<td class="value">
+						<!-- IF type=='list' -->列表 <!-- ELSEIF type=='form' -->表单<!-- ENDIF -->
+						<input type="hidden" name="type" value="{type}">
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>列表字段<span class="required"></span></label></td>
+					<td class="">
+						<button type="button" class="append" onclick="BlockPatternAddListField('main');"><span>添加字段</span></button>
+						<div class="HY-grid" style="width:550px;margin-top:10px;">
+							<table cellspacing="0" class="data" id="grid_table">
+								<thead>
+									<tr class="header">
+										<th width="80">名称</th>
+										<th width="">字段名(字母/下划线)</th>
+										<th width="80">类型<nobr></th>
+										<th width="180">其他<nobr></th>
+										<th width="80">操作<nobr></th>
+									</tr>
+								</thead>
+								<tbody id="main_field_row_box">
+									<!-- BEGIN config.main_field_list AS field -->
+									<tr name="field_row">
+										<td name="alias_name">{field.alias_name}</td>
+										<td name="name">{field.name}</td>
+										<td name="type"><!-- IF field.type=='image' -->图片<!-- ELSEIF field.type=='text' -->文本<!-- ELSEIF field.type=='product' -->产品<!-- ENDIF --></td>
+										<td name="extra"><!-- IF field.type=='image' -->宽:{field.width}px;高:{field.height}px<!-- ENDIF -->&nbsp;</td>
+										<td align="right">
+											<a href="javascript:void(0);" onclick="BlockPatternEditListField(this)">修改</a>
+											<a href="javascript:void(0);" onclick="RemoveListField(this)">移除</a>
+											<input type="hidden" name="main_field[name][]" fname="name" value="{field.name}">
+											<input type="hidden" name="main_field[alias_name][]" fname="alias_name" value="{field.alias_name}">
+											<input type="hidden" name="main_field[width][]" fname="width" value="{field.width}">
+											<input type="hidden" name="main_field[height][]" fname="height" value="{field.height}">
+											<input type="hidden" name="main_field[type][]" fname="type" value="{field.type}">
+											<input type="hidden" name="main_field[thumb_type][]" fname="thumb_type" value="{field.thumb_type}">
+										</td>
+									</tr>
+									<!-- END config.main_field_list -->
+								</tbody>
+							</table>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+				<!-- IF type=='list' -->
+				<tr>
+					<td class="label"><label>子列表字段<span class="required"></span></label></td>
+					<td class="">
+						<button type="button" class="append" onclick="BlockPatternAddListField('child');"><span>添加字段</span></button>
+						<div class="HY-grid" style="width:550px;margin-top:10px;">
+							<table cellspacing="0" class="data" id="grid_table">
+								<thead>
+									<tr class="header">
+										<th width="80">名称</th>
+										<th width="">字段名(字母/下划线)</th>
+										<th width="80">类型<nobr></th>
+										<th width="180">其他<nobr></th>
+										<th width="80">操作<nobr></th>
+									</tr>
+								</thead>
+								<tbody id="child_field_row_box">
+									<!-- BEGIN config.child_field_list AS field -->
+									<tr name="field_row">
+										<td name="alias_name">{field.alias_name}</td>
+										<td name="name">{field.name}</td>
+										<td name="type"><!-- IF field.type=='image' -->图片<!-- ELSEIF field.type=='text' -->文本<!-- ELSEIF field.type=='product' -->产品<!-- ENDIF --></td>
+										<td name="extra"><!-- IF field.type=='image' -->宽:{field.width}px;高:{field.height}px;缩略图:<!-- IF field.thumb_type=='cut' -->裁剪<!-- ELSE -->不裁剪<!-- ENDIF --><!-- ENDIF -->&nbsp;</td>
+										<td align="right">
+											<a href="javascript:void(0);" onclick="BlockPatternEditListField(this)">修改</a>
+											<a href="javascript:void(0);" onclick="RemoveListField(this)">移除</a>
+											<input type="hidden" name="child_field[name][]" fname="name" value="{field.name}">
+											<input type="hidden" name="child_field[alias_name][]" fname="alias_name" value="{field.alias_name}">
+											<input type="hidden" name="child_field[width][]" fname="width" value="{field.width}">
+											<input type="hidden" name="child_field[height][]" fname="height" value="{field.height}">
+											<input type="hidden" name="child_field[type][]" fname="type" value="{field.type}">
+											<input type="hidden" name="child_field[thumb_type][]" fname="thumb_type" value="{field.thumb_type}">
+										</td>
+									</tr>
+									<!-- END config.child_field_list -->
+								</tbody>
+							</table>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+				<!-- ENDIF -->
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+
+<div id="tpl_add_field" style="display:none">
+	<table width="100%">
+		<tr>
+			<td align="right">类型:</td>
+			<td>
+				<select id="-_-field_type" style="width:100px;line-height:2em;">
+					<option value="text">文本</option>
+					<option value="image">图片</option>
+					<option value="product">产品</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="tpl_add_field_base" style="display:none">
+	<table width="100%">
+		<tr>
+			<td align="right">名称:</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_alias_name" style="width:150px;" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">字段名(字母/下划线):</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_name" style="width:150px;" value="" />
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="tpl_add_field_image" style="display:none">
+	<table width="100%">
+		<tr>
+			<td align="right">名称:</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_alias_name" style="width:150px;" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">字段名(字母/下划线):</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_name" style="width:150px;" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">图片宽度:</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_width" style="width:60px;" value="" />(0 表示不缩放)
+			</td>
+		</tr>
+		<tr>
+			<td align="right">图片高度:</td>
+			<td>
+				<input type="text" class="input-text" id="-_-field_height" style="width:60px;" value="" />(0 表示不缩放)
+			</td>
+		</tr>
+		<tr>
+			<td align="right">缩略图:</td>
+			<td>
+				<input type="radio" class="input-text" name="-_-field_thumb_type" value="cut" />裁剪
+				<input type="radio" class="input-text" name="-_-field_thumb_type" value="normal" checked/>不裁剪
+			</td>
+		</tr>
+	</table>
+</div>
+
+<table id="tpl_field_row" style="display:none">
+	<tr name="field_row">
+		<td name="alias_name">&nbsp;</td>
+		<td name="name">&nbsp;</td>
+		<td name="type">&nbsp;</td>
+		<td name="extra">&nbsp;</td>
+		<td align="right">
+			<a href="javascript:void(0);" onclick="BlockPatternEditListField(this)">修改</a>
+			<a href="javascript:void(0);" onclick="RemoveListField(this)">移除</a>
+			<input type="hidden" name="{0}_field[name][]" fname="name" value="">
+			<input type="hidden" name="{0}_field[alias_name][]" fname="alias_name" value="">
+			<input type="hidden" name="{0}_field[width][]" fname="width" value="">
+			<input type="hidden" name="{0}_field[height][]" fname="height" value="">
+			<input type="hidden" name="{0}_field[type][]" fname="type" value="">
+			<input type="hidden" name="{0}_field[thumb_type][]" fname="thumb_type" value="">
+		</td>
+	</tr>
+</table>

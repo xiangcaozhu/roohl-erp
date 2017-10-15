@@ -1,0 +1,52 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">供应商列表 </h3>
+	<p class="right">
+		<button style="float:right;" type="button" onclick="window.location='?mod=purchase.supplier&excel=1'">导出</button> <button  id="" type="button" class="scalable back" onclick="window.location='?mod=purchase.supplier.add';" style=""><span>添加供应商</span></button>
+	</p>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+			<th width="40"><div align="center">序号</div></th>
+				<th width="80">产品经理</th>
+				<th width="120">公司简称</th>
+				<th width="">公司名称</th>
+				<th width="">发货方式</th>
+				<th width="120" style="display:none">联系人</th>
+				<th width="120" style="display:none">电话</th>
+				<th>开户行</th>
+				<th width="180">帐号</th>
+				<th width="80"><div align="center">操作</div></th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS supplierinfo -->
+			<tr>
+			<td align="center"><a href="?mod=warehouse.stock.detailA&warehouse_id=6&place_id=&sku=&view_type=1&NID={supplierinfo.id}" target="_blank"></a>{supplierinfo.id}</td>
+				<td >&nbsp;{supplierinfo.manage_name}</td>
+				<td >&nbsp;{supplierinfo.op}→{supplierinfo.mini_name}</td>
+				<td >&nbsp;<!-- IF supplierinfo.is_good==1  --><font color="#000000"><!-- ELSE --><font color="#990000"><!-- ENDIF -->{supplierinfo.name}</font></td>
+				<td >&nbsp;<!-- IF 0==supplierinfo.key_mode  -->代发货<!-- ELSE --><font color="#990000">库房调货</font><!-- ENDIF --></td>
+				<td  style="display:none">&nbsp;{supplierinfo.linkman}</td>
+				<td  style="display:none">&nbsp;{supplierinfo.phone}</td>
+				<td >&nbsp;{supplierinfo.accountbank}</td>
+				<td >&nbsp;{supplierinfo.account_number}</td>
+				<td align="center">
+					<a href="?mod=purchase.supplier.edit&id={supplierinfo.id}">修改</a>
+					<!-- IF group_man==1 -->
+					<a href="?mod=purchase.supplier.del&id={supplierinfo.id}" onclick="return confirm('确定删除吗?');">删除</a>
+					<!-- ENDIF -->
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>
+

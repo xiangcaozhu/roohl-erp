@@ -1,0 +1,44 @@
+
+<div class="HY-content-header clearfix">
+	<h3>文章分类列表 </h3>
+</div>
+
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		<!-- 分页:{page_bar} 每页20条商品 总共{total}条商品 {page}/{page_num} -->
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="40">ID</th>
+				<th>名称</th>
+				<th width="40" align="center">排序</th>
+				<th width="120" align="center">添加时间</th>
+				<th width="120" align="center">更新时间</th>
+				<th width="300" align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN category_list AS category -->
+			<tr pid="sub_{category.pid}" <!-- IF category.pid!=0 -->style="display:none"<!-- ENDIF -->>
+				<td>{category.id}</td>
+				<td>{category.indent}<!-- IF category.pid==0 --><img src="image/plus.gif" align="absmiddle" style="cursor:pointer;" onclick="$('tr[pid=sub_{category.id}]').toggle();this.src=(this.src.indexOf('image/plus.gif')>0 ? 'image/minus.gif':'image/plus.gif');"><b>{category.name}</b><!-- ELSE -->{category.name}<!-- ENDIF --></td>
+				<td align="center">
+					<a href="?mod=content.article.category.order&id={category.id}&type=up"><img src="image/up.gif" style="float:left;display: <!-- IF category.up==1 -->block<!-- ELSE -->none<!-- ENDIF -->" border="0"></a>
+					<a href="?mod=content.article.category.order&id={category.id}&type=down"><img src="image/down.gif" style="float:right;display: <!-- IF category.down==1 -->block<!-- ELSE -->none<!-- ENDIF -->" border="0"></a>
+				</td>
+				<td align="center">{category.add_time}</td>
+				<td align="center">{category.update_time}</td>
+				<td align="">
+					<a href="?mod=content.article.category.edit&id={category.id}">编辑</a>
+					<!-- IF category.pid==0 --><a href="?mod=content.article.category.add&id={category.id}">添加子分类</a><!-- ENDIF -->
+					<a href="?mod=content.article.add&cid={category.id}">添加文章</a>
+				</td>
+			</tr>
+			<!-- END category_list -->
+		</tbody>
+	</table>
+</div>

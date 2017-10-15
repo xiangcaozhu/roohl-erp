@@ -1,0 +1,43 @@
+
+
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">编辑展示分类块配置</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		编辑展示分类块配置
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>名称<span class="required">*</span></label></td>
+					<td class="value"><input name="name" value="{info.name}" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>标示(英文名,字母/下划线)<span class="required">*</span></label></td>
+					<td class="value"><input name="en_name" value="{info.en_name}" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>块模型<span class="required">*</span></label></td>
+					<td class="value">
+						<select name="pattern_id">
+							<!-- BEGIN pattern_list AS pattern -->
+							<option value="{pattern.id}" <!-- IF pattern.id==info.pattern_id -->selected<!-- ENDIF -->>{pattern.name}</option>
+							<!-- END pattern_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

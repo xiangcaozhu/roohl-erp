@@ -1,0 +1,146 @@
+<link href="css/cal/zpcal.css" rel="stylesheet" type="text/css">
+<link href="css/cal/template.css" rel="stylesheet" type="text/css">
+<link href="css/cal/maroon.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src='script/zapatec.js'></script>
+<script type="text/javascript" src="script/calendar.js"></script>
+<script type="text/javascript" src="script/calendar-zh.js"></script>
+
+<div class="HY-content-header clearfix">
+	<h3>订单销售报表</h3>
+	<div class="right">
+		<button type="button" onclick="$('#excel').val(1);$('#search_form').submit();$('#excel').val(0);">导出Excel</button>
+		<button type="button" onclick="$('#main_form').submit();">打印</button>
+	</div>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		订单销售报表 ({_GET.begin_date} - {_GET.end_date}) 总共{total}条记录
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="30">订单号</th>
+				<th width="80">父渠道</th>
+				<th width="100">渠道</th>
+				<th width="140">出库时间</th>
+				<th width="30">是否开票</th>
+				<th width="">商品名称</th>
+				<th width="60">单价</th>
+				<th width="30">数量</th>
+				<th width="60">销售合计</th>
+				<th width="60">成本(不含税)</th>
+				<th width="30">数量</th>
+				<th width="60">成本合计</th>
+				<th width="60">操作</th>
+			</tr>
+			<tr class="filter">
+				<form method="get" id="search_form">
+				<th>
+					<input type="hidden" name="mod" value="{_GET.mod}">
+					<input type="hidden" name="excel" id="excel" value="0">
+				</th>
+				<th>
+					<div class="input-field">
+						<select name="channel_parent_id">
+							<option value=""></option>
+							<!-- BEGIN channel_parent_list AS val -->
+							<option value="{val.id}" <!-- IF val.id==_GET.channel_parent_id  -->selected<!-- ENDIF -->>{val.name}</option>
+							<!-- END channel_parent_list -->
+						</select>
+					</div>
+				</th>
+				<th>
+					<div class="input-field">
+						<select name="channel_id">
+							<option value=""></option>
+							<!-- BEGIN channel_list AS val -->
+							<option value="{val.id}" <!-- IF val.id==_GET.channel_id  -->selected<!-- ENDIF -->>{val.name}</option>
+							<!-- END channel_list -->
+						</select>
+					</div>
+				</th>
+				<th>
+					<div class="input-from">
+						<div class="clearfix">
+							<div class="left">开始:</div>
+							<input type="text" name="begin_date" id="begin_date" value="{_GET.begin_date}">
+							<img src="image/grid-cal.gif" alt="" class="v-middle" id="begin_date_btn" />
+						</div>
+						<div class="clearfix">
+							<div class="left">结束:</div>
+							<input type="text" name="end_date" id="end_date" value="{_GET.end_date}">
+							<img src="image/grid-cal.gif" alt="" class="v-middle" id="end_date_btn" />
+						</div>
+					</div>
+				</th>
+				<th>
+					<div class="input-field">
+						<select name="order_invoice_status">
+							<option value=""></option>
+							<option value="1" <!-- IF 1==_GET.order_invoice_status && _GET.order_invoice_status!='' -->selected<!-- ENDIF -->>已开发票</option>
+							<option value="0" <!-- IF 0==_GET.order_invoice_status && _GET.order_invoice_status!='' -->selected<!-- ENDIF -->>未开发票</option>
+						</select>
+					</div>
+				</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th><button type="button" onclick="$('#search_form').submit();">过滤</button></th>
+				</form>
+			</tr>
+		</thead>
+		<tbody>
+			<form method="post" action="?mod=finance.order.print&channel_id={_GET.channel_id}&begin_date={_GET.begin_date}&end_date={_GET.end_date}&order_invoice_status={_GET.order_invoice_status}&channel_parent_id={_GET.channel_parent_id}" id="main_form">
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td align="center">{info.id}</td>
+				<td align="center">{info.channel_parent_name}</td>
+				<td align="center">{info.channel_name}</td>
+				<td align="center">{#DateFormat(info.delivery_time)}</td>
+				<td align="center"><!-- IF info.order_invoice_status --><font color="blue">已开发票</font><!-- ELSE --><font color="red">未开发票</font><!-- ENDIF --></td>
+				<td align="center">{info.product_name}</td>
+				<td align="right">{info.sales_price}</td>
+				<td align="center">{info.sales_quantity}</td>
+				<td align="right">{info.total_sales_price}</td>
+				<td align="right">{info.stock_price}</td>
+				<td align="center">{info.stock_quantity}</td>
+				<td align="right">{info.total_stock_price}</td>
+				<td>&nbsp;</td>
+			</tr>
+			<!-- END list -->
+			</form>
+		</tbody>
+	</table>
+</div>
+
+
+<script type="text/javascript">
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "begin_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "begin_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "end_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "end_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+
+</script>

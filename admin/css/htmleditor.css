@@ -1,0 +1,149 @@
+.editor input{
+	border:1px solid #ccc;
+	padding:3px;
+}
+
+.editor td{
+	vertical-align:middle;
+	padding:0px;
+}
+
+.editor-btn{
+	height:21px;
+	line-height:21px;
+	width:auto;
+	cursor:pointer;
+}
+
+.editor-split{
+	background:url(../image/editor/grid-blue-split.gif) no-repeat scroll center center;
+	display:block;
+	height:16px;
+	margin:0 2px;
+	overflow:hidden;
+	width:4px;
+}
+
+.editor-btn-left{
+	width:3px;
+}
+
+.editor-btn-main{
+	white-space:nowrap;
+}
+
+.editor-btn-right{
+	width:3px;
+}
+
+.editor-btn-main span{
+	background:transparent url(../image/editor/tb-sprite.gif) repeat-x scroll 0 0px;
+	display:block;
+	width:16px;
+	height:16px;
+}
+
+.focus .editor-btn-main{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) repeat-x scroll 0 -105px;
+}
+
+.focus .editor-btn-left{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) no-repeat scroll 0 -63px;
+}
+
+.focus .editor-btn-right{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) no-repeat scroll 0 -84px;
+}
+
+
+.hover .editor-btn-main{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) repeat-x scroll 0 -42px;
+}
+
+.hover .editor-btn-left{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) no-repeat scroll 0 -0px;
+}
+
+.hover .editor-btn-right{
+	background:transparent url(../image/editor/tb-btn-sprite.gif) no-repeat scroll 0 -21px;
+}
+
+.editor-tool{
+	background:#D0DEF0 url(../image/editor/bg.gif) repeat-x scroll left top;
+	border-color:#A9BFD3;
+	border-style:solid;
+	border-width:0 0 1px;
+	padding:2px;
+}
+
+.editor{
+	border:1px solid #A9BFD3;
+	position:relative;
+}
+
+.editor-mask{
+	position:absolute;
+	background:#000;
+	opacity:0.1;
+	filter:Alpha(opacity=10);
+	z-index:50;
+	height:100%;
+	width:100%;
+	top:0;
+	left:0;
+}
+
+.editor-dialog{
+	border:1px solid #A9BFD3;
+	position:absolute;
+	z-index:51;
+	width:360px;
+	top:0;
+	left:0;
+}
+
+.editor-dialog-head{
+	background:#D0DEF0 url(../image/editor/bg.gif) repeat-x scroll left top;
+	border-color:#A9BFD3;
+	border-style:solid;
+	border-width:0 0 1px;
+	padding:2px;
+	height:20px;
+	line-height:20px;
+	font-weight:bold;
+}
+
+.editor-dialog-main{
+	padding:5px;
+	background-color:#fff;
+}
+
+.editor-dialog-bottom{
+	padding:5px;
+	background-color:#fff;
+	height:20px;
+}
+
+.editor-color-panel{
+	border:1px solid #ccc;
+	width:121px;
+	padding:3px 0px 3px 3px;
+	background-color:#fff;
+	position:absolute;
+	z-index:104;
+}
+
+.editor-color-panel-block{
+	display:block;
+	border:1px solid #ccc;
+	width:10px;
+	height:10px;
+	float:left;
+	margin-right:3px;
+	margin-bottom:3px;
+	cursor:pointer;
+}
+
+.editor-color-panel-block:hover{
+	border:1px solid #000;
+}

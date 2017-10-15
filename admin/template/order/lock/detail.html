@@ -1,0 +1,119 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>配货详细</h3>
+	<div class="right">
+		<!-- <button type="button" class="scalable back" onclick="$('#main_form').submit();" style=""><span>保存采购单</span></button> -->
+	</div>
+</div>
+
+<form method="post" id="main_form">
+
+<div class="clearfix">
+	<div class="left">
+		订单号：{order.id}&nbsp;&nbsp;
+		渠道订单号：{order.target_id}&nbsp;&nbsp;
+		配货状态：{order.lock_status_name}&nbsp;&nbsp;
+		满足情况：{order.delivery_type_name}&nbsp;&nbsp;
+		发货状态：{order.delivery_status_name}&nbsp;&nbsp;
+	</div>
+	<div class="right">
+	</div>
+</div>
+<div class="block5"></div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		商品列表
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="120">SKU</th>
+				<th width="100">商品ID</th>
+				<th width=""><nobr>商品名称<nobr></th>
+				<th width="80">需求数量</th>
+				<th width="">已配货数量</th>
+				<th width="">待配货数量</th>
+			</tr>
+		</thead>
+		<tbody id="purchase_row">
+			<!-- BEGIN product_list AS val -->
+			<tr id="row_{1}">
+				<td><small>{val.sku}</small></td>
+				<td><small>{val.product_id}</small></td>
+				<td>
+					<b>名称：</b>{val.sku_info.product.name}
+					<br>
+					<span><!-- IF val.sku_info.attribute --><b>属性：</b>{val.sku_info.attribute}<!-- ENDIF --></span>
+				</td>
+				<td>{val.quantity}</td>
+				<td align="center">
+					{val.lock_quantity}
+					<!-- IF val.lock_list  -->
+					<div class="HY-grid">
+						<table cellspacing="0" class="data" style="margin-top:5px;">
+							<thead>
+								<tr class="header">
+									<th width="">仓库</th>
+									<th width="90">货位</th>
+									<th width="50">配货数</th>
+									<th width="100">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- BEGIN val.lock_list AS row -->
+								<tr>
+									<td align="center">{row.warehouse_name}</td>
+									<td align="center">{row.place_name}</td>
+									<td align="center">{row.quantity}</td>
+									<td align="center"><a href="?mod=order.lock.cancel&id={row.id}" onclick="return confirm('确定取消配货吗?');">取消配货</a></td>
+								</tr>
+								<!-- END va.lock_list -->
+							</tbody>
+						</table>
+					</div>
+					<!-- ENDIF -->
+				</td>
+				<td align="center">
+					{val.wait_quantity}
+					<!-- IF val.stock_list  -->
+					<div class="HY-grid">
+						<table cellspacing="0" class="data" style="margin-top:5px;">
+							<thead>
+								<tr class="header">
+									<th width="">仓库</th>
+									<th width="50">货位</th>
+									<th width="50">库存数</th>
+									<th width="50">锁定数</th>
+									<th width="50">可用数</th>
+									<th width="50">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- BEGIN val.stock_list AS row -->
+								<tr>
+									<td align="center">{row.warehouse_name}</td>
+									<td align="center">{row.place_name}</td>
+									<td align="center">{row.quantity}</td>
+									<td align="center">{row.lock_quantity}</td>
+									<td align="center">{row.live_quantity}</td>
+									<td align="center">&nbsp;
+									<!-- IF val.wait_quantity > 0 -->
+										<a href="?mod=order.lock.put&order_product_id={val.id}&place_id={row.place_id}" onclick="return confirm('确定配货吗?');">配货</a>
+									<!-- ENDIF -->
+									</td>
+								</tr>
+								<!-- END va.stock_list -->
+							</tbody>
+						</table>
+					</div>
+					<!-- ENDIF -->
+				</td>
+			</tr>
+			<!-- END product_list -->
+		</tbody>
+	</table>
+</div>

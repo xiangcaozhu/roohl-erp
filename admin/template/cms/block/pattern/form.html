@@ -1,0 +1,297 @@
+<!-- IF type=='list' -->
+<div name="block_form">
+	<div class="HY-grid">
+		<table cellspacing="0" class="data">
+			<thead>
+				<tr class="header" type="main-header">
+					<!-- BEGIN config.main_field_list AS field -->
+					<th width="" align="center" field="{field.name}" type="{field.type}">{field.alias_name}</th>
+					<!-- END config.main_field_list -->
+					<!-- IF config.child_field_list -->
+					<th width="" align="center">子列表</th>
+					<!-- ENDIF -->
+					<th width="120" align="center">操作</th>
+				</tr>
+			</thead>
+			<tbody type="main-body">
+				<!-- BEGIN data AS key => row -->
+				<tr row_id="{key}">
+					<!-- BEGIN row AS field_name => field -->
+					<!-- IF field_name!='child_list' -->
+					<td field="{field_name}" type="{field.type}" level="main">
+						<div>
+						<!-- IF field.type=='image' -->
+							<!-- IF field.value -->
+							<img src="{field.url}" />
+							<!-- ENDIF -->
+						<!-- ELSEIF field.type=='product' -->
+						产品ID:{field.value} <span type="product_name" pid="{field.value}"></span>
+						<!-- ELSE -->
+						{field.value}
+						<!-- ENDIF -->
+						</div>
+						<!-- IF field.type=='image' -->
+						<input type="hidden" name="block_list{multi_name}[{key}][{field_name}][path]" value="{field.value}">
+						<input type="hidden" name="block_list{multi_name}[{key}][{field_name}][value]" fname="{field_name}" value="">
+						<!-- ELSE -->
+						<input type="hidden" name="block_list{multi_name}[{key}][{field_name}][value]" fname="{field_name}" value="{field.value}">
+						<!-- ENDIF -->
+					</td>
+					<!-- ENDIF -->
+					<!-- END row -->
+					<!-- IF config.child_field_list -->
+					<td style="padding:10px;">
+						<table cellspacing="0" class="data">
+							<thead>
+								<tr class="header" type="child-header">
+									<!-- BEGIN config.child_field_list AS field -->
+									<th width="" align="center" field="{field.name}" type="{field.type}">{field.alias_name}</th>
+									<!-- END config.child_field_list -->
+									<th width="120" align="center">操作</th>
+								</tr>
+							</thead>
+							<tbody type="child-body">
+								<!-- BEGIN row.child_list AS child_key => child_row -->
+								<tr row_id="{child_key}">
+									<!-- BEGIN child_row AS field_name => field -->
+									<td field="{field_name}" type="{field.type}" level="child">
+										<div>
+										<!-- IF field.type=='image' -->
+											<!-- IF field.value -->
+											<img src="{field.url}" />
+											<!-- ENDIF -->
+										<!-- ELSEIF field.type=='product' -->
+										产品ID:{field.value} <span type="product_name" pid="{field.value}"></span>
+										<!-- ELSE -->
+										{field.value}
+										<!-- ENDIF -->
+										</div>
+										<!-- IF field.type=='image' -->
+										<input type="hidden" name="block_child_list{multi_name}[{key}][{child_key}][{field_name}][path]" value="{field.value}">
+										<input type="hidden" name="block_child_list{multi_name}[{key}][{child_key}][{field_name}][value]" fname="{field_name}" value="">
+										<!-- ELSE -->
+										<input type="hidden" name="block_child_list{multi_name}[{key}][{child_key}][{field_name}][value]" fname="{field_name}" value="{field.value}">
+										<!-- ENDIF -->
+									</td>
+									<!-- END child_row -->
+									<td>
+									<nobr>
+										<a href="javascript:void(0);" onclick="BlockListEditRow(this,'child')">编辑</a>
+										<a href="javascript:void(0);" onclick="BlockListDelRow(this,'child')">删除</a>
+										|
+										<a href="javascript:void(0);" onclick="BlockListUpRow(this,'child')">向上</a>
+										<a href="javascript:void(0);" onclick="BlockListDownRow(this,'child')">向下</a>
+									</nobr>
+									</td>
+								</tr>
+								<!-- END row.child_list -->
+							</tbody>
+						</table>
+					</td>
+					<!-- ENDIF -->
+					<td>
+					<nobr>
+						<a href="javascript:void(0);" onclick="BlockListEditRow(this,'main')">编辑</a>
+						<a href="javascript:void(0);" onclick="BlockListDelRow(this,'main')">删除</a>
+
+						<!-- IF config.child_field_list -->
+						<a href="javascript:void(0);" onclick="BlockListAddRow(this,'child')">添加子行</a>
+						<!-- ENDIF -->
+
+						|
+						<a href="javascript:void(0);" onclick="BlockListUpRow(this,'main')">向上</a>
+						<a href="javascript:void(0);" onclick="BlockListDownRow(this,'main')">向下</a>
+					</nobr>
+					</td>
+				</tr>
+				<!-- END data -->
+			</tbody>
+		</table>
+	</div>
+
+	<div name="tpl_block_main_input_form" style="display:none;">
+		<table width="100%">
+			<!-- BEGIN config.main_field_list AS field -->
+			<!-- IF field.type=='text' -->
+			<tr>
+				<td align="right" width="110">{field.alias_name}({field.name}):</td>
+				<td><input type="text" class="input-text" name="-_-block_input_{field.name}" fname="{field.name}" style="width:150px;" value="" /></td>
+			</tr>
+			<!-- ELSEIF field.type=='product' -->
+			<tr>
+				<td align="right" width="110">{field.alias_name}({field.name}):</td>
+				<td><input type="text" class="input-text" name="-_-block_input_{field.name}" fname="{field.name}" style="width:50px;" value="" />(输入产品ID)</td>
+			</tr>
+			<!-- ELSEIF field.type=='image' -->
+			<tr>
+				<td align="right" width="110">{field.alias_name}({field.name}):</td>
+				<td>
+					<div class="clearfix" ftype="-_-uploader_box" fwidth="{field.width}" fheight="{field.height}">
+						<div style="float:left;height:20px;">
+							<span id="-_-uploader_btn_{field.name}" ftype="uploader"></span>
+						</div>
+						<div ftype="uploader_bar" style="height:20px;line-height:20px;float:left;display:none;">
+							<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+							<span style="font-size:11px;"><span ftype="uploader_bar_per">0</span>%</span>
+						</div>
+						<div class="clear"></div>
+						<input type="hidden" name="-_-block_input_{field.name}" ftype="uploader_temp_file" fname="{field.name}">
+						<input type="hidden" name="-_-block_input_{field.name}_url" ftype="uploader_url">
+						<span ftype="uploader_review"></span>
+					</div>
+				</td>
+			</tr>
+			<!-- ENDIF -->
+			<!-- END config.main_field_list -->
+		</table>
+	</div>
+
+	<table name="tpl_block_main_row" style="display:none;">
+		<tr row_id="{0}">
+			<!-- BEGIN config.main_field_list AS field -->
+			<td field="{field.name}" type="{field.type}" level="main">
+				<div></div>
+				<input type="hidden" name="-_-block_list{multi_name}[{0}][{field.name}][value]" fname="{field.name}">
+			</td>
+			<!-- END config.main_field_list -->
+			<!-- IF config.child_field_list -->
+			<td style="padding:10px;">
+				<table cellspacing="0" class="data">
+					<thead>
+						<tr class="header" type="child-header">
+							<!-- BEGIN config.child_field_list AS field -->
+							<th width="" align="center" field="{field.name}" type="{field.type}">{field.alias_name}</th>
+							<!-- END config.child_field_list -->
+							<th width="120" align="center">操作</th>
+						</tr>
+					</thead>
+					<tbody type="child-body"></tbody>
+				</table>
+			</td>
+			<!-- ENDIF -->
+			<td>
+			<nobr>
+				<a href="javascript:void(0);" onclick="BlockListEditRow(this,'main')">编辑</a>
+				<a href="javascript:void(0);" onclick="BlockListDelRow(this,'main')">删除</a>
+
+				<!-- IF config.child_field_list -->
+				<a href="javascript:void(0);" onclick="BlockListAddRow(this,'child')">添加子行</a>
+				<!-- ENDIF -->
+
+				|
+				<a href="javascript:void(0);" onclick="BlockListUpRow(this,'main')">向上</a>
+				<a href="javascript:void(0);" onclick="BlockListDownRow(this,'main')">向下</a>
+			</nobr>
+			</td>
+		</tr>
+	</table>
+
+	<!-- IF config.child_field_list -->
+	<div name="tpl_block_child_input_form" style="display:none;">
+		<table width="100%">
+			<!-- BEGIN config.child_field_list AS field -->
+			<!-- IF field.type=='text' -->
+			<tr>
+				<td align="right" width="110">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td><input type="text" class="input-text" name="-_-block_input_{field.name}"  fname="{field.name}" style="width:150px;" value="" /></td>
+			</tr>
+			<!-- ELSEIF field.type=='product' -->
+			<tr>
+				<td align="right" width="110">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td><input type="text" class="input-text" name="-_-block_input_{field.name}"  fname="{field.name}" style="width:50px;" value="" />(输入产品ID)</td>
+			</tr>
+			<!-- ELSEIF field.type=='image' -->
+			<tr>
+				<td align="right" width="110">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td>
+					<div class="clearfix" ftype="-_-uploader_box" fwidth="{field.width}" fheight="{field.height}">
+						<div style="float:left;height:20px;">
+							<span id="-_-uploader_btn_{field.name}" ftype="uploader"></span>
+						</div>
+						<div ftype="uploader_bar" style="height:20px;line-height:20px;float:left;display:none;">
+							<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+							<span style="font-size:11px;"><span ftype="uploader_bar_per">0</span>%</span>
+						</div>
+						<div class="clear"></div>
+						<input type="hidden" name="-_-block_input_{field.name}" ftype="uploader_temp_file" fname="{field.name}">
+						<input type="hidden" name="-_-block_input_{field.name}_url" ftype="uploader_url">
+						<span ftype="uploader_review"></span>
+					</div>
+				</td>
+			</tr>
+			<!-- ENDIF -->
+			<!-- END config.child_field_list -->
+		</table>
+	</div>
+
+	<table name="tpl_block_child_row" style="display:none;">
+		<tr row_id="{0}">
+			<!-- BEGIN config.child_field_list AS field -->
+			<td field="{field.name}" type="{field.type}" level="child">
+				<div></div>
+				<input type="hidden" name="-_-block_child_list{multi_name}[{1}][{0}][{field.name}][value]" fname="{field.name}">
+			</td>
+			<!-- END config.child_field_list -->
+			<td>
+			<nobr>
+				<a href="javascript:void(0);" onclick="BlockListEditRow(this,'child')">编辑</a>
+				<a href="javascript:void(0);" onclick="BlockListDelRow(this,'child')">删除</a>
+				|
+				<a href="javascript:void(0);" onclick="BlockListUpRow(this,'child')">向上</a>
+				<a href="javascript:void(0);" onclick="BlockListDownRow(this,'child')">向下</a>
+			</nobr>
+			</td>
+		</tr>
+	</table>
+	<!-- ENDIF -->
+</div>
+
+<!-- ELSEIF type=='form' -->
+
+<div class="HY-form-table-main" name="block_form">
+	<table cellspacing="0" class="HY-form-table-table">
+		<tbody>
+			<!-- BEGIN config.main_field_list AS field -->
+			<!-- IF field.type=='text' -->
+			<tr>
+				<td class="label">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td class="value"><input type="text" class="input-text" name="block_list{multi_name}[0][{field.name}][value]"  fname="{field.name}" style="width:150px;" value="{field.value}" /></td>
+				<td><small>&nbsp;</small></td>
+			</tr>
+			<!-- ELSEIF field.type=='product' -->
+			<tr>
+				<td class="label">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td class="value"><input type="text" class="input-text" name="block_list{multi_name}[0][{field.name}][value]"  fname="{field.name}" style="width:50px;" value="{field.value}" />(输入产品ID)</td>
+				<td><small>&nbsp;</small></td>
+			</tr>
+			<!-- ELSEIF field.type=='image' -->
+			<tr>
+				<td class="label">{#htmlspecialchars_decode(field.alias_name)}({field.name}):</td>
+				<td class="value">
+					<div class="clearfix" ftype="uploader_box" fwidth="{field.width}" fheight="{field.height}">
+						<div style="float:left;height:20px;">
+							<span id="uploader_btn_{multi_id}{field.name}" ftype="uploader"></span>
+						</div>
+						<div ftype="uploader_bar" style="height:20px;line-height:20px;float:left;display:none;">
+							<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+							<span style="font-size:11px;"><span ftype="uploader_bar_per">0</span>%</span>
+						</div>
+						<div class="clear"></div>
+						<input type="hidden" name="block_list{multi_name}[0][{field.name}][value]" ftype="uploader_temp_file" fname="{field.name}">
+						<input type="hidden" name="block_list{multi_name}[0][{field.name}][path]" value="{field.value}">
+						<span ftype="uploader_review"><!-- IF field.value --><img src="{field.url}" /><!-- ENDIF --></span>
+					</div>
+				</td>
+				<td>
+					<script language="JavaScript">
+					BlockSetUploader('uploader_btn_{multi_id}{field.name}');
+					</script>
+				</td>
+			</tr>
+			<!-- ENDIF -->
+			<!-- END config.main_field_list -->
+		</tbody>
+	</table>
+</div>
+
+<!-- ENDIF -->

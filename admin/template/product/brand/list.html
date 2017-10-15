@@ -1,0 +1,45 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">品牌列表 </h3>
+	<p class="right">
+		<button  id="" type="button" class="scalable back" onclick="window.location='?mod=product.brand.add';" style=""><span>添加新的品牌</span></button>
+	</p>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="40">ID</th>
+				<th width="120">Logo</th>
+				<th width="150"><nobr>名称<nobr></th>
+				<th width="150" align="center">添加时间</th>
+				<th width="90" align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td><small>{info.id}</small></td>
+				<td>
+					<!-- IF info.logo -->
+						<img src="{info.logo}" class="img" width="84" />
+					<!-- ENDIF -->
+					&nbsp;
+				</td>
+				<td>{info.name}</td>
+				<td align="center"><small>{info.add_time}</small></td>
+				<td align="center">
+					<a href="?mod=product.brand.edit&id={info.id}">编辑</a>
+					<!-- <a href="?mod=product.brand.del&id={info.id}" onclick="return confirm('确定删除吗?');">删除</a> -->
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>
+

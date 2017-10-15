@@ -1,0 +1,29 @@
+<?php
+
+$menuConfigList = Core::GetConfig( 'menu_list' );
+
+$menuList = array();
+foreach ( $menuConfigList as $key => $item )
+{
+	foreach ( $item['sub'] as $mod => $name )
+	{
+		if( $AccessControl->ToTest( $mod ) )
+		{
+			$menuList[$key]['sub'][$mod] = $name;
+		}
+	}
+}
+
+foreach ( $menuConfigList as $key => $item )
+{
+	if ( $menuList[$key]['sub'] )
+	{
+		$menuList[$key]['name'] = $item['name'];
+	}
+}
+
+$tpl['menu_list'] = $menuList;
+
+Common::PageOut( 'menu.html', $tpl, false, false );
+
+?> 

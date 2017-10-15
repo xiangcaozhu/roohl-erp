@@ -1,0 +1,128 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>
+		<!-- IF edit -->
+		编辑内容
+		<!-- ELSE -->
+		添加内容
+		<!-- ENDIF -->
+	</h3>
+	<div class="right">
+		<button type="button" class="scalable " onclick="$('form').reset();"><span>重置</span></button>
+		<!-- <button type="button" class="scalable save" onclick="if (OnSubmit()){$('#main_form').attr('action', '?mod=product.preview');$('#main_form').attr('target', '_blank');$('#main_form').submit();}"><span>预览</span></button> -->
+		<button type="button" class="scalable save" onclick="$('#main_form').submit();"><span>保存数据</span></button>
+	</div>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="main_form">
+
+<div class="HY-main-columns-2 clearfix">
+	<div class="HY-main-columns-right-2">
+		<div class="HY-form-table" id="price_tab">
+			<div class="HY-form-table-header">
+				内容模型
+			</div>
+			<div class="HY-form-table-main">
+				<table cellspacing="0" class="HY-form-table-table">
+					<tbody>
+						<tr>
+							<td class="label"><label>模型名称</label></td>
+							<td class="value">
+								{pattern_config.name}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="HY-form-table" id="price_tab">
+			<div class="HY-form-table-header">
+				发布选项(可选,不用请留空)
+			</div>
+			<div class="HY-form-table-main">
+				<table cellspacing="0" class="HY-form-table-table">
+					<tbody>
+						<tr>
+							<td class="label"><label>独立发布到</label></td>
+							<td class="value">
+								<input name="publish_path" id="publish_path" value="{content.publish_path}" class="input-text" type="text" style="width:120px;"/>
+								<button type="button" class="" onclick="OpenFileBox('{site_info.publish_path}', true,function(p){$('#publish_path').val(p);});"><span>浏览...</span></button>
+							</td>
+						</tr>
+						<tr>
+							<td class="label"><label>文件名</label></td>
+							<td class="value">
+								<input name="publish_name" value="{content.publish_name}" class="input-text" type="text" style="width:120px;"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="label"><label>模板</label></td>
+							<td class="value">
+								<input name="publish_template" id="publish_template" value="{content.publish_template}" class="input-text" type="text" style="width:120px;"/>
+								<button type="button" class="" onclick="OpenFileBox('{publish_template_path}', false,function(p){$('#publish_template').val(p);});"><span>浏览...</span></button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="HY-main-columns-left-2">
+		
+		<div class="HY-form-table" id="base_tab">
+			<div class="HY-form-table-header">
+				内容信息
+			</div>
+			<div class="HY-form-table-main">
+				<table cellspacing="0" class="HY-form-table-table">
+					<tbody>
+						<tr>
+							<td class="label"><label>标题<span class="required">*</span></label></td>
+							<td class=""><input name="title" value="{content.title}" class="input-text" type="text" size="90"/></td>
+						</tr>
+						<tr>
+							<td class="label"><label>短标题<span class="required">*</span></label></td>
+							<td class=""><input name="sort_title" value="{content.sort_title}" class="input-text" type="text" size="45"/></td>
+						</tr>
+						<tr>
+							<td class="label"><label>关键字</label></td>
+							<td class=""><input name="keyword" value="{content.keyword}" class="input-text" type="text" style="width:150px;"/> (半角逗号分隔)</td>
+						</tr>
+						<tr>
+							<td class="label"><label>描述<span class="required">*</span></label></td>
+							<td class="">
+								<textarea name="summary" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{content.summary}</textarea>
+							</td>
+						</tr>
+						{pattern_form}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+
+<link rel="stylesheet" type="text/css" href="script/ext/css/tree.css" />
+<link rel="stylesheet" type="text/css" href="script/ext/css/menu.css" />
+<link rel="stylesheet" type="text/css" href="script/ext/css/core.css" />
+
+<script type="text/javascript" src="script/ext/ext-base.js"></script>
+<script type="text/javascript" src="script/ext/ext-all.js"></script>
+
+<link rel="stylesheet" href="css/htmleditor.css" type="text/css" media="screen" />
+<script language="javascript" type="text/javascript" src="script/htmleditor.js"></script>
+
+<script type="text/javascript" src="script/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="script/mediaImage.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/fileTree/fileTree.css" />
+<script type="text/javascript" src="script/fileTree.js"></script>
+
+<script>
+
+Ext.BLANK_IMAGE_URL = 'script/ext/s.gif';
+
+</script>

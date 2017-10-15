@@ -1,0 +1,36 @@
+
+
+
+<div class="HY-content-header clearfix">
+	<h3>管理组列表 </h3>
+</div>
+<div class="HY-content-header clearfix">
+<a href='/shop_center/admin/index.php?mod=system.administrator.group.add'>添加管理组</a>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th>ID</th>
+				<th>用户组名称</th>
+				<th>添加日期</th>
+				<th>修改日期</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS group -->
+			<tr>
+				<td>{group.id}</td>
+				<td>{group.name}</td>
+				<td>{group.add_time}</td>
+				<td>{group.update_time}</td>
+				<td>
+					<a href="?mod=system.administrator.group.edit&id={group.id}">编辑</a>
+					<a href="?mod=system.administrator.group.del&id={group.id}" onclick="return confirm('确定删除?');">删除</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

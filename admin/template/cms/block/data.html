@@ -1,0 +1,26 @@
+<script type="text/javascript" src="script/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="script/uploader.js"></script>
+<script type="text/javascript" src="script/cms-block.js"></script>
+
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">块"{info.name}({info.en_name})"数据管理</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header clearfix">
+		<div class="al-left">
+			块"{info.name}({info.en_name})"数据管理
+		</div>
+		<div class="al-right">
+			<!-- IF pattern.type=='list' -->
+			<button type="button" class="append" onclick="BlockListAddRow($(this).parents('.HY-form-table').eq(0).find('*[name=tpl_block_main_input_form]')[0], 'main');"><span>添加行</span></button>
+			<!-- ENDIF -->
+		</div>
+	</div>
+	{html}
+</div>
+</form>

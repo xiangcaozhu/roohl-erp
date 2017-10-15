@@ -1,0 +1,58 @@
+<h3>换购请求列表</h3>
+
+<table class="datalist">
+	<thead>
+		<tr>
+			<td colspan="4">参数</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td align="" style="padding:5px">
+				
+				<form method="get">
+					<input type="hidden" name="mod" value="gift.request.list">
+
+					用户编号:<input type="text" name="user_id" id="user_id" value="{_GET.user_id}" size="10">
+					用户名:<input type="text" name="user_name" id="user_name" value="{_GET.user_name}" size="10">
+					<input type="submit" value="过滤">
+				</form>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="block10"></div>
+
+<table class="datalist">
+	<thead>
+		<tr>
+			<td width="40">ID</td>
+			<td width="120">用户</td>
+			<td width="40">商品ID</td>
+			<td width="">商品名称</td>
+			<td width="150" align="center">请求时间</td>
+			<td>收货人</td>
+			<td width="220" align="center">花费积分</td>
+			<td width="170" align="center">状态</td>
+			<td width="100" align="center">操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		<!-- BEGIN list AS info -->
+		<tr>
+			<td>{info.id}</td>
+			<td>{info.user.user_name}</td>
+			<td align="">{info.gid}</td>
+			<td align="">{info.name}</td>
+			<td align="center">{info.add_time}</td>
+			<td align="">{info.ship_accepter}[电话:{info.ship_phone}]</td>
+			<td align="center">{info.point}</td>
+			<td align="center">{info.status}</td>
+			<td align="center">
+				<a href="?mod=gift.request.view&id={info.id}">编辑/查看</a>
+			</td>
+		</tr>
+		<!-- END list -->
+	</tbody>
+</table>

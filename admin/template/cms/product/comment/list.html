@@ -1,0 +1,39 @@
+<div class="HY-content-header clearfix">
+	<h3 class="left">商品评论管理</h3>
+	<p class="right">
+	</p>
+</div>
+
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="45" align="center">评论ID</th>
+				<th width="45" align="center"><nobr>商品ID<nobr></th>
+				<th width="320"><nobr>商品名称<nobr></th>
+				<th width="200"><nobr>评论人<nobr></th>
+				<th width="100"><nobr>标题<nobr></th>
+				<th width=""><nobr>摘要<nobr></th>
+				<th width="100" align="center">添加时间</th>
+				<th width="100" align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td><small>{info.id}</small></td>
+				<td><small>{info.pid}</small></td>
+				<td>{info.product.name}</td>
+				<td>{info.user_name} ({info.user_email})</td>
+				<td align="">{info.title}</td>
+				<td align="">{info.content}</td>
+				<td align="center"><small>{info.add_time}</small></td>
+				<td align="center">
+					<a href="?mod=cms.product.comment.view&id={info.id}">查看回复</a>
+					<a href="?mod=cms.product.comment.del&id={info.id}" onclick="return confirm('确定删除吗?');">删除</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,46 @@
+<h3>积分换购商品列表</h3>
+
+<div class="page-box clearfix">
+	<small>每页20条记录 总共{total}条记录 {page}/{page_num}</small>
+	<div class="pagelist">{page_bar}</a></div>
+</div>
+<div class="block10"></div>
+<table class="datalist">
+	<thead>
+		<tr>
+			<td width="40">ID</td>
+			<td>商品名称</td>
+			<td width="80" align="center">所需积分</td>
+			<td width="60" align="center">是否启用</td>
+			<td width="60" align="center">启用/关闭</td>
+			<td width="60" align="center">已售数量</td>
+			<td width="120" align="center">添加时间</td>
+			<td width="120" align="center">更新时间</td>
+			<td width="160" align="center">操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		<!-- BEGIN gift_list AS gift -->
+		<tr>
+			<td>{gift.id}</td>
+			<td>{gift.name}</td>
+			<td align="center">{gift.point}</td>
+			<td align="center"><!-- IF gift.is_on --><font color="green">是<font><!-- ELSE --><font color="red">否<font><!-- ENDIF --></td>
+			<td align="center"><!-- IF gift.is_on --><a href="?mod=gift.on&id={gift.id}&type=down" style="color:red">关闭</a><!-- ELSE --><a href="?mod=gift.on&id={gift.id}&type=up" style="color:green">启用</a><!-- ENDIF --></td>
+			<td align="center">{gift.gift_num}</td>
+			<td align="center">{gift.add_time}</td>
+			<td align="center">{gift.update_time}</td>
+			<td align="center">
+				<a href="?mod=gift.edit&id={gift.id}">编辑</a>
+			</td>
+		</tr>
+		<!-- END gift_list -->
+	</tbody>
+</table>
+
+<div class="block10"></div>
+<div class="page-box clearfix">
+	<small>每页20条记录 总共{total}条记录 {page}/{page_num}</small>
+	<div class="pagelist">{page_bar}</a></div>
+</div>
+<div class="block10"></div>

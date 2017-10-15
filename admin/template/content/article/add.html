@@ -1,0 +1,127 @@
+
+<div class="HY-content-header clearfix">
+	<h3>添加文章</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		添加文章
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>标题<span class="required">*</span></label></td>
+					<td class="value"><input name="title" id="title" value="" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>分类<span class="required"></span></label></td>
+					<td class="value">
+						<select name="cid" style="width:200px;">
+							<!-- BEGIN category_list AS category -->
+							<option value="{category.id}" <!-- IF category.id==_GET.id -->selected<!-- ENDIF -->>{category.indent}{category.name}</option>
+							<!-- END category_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>简单描述<span class="required"></span></label></td>
+					<td class="value">
+						<textarea name="summary" id="summary" class="textarea" rows="2" cols="10" style="width:400px;height:80px;"></textarea>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>详细描述<span class="required">*</span></label></td>
+					<td class="value">
+						<textarea name="content" id="content" style="width:630px;height:180px;border:1px solid #ccc;overflow-x:auto;overflow-y:auto;"></textarea>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>图片<span class="required"></span></label></td>
+					<td class="value">
+						<div>
+							<span id="picture_field"><input type="file" name="picture" id="image_description" class="input-file"></span>
+							<button type="button" value="Upload" onclick="UploadImage();" >Upload</button><br />
+							<i>选择后,点击"Upload"按钮进行上传</i>
+						</div>
+						<div id="picture_list" style="margin-top:5px;"></div>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+
+<iframe id="upload_iframe" name="upload_iframe" style="display:none;"></iframe>
+
+<script language="JavaScript">
+
+function TabSelect(obj,id){
+	$('table').hide();
+	$('#'+id).show();
+	$('.tab4').find('li').removeClass('active');
+	$(obj).parent().addClass('active');
+}
+
+var editor;
+
+function EditorRun(){
+	editor = new Editor('content');
+	editor.Init();
+}
+
+function UploadImage(){
+	
+	$('form').attr('target', 'upload_iframe');
+	$('form').attr('action', '?mod=content.article.upload.image&type=1&call=UploadDone');
+
+	$('form').submit();
+
+	$('form').attr('target', '');
+	$('form').attr('action', '');
+
+}
+
+function UploadDone(error,info){
+	if (error==null){
+		$('#picture_list').append('<div class="picture" onclick="InsertPicture(\''+info.full_url+'\');"><img src="'+info.thumb3_url+'" align="absmiddle"><input type="hidden" name="picture_id[]" value="'+info.id+'"></div>');
+	}
+
+	$('#picture_field').empty();
+	$('#picture_field').append('<input type="file" name="picture" id="image_description" class="input-file">');
+}
+
+function InsertPicture(url){
+	editor.Insert('<br /><img src="'+url+'" /><br />', editor.__sel);
+}
+</script>
+<style>
+.picture{
+	width:100px;height:100px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+	cursor:pointer;
+}
+
+.picture2{
+	width:52px;height:52px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+}
+</style>
+<link rel="stylesheet" href="css/editor.css" type="text/css" media="screen" />
+<script language="javascript" type="text/javascript" src="script/editor.js"></script>

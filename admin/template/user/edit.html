@@ -1,0 +1,56 @@
+
+
+
+<div class="HY-content-header clearfix">
+	<h3>编辑用户</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post">
+<div class="HY-form-table">
+	<div class="HY-form-table-header">
+		编辑品牌
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>用户名<span class="required"></span></label></td>
+					<td class="value">{user.user_name}</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>登录密码<span class="required"></span></label></td>
+					<td class="value"><input name="user_password" id="user_password" value="" class="input-text" type="password" style=""/></td>
+					<td class="note">不更改请留空</td>
+				</tr>
+				<tr>
+					<td class="label"><label>确认密码<span class="required"></span></label></td>
+					<td class="value"><input name="user_password_confirm" id="user_password_confirm" value="" class="input-text" type="password" style=""/></td>
+					<td class="note">不更改请留空</td>
+				</tr>
+				<tr>
+					<td class="label"><label>Email<span class="required">*</span></label></td>
+					<td class="value"><input name="user_email" id="user_email" value="{user.user_email}" class="input-text" type="text" style=""/></td>
+					<td class=""></td>
+				</tr>
+				<tr>
+					<td class="label"><label>积分<span class="required"></span></label></td>
+					<td class="value"><input name="user_point" id="user_point" value="{user.user_point}" class="input-text" type="text" style=""/></td>
+					<td class=""></td>
+				</tr>
+				<tr>
+					<td class="label"><label>VIP<span class="required">*</span></label></td>
+					<td class="value">
+						<input type="radio" name="user_is_vip" value="1" <!-- IF user.user_is_vip -->checked<!-- ENDIF -->/>是
+						<input type="radio" name="user_is_vip" value="0" <!-- IF !user.user_is_vip -->checked<!-- ENDIF -->/>否
+					</td>
+					<td class=""></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

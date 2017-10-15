@@ -1,0 +1,87 @@
+<h3>添加换购商品</h3>
+<form method="post" enctype="multipart/form-data">
+<div class="tab4 clearfix">
+	<ul class="clearfix">
+		<li class="active right"><a href="javascript:void(0);" onclick="TabSelect(this,'base');">基本信息</a></li>
+	</ul>
+</div>
+<table class="dataform" id="base">
+	<tbody>
+		<tr>
+			<td class="label"><font color="red">*</font>名称</td>
+			<td>
+				<input type="text" name="name" value="{gift.name}" class="in" style="width:300px;">
+			</td>
+		</tr>
+		<tr>
+			<td class="label"><font color="red">*</font>所需积分</td>
+			<td>
+				<input type="text" name="point" value="{gift.point}" class="in" style="width:100px;">
+			</td>
+		</tr>
+		<tr>
+			<td class="label">列表图片</td>
+			<td>
+				<!-- IF gift.image_list -->
+				<img src="{gift.image_list_url}" class="img"><br />
+				<!-- ENDIF -->
+				<input type="file" name="image_list" id="image_list" style="height:27px;"><br />
+				<i>92*92 请先选择,提交时会自动上传</i>
+			</td>
+		</tr>
+		<tr>
+			<td class="label">简单描述</td>
+			<td>
+				<textarea name="summary">{gift.summary}</textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div>
+	<center>
+		<input type="submit" name="__post" value="确认提交" class="btn" onclick="$('#picture').attr('disabled', true);">
+		<input type="reset" name="reset" value="取消重置" class="btn">
+	<center>
+</div>
+</form>
+
+<iframe id="upload_iframe" name="upload_iframe" style="display:none;"></iframe>
+
+<script language="JavaScript">
+
+function TabSelect(obj,id){
+	$('table').hide();
+	$('#'+id).show();
+	$('.tab4').find('li').removeClass('active');
+	$(obj).parent().addClass('active');
+}
+
+var editor;
+
+function EditorRun(){
+	editor = new Editor('description');
+	editor.Init();
+}
+
+function InsertPicture(url){
+	editor.Insert('<br /><img src="'+url+'" /><br />', editor.__sel);
+}
+</script>
+<style>
+.picture{
+	width:100px;height:100px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+	cursor:pointer;
+}
+
+.picture2{
+	width:52px;height:52px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+}
+</style>
+<link rel="stylesheet" href="css/editor.css" type="text/css" media="screen" />
+<script language="javascript" type="text/javascript" src="script/editor.js"></script>

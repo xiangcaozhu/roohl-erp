@@ -1,0 +1,336 @@
+<?xml version='1.0' encoding='utf-8'?>
+<module>
+	<delivery>
+		<title>出库发货 delivery</title>
+		<sub>
+			<freight>
+				<title>导入订单物流费 freight</title>
+			</freight>
+			<import>
+				<title>导入物流单号物流费 import</title>
+			</import>
+			<list>
+				<title>出库单列表 list</title>
+			</list>
+			<other>
+				<title>其他出库 other</title>
+			</other>
+			<pack>
+				<title>整理出库订单 pack</title>
+			</pack>
+			<print>
+				<title>打印发货单 print</title>
+			</print>
+			<readyprint>
+				<title>待打印出库单列表 readyprint</title>
+			</readyprint>
+			<WL_no_excel>
+				<title>未给快递公司出库单列表 WL_no_excel</title>
+			</WL_no_excel>
+		</sub>
+	</delivery>
+	<download>
+		<title>报表下载</title>
+		<sub>
+			<gf_1>
+				<title>广发销售报表（刘丹） gf_1</title>
+			</gf_1>
+			<gf_2>
+				<title>广发银行月报（孙江琳） gf_2</title>
+			</gf_2>
+			<jh_1>
+				<title>建行销售报表（刘丹） jh_1</title>
+			</jh_1>
+			<jh_2>
+				<title>交行销售报表（刘丹） jh_2</title>
+			</jh_2>
+		</sub>
+	</download>
+	<finance>
+		<title>财务报表 finance</title>
+		<sub>
+			<detail>
+				<title>订单回款明细 detail</title>
+			</detail>
+			<order>
+				<title>订单销售报表 order</title>
+			</order>
+			<total>
+				<title>渠道回款汇总 total</title>
+			</total>
+		</sub>
+	</finance>
+	<order>
+		<title>订单中心 order</title>
+		<sub>
+			<channel>
+				<title>新建渠道订单 channel</title>
+			</channel>
+			<check>
+				<title>订单确认 check</title>
+				<sub>
+					<check_f>
+						<title>财务批量确认 check_f</title>
+					</check_f>
+					<finance>
+						<title>财务到款确认 finance</title>
+					</finance>
+					<purchase>
+						<title>产品经理确认 purchase</title>
+					</purchase>
+					<service>
+						<title>客服确认 service</title>
+					</service>
+					<service_1>
+						<title>客服确认_1 service_1</title>
+					</service_1>
+					<service_11>
+						<title>客服确认_1 service_1</title>
+					</service_11>
+					<service_2>
+						<title>客服外呼_2 service_2</title>
+					</service_2>
+					<sign>
+						<title>订单签收确认 sign</title>
+					</sign>
+					<sign_f>
+						<title>订单批量签收 sign_f</title>
+					</sign_f>
+				</sub>
+			</check>
+			<edit>
+				<title>编辑订单 edit</title>
+			</edit>
+			<importcheck>
+				<title>导入订单 check</title>
+			</importcheck>
+			<list>
+				<title>所有订单信息 list</title>
+			</list>
+			<list_all>
+				<title>所有订单信息客服部 list_all</title>
+			</list_all>
+			<list_all_1>
+				<title>所有订单信息客服部 list_all_1</title>
+			</list_all_1>
+			<lock>
+				<title>配货管理 lock</title>
+			</lock>
+			<service>
+				<title>售后处理 service</title>
+			</service>
+		</sub>
+	</order>
+	<product>
+		<title>商品中心 product</title>
+		<sub>
+			<add>
+				<title>添加商品 add</title>
+			</add>
+			<bank>
+				<title>渠道商品对照表 collate</title>
+			</bank>
+			<brand>
+				<title>品牌管理</title>
+				<sub>
+					<add>
+						<title>添加新的品牌</title>
+					</add>
+					<del>
+						<title>del</title>
+					</del>
+					<edit>
+						<title>edit</title>
+					</edit>
+					<list>
+						<title>列表 product.brand.list</title>
+					</list>
+					<list1>
+						<title>list1</title>
+					</list1>
+				</sub>
+			</brand>
+			<category>
+				<title>分类管理 category</title>
+			</category>
+			<collate>
+				<title>渠道商品对照表 collate</title>
+			</collate>
+			<edit>
+				<title>编辑商品 edit</title>
+			</edit>
+			<import>
+				<title>产品导入 import</title>
+			</import>
+			<import20161011>
+				<title>产品导入 import</title>
+			</import20161011>
+			<import_collate>
+				<title>渠道产品对照表导入 import_collate</title>
+			</import_collate>
+			<list>
+				<title>商品列表 list</title>
+			</list>
+			<up_collate>
+				<title>渠道产品对照表导入 import_collate</title>
+			</up_collate>
+		</sub>
+	</product>
+	<purchase>
+		<title>采购管理 purchase</title>
+		<sub>
+			<check---->
+				<title>审核采购单 check</title>
+			</check---->
+			<check>
+				<title>审核采购单 check</title>
+			</check>
+			<del>
+				<title>删除采购单 del</title>
+			</del>
+			<edit>
+				<title>修改采购单 edit</title>
+			</edit>
+			<E_CGD>
+				<title>常规库房→采购单列表 E_CGD</title>
+			</E_CGD>
+			<general>
+				<title>常规采购 general</title>
+			</general>
+			<gls>
+				<title>格兰仕独立采购 gls</title>
+			</gls>
+			<gomast>
+				<title>调库过账 gomast</title>
+			</gomast>
+			<list>
+				<title>常规库房采购单列表 list</title>
+			</list>
+			<listreceive>
+				<title>未完成采购单常规库房 listreceive</title>
+			</listreceive>
+			<listreceive_h>
+				<title>★代发货→采购单列表 listreceive_h</title>
+			</listreceive_h>
+			<listreceive_m>
+				<title>常规库房→采购单列表 listreceive_m</title>
+			</listreceive_m>
+			<list_h>
+				<title>代发货采购单列表 list_h</title>
+			</list_h>
+			<need>
+				<title>按需采购 need</title>
+			</need>
+			<need1>
+				<title>按需采购 need</title>
+			</need1>
+			<nopay>
+				<title>常规库未付款采购单 nopay</title>
+			</nopay>
+			<nopay_creat>
+				<title>创建支出单 nopay_creat</title>
+			</nopay_creat>
+			<nopay_creatS>
+				<title>创建支出单 nopay_creatS</title>
+			</nopay_creatS>
+			<pay>
+				<title>财务采购付款 pay</title>
+			</pay>
+			<paylist>
+				<title>支出单 paylist</title>
+			</paylist>
+			<supplier>
+				<title>供应商管理 supplier</title>
+			</supplier>
+			<supplierInvoice>
+				<title>供货商发票管理 supplierInvoice</title>
+			</supplierInvoice>
+			<supplier_money>
+				<title>供应商管理账目 supplier_money</title>
+			</supplier_money>
+		</sub>
+	</purchase>
+	<report>
+		<title>销售报表 report</title>
+		<sub>
+			<business>
+				<title>业务部毛利报表 business</title>
+			</business>
+			<channelone>
+				<title>渠道销售汇总报表 channelone</title>
+			</channelone>
+			<channelproduct>
+				<title>渠道销售产品明细 channelproduct</title>
+			</channelproduct>
+			<dataone>
+				<title>每日渠道销售明细 dataone</title>
+			</dataone>
+			<finance>
+				<title>财务到账报表 finance</title>
+			</finance>
+			<gross>
+				<title>产品销售毛利表 gross</title>
+			</gross>
+			<gross_1>
+				<title>产品销售毛利表 gross</title>
+			</gross_1>
+			<order>
+				<title>订单流水分类报表 order</title>
+			</order>
+			<sales>
+				<title>产品销量报表 sales</title>
+			</sales>
+		</sub>
+	</report>
+	<store>
+		<title>入库管理 store</title>
+		<sub>
+			<hurry>
+				<title>其他入库 other</title>
+			</hurry>
+			<list>
+				<title>入库单列表 list</title>
+			</list>
+			<other>
+				<title>其他入库 other</title>
+			</other>
+			<print>
+				<title>打印入库单 print</title>
+			</print>
+			<purchase>
+				<title>收货入库 purchase</title>
+			</purchase>
+			<receive>
+				<title>收货入库 receive</title>
+			</receive>
+		</sub>
+	</store>
+	<system>
+		<title>系统管理 system</title>
+		<sub>
+			<administrator>
+				<title>系统帐号管理 administrator</title>
+			</administrator>
+			<channel>
+				<title>渠道管理 channel</title>
+			</channel>
+		</sub>
+	</system>
+	<warehouse>
+		<title>库房管理 warehouse</title>
+		<sub>
+			<account>
+				<title>库存商品帐 account</title>
+			</account>
+			<list>
+				<title>库房管理 list</title>
+			</list>
+			<place>
+				<title>货位管理 place</title>
+			</place>
+			<stock>
+				<title>库存查询 stock</title>
+			</stock>
+		</sub>
+	</warehouse>
+</module>

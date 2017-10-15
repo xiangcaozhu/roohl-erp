@@ -1,0 +1,92 @@
+<!-- BEGIN buy_attribute_list AS attribute -->
+
+<div name="buy_attr" attr_id="{attribute.id}" >
+	<div class="HY-grid-title">
+		<div class="HY-grid-title-inner">
+			<b name="attr_name">{attribute.name}</b>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="EditProductAttribute(this);">编辑</a>
+			<!-- IF is_template -->
+			<a href="javascript:void(0);" onclick="RemoveProductAttribute(this)"><b>移除属性</b></a>
+			<!-- ENDIF -->
+			<a style="float:right;" href="javascript:void(0);" onclick="AddProductAttributeValue(this);">添加选项</a>
+		</div>
+	</div>
+	<div class="HY-grid" name="table_box">
+	<table cellspacing="0">
+					<thead>
+						<tr class="header">
+							<th>名称</th>
+							<th width="40">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody name="value_box">
+						<!-- BEGIN attribute.value_list AS value -->
+						<tr name="value_row" class="value-row" attr_val_id="{value.id}">
+							<td><span name="value_name">{value.name}</span>&nbsp;<span name="value_service">{value.service_name}</span></td>
+							<td align="center">
+								<a href="javascript:void(0);" onclick="EditProductAttributeValueTextblock(this)">修改</a> 
+								<!-- IF is_template -->
+								<a href="javascript:void(0);" onclick="RemoveProductAttributeValueTextblock(this)">移除</a>
+								<!-- ENDIF -->
+								<input type="hidden" name="buy_attr_val[{attribute.id}][{value.id}][name]" vname="name" value="{value.name}">
+								<input type="hidden" name="buy_attr_val[{attribute.id}][{value.id}][about]" vname="about" value="{value.about_disabled}">
+								<input type="hidden" name="buy_attr_val[{attribute.id}][{value.id}][append_price]" vname="append_price" value="{value.append_price}">
+								<input type="hidden" name="buy_attr_val[{attribute.id}][{value.id}][hidden]" vname="hidden" value="{value.hidden}">
+								<input type="hidden" name="buy_attr_val[{attribute.id}][{value.id}][service]" vname="service" value="{value.service}">
+							</td>
+						</tr>
+						<!-- END attribute.value_list -->
+					</tbody>
+				</table>
+</div>				
+	<div class="attribute-editbox clearfix" style="display:none">
+		<div class="attribute-editbox-left" style="display:none">
+			<div class="attribute-editbox-title">基本信息ertert</div>
+			<table>
+				<tr>
+					<td class="label">属性名称:</td>
+					<td><span name="attr_name">{attribute.name}</span></td>
+				</tr>
+				<tr>
+					<td class="label">类型:</td>
+					<td name="attr_type_view">
+						<!-- IF attribute.type=='text' -->文本框
+						<!-- ELSEIF attribute.type=='color' -->颜色
+						<!-- ELSEIF attribute.type=='image' -->图片
+						<!-- ELSEIF attribute.type=='select' -->下拉菜单
+						<!-- ELSEIF attribute.type=='textblock' -->文本选择块
+						<!-- ELSEIF attribute.type=='textgroup' -->文本输入组
+						<!-- ENDIF -->
+					</td>
+				<tr>
+				<tr>
+					<td class="label">必须:</td>
+					<td><span name="attr_required"><!-- IF attribute.required==1 --><font color="red">是</font><!-- ELSE -->否<!-- ENDIF --></span></td>
+				</tr>
+				<tr>
+					<td class="label"></td>
+					<td align="right"></td>
+				</tr>
+			</table>
+			
+			<input type="hidden" name="buy_attr[{attribute.id}][name]" value="{attribute.name}" aname="name">
+			<input type="hidden" name="buy_attr[{attribute.id}][type]" aname="type" value="{attribute.type}">
+			<input type="hidden" name="buy_attr[{attribute.id}][order]" aname="order" value="{attribute.order_id}">
+			<input type="hidden" name="buy_attr[{attribute.id}][length]" aname="length" value="{attribute.length}">
+			<input type="hidden" name="buy_attr[{attribute.id}][append_price]" aname="append_price" value="{attribute.append_price}">
+			<input type="hidden" name="buy_attr[{attribute.id}][hidden]" aname="hidden" value="{attribute.hidden}">
+			<input type="hidden" name="buy_attr[{attribute.id}][required]" aname="required" value="{attribute.required}">
+			<input type="hidden" name="buy_attr[{attribute.id}][switch]" aname="switch" value="{attribute.switch}">
+			<input type="hidden" name="buy_attr[{attribute.id}][switch_title]" aname="switch_title" value="{attribute.switch_title}">
+			<input type="hidden" name="buy_attr[{attribute.id}][disable]" aname="disable" value="{attribute.disable}">
+			<input type="hidden" name="buy_attr[{attribute.id}][description]" aname="description" value="{attribute.description}">
+		</div>
+		<div class="attribute-editbox-right">
+			<div class="attribute-editbox-title" style="display:none">项目列表 <span name="attr_item_add_view"><!-- IF attribute.type!='text' --><a href="javascript:void(0);" onclick="AddProductAttributeValue(this);">添加选项</a><!-- ENDIF --></span></div>
+			<div class="HY-grid" name="table_box">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- END buy_attribute_list -->

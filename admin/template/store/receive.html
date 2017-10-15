@@ -1,0 +1,46 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">{warehouse_info.name} 收货入库 </h3>
+	<p class="right">
+		
+	</p>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		收货单列表 分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="60">收货单号</th>
+				<th width="80">收货类型</th>
+				<th width="80">库房</th>
+				<th width="80">入库状态</th>
+				<th width="80">采购单</th>
+				<th width="60">收货员</th>
+				<th width="40">总件数</th>
+				<th width="100">添加时间</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td align="center"><small>{val.id}</small></td>
+				<td align="center">{val.type_name}</td>
+				<td align="center">{val.warehouse_name}</td>
+				<td align="center">{val.into_status_name}</td>
+				<td align="center"><!-- IF val.purchase_id -->{val.purchase_id}<!-- ELSE -->-<!-- ENDIF --></td>
+				<td >{val.user_name}</td>
+				<td align="center">{val.total_quantity}</td>
+				<td align="center"><small>{val.add_time}</small></td>
+				<td align="center">
+					<a href="?mod=store.new.receive{warehouse_uri}&id={val.id}">开始入库</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

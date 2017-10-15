@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<style type="text/css">
+
+body{
+	padding:0px 0px;
+}
+
+*{
+	padding:0px;
+	margin:0px;
+	font-family:tahoma,"Lucida Grande","Lucida Sans",sans,Hei;
+	font-size:12px;
+}
+
+a{
+	color:#0066CC;
+	text-decoration:underline;
+}
+
+a:hover{
+	color:#FF7031;
+	text-decoration:none;
+}
+
+h3{
+	font-size:14px;
+	font-weight:bold;
+	color:#444;
+	margin-bottom:10px;
+}
+
+input {
+	vertical-align:middle;
+	padding:3px;
+}
+
+input.in{
+	padding:2px;
+	width:220px;
+	border:1px solid #ccc;
+	height:20px;
+	padding-top:10px;
+}
+
+select{
+	padding:3px;
+	/*font-size:11px;*/
+}
+
+input.btn {
+	cursor:pointer;
+	height:28px;
+}
+
+.img{
+	border:1px solid #ccc;
+	padding:2px;
+}
+
+ul {list-style-image:none;list-style-position:none;list-style-type:none;}
+
+#tab{
+	width:960px;
+}
+
+#tab td{
+	padding:4px;
+}
+
+#tab th{
+	padding:2px;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<table border="0" width="850" align="center" style="margin:10px auto 18px;">
+	<tr>
+		<td width="850" align="center">
+			<h1 style="font-size:18px;" align="center">渠道回款汇总</h1>
+		</td>
+	</tr>
+	<tr>
+		<td width="200">
+			北京科润迪科技发展有限公司
+		</td>
+		<td width="100" align="right">
+			制表人：{creator}
+		</td>
+	</tr>
+	<tr>
+		<td width="200">
+			日期区间：{begin_date} - {end_date}
+		</td>
+		<td width="300" align="right">
+			制表时间：{current_time}
+		</td>
+	</tr>
+</table>
+<table  border="1" width="850" align="center" style="margin:0 auto 0px;">
+	<thead>
+		<tr>
+				<th width="80">父渠道</th>
+				<th width="80">回款日期</th>
+				<th width="60">销售合计</th>
+				<th width="60">手续费</th>
+				<th width="60">结算金额</th>
+		</tr>
+	</thead>
+	<tbody>
+		<!-- BEGIN list AS info -->
+		<tr>
+			<td align="center">{info.channel_parent_name}</td>
+			<td align="center">{#DateFormat(info.finance_recieve_time, 'Y-m-d')}</td>
+			<td align="right">{#FormatMoney(info.total_sales_price)}</td>
+			<td align="right">{#FormatMoney(info.total_payout)}</td>
+			<td align="right">{#FormatMoney(info.total_balance)}</td>
+		</tr>
+		<!-- END list -->
+	</table>
+</table>
+
+
+</body>
+</html>

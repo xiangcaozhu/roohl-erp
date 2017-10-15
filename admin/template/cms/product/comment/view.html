@@ -1,0 +1,71 @@
+
+
+
+<div class="HY-content-header clearfix">
+	<h3>
+		编辑/回复评论
+	</h3>
+	
+</div>
+
+<form method="post">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		编辑/回复评论
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>标题</label></td>
+					<td class="value">{info.title}</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>内容</label></td>
+					<td class="value">{info.content}</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>添加时间</label></td>
+					<td class="value">{info.add_time}</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+
+<div class="HY-content-header clearfix">
+	<h3>
+		评论回复
+	</h3>
+</div>
+
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="45" align="center">ID</th>
+				<th width="200"><nobr>评论人<nobr></th>
+				<th width=""><nobr>内容<nobr></th>
+				<th width="100" align="center">添加时间</th>
+				<th width="100" align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td><small>{info.id}</small></td>
+				<td>{info.user_name} ({info.user_email})</td>
+				<td align="">{info.content}</td>
+				<td align="center"><small>{info.add_time}</small></td>
+				<td align="center">
+					<a href="?mod=cms.product.comment.del&id={info.id}" onclick="return confirm('确定删除吗?');">删除</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

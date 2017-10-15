@@ -1,0 +1,42 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>导入产品信息</h3>
+	<div class="right">
+		<button type="button" class="scalable back" onclick="location='?mod=product.import.upload_collate_1&file={file_name}'" style=""><span>确定导入</span></button>
+	</div>
+</div>
+
+<form method="post" id="main_form">
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		列表
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="40">渠道ID</th>
+				<th width="150">渠道名称-编号</th>
+				<th width="100">渠道-SKU</th>
+				<th width="">系统名称-银行名称</th>
+				<th width="">价格-银行链接</th>
+				<th width="120">状态</th>
+			</tr>
+		</thead>
+		<tbody id="purchase_row">
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td><!-- IF !val.channel_id --><font color="red">渠道ID不能为空</font><!-- ELSE --><small>{val.channel_id}</small><!-- ENDIF --></td>
+				<td>{val.channel_name}<br />{val.target_id}</td>
+				<td bgcolor="{val.sku_err}">系统：{val.collateOne.sku}<br />导入：{val.sku}</td>
+				<td>产品：{val.product_name}<br />系统：{val.collateOne.bank_name}<br />导入：{val.bank_name}<br />银行：{val.bank_info.Pname}</td>
+				<td align="left" bgcolor="{val.sku_price}">系统：{val.price}<br />导入：{val.AllMoney}<br /><a href="{val.bank_link}" target="_blank">{val.bank_link}</a></td>
+				<td><!-- IF val.exists --><font color="#006600">记录已经存在，正确</font><!-- ELSE --><font color="red">无记录，错误！</font><!-- ENDIF --></td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

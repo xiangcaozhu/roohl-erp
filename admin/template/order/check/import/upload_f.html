@@ -1,0 +1,37 @@
+
+<div class="HY-content-header clearfix">
+	<h3>订单批量到款</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>提交数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data" <!-- IF check -->action="?mod=order.check.check_f"<!-- ENDIF -->>
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		订单批量到款
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>导入类型<span class="required">*</span></label></td>
+					<td class="value">
+						<select name="channel_parent_id">
+							<!-- BEGIN channel_parent_list AS val -->
+							<option value="{val.id}" <!-- IF val.id==_POST.channel_parent_id  -->selected<!-- ENDIF -->>{val.name}</option>
+							<!-- END channel_parent_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>文件<span class="required">*</span></label></td>
+					<td class="value"><input name="file" id="file" value="" class="input-text" type="file"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

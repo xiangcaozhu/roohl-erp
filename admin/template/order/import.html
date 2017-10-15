@@ -1,0 +1,46 @@
+
+<div class="HY-content-header clearfix">
+	<!-- IF check -->
+	<h3>待处理文件检查</h3>
+	<!-- ELSE -->
+	<h3>导入订单</h3>
+	<!-- ENDIF -->
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>提交数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data" <!-- IF check -->action="?mod=order.importcheck"<!-- ENDIF -->>
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		<!-- IF check -->
+		待处理文件检查
+		<!-- ELSE -->
+		导入订单
+		<!-- ENDIF -->
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>导入类型<span class="required">*</span></label></td>
+					<td class="value">
+						<select name="channel_parent_id">
+						<option value="0">选择银行</option>
+							<!-- BEGIN channel_parent_list AS val -->
+							<option value="{val.id}" <!-- IF val.id==_GET.channel_parent_id  -->selected<!-- ENDIF -->>{val.name}</option>
+							<!-- END channel_parent_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>文件<span class="required">*</span></label></td>
+					<td class="value"><input name="file" id="file" value="" class="input-text" type="file"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

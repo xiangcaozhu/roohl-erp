@@ -1,0 +1,15 @@
+.editor_tb{margin-bottom:-2px;*margin-bottom:2px !important;width:400px;}
+.editor_tb a{padding:4px;display:block;line-height:12px;text-align:center;cursor:pointer;color:#000;text-decoration:none;min-width:12px;}
+.editor_tb a:hover{color:#000;text-decoration:none;}
+.editor_tb .editor_box{position:absolute;display:none;top:20px;left:-1px;padding:10px;cursor:default;background-color:#fff;border:1px solid #666;border-top:1px solid #eee;border-left:1px solid #eee;width:255px;}
+.editor_tb .editor_box input{border:1px solid #ccc;height:20px;line-height:20px;}
+.editor_tb .editor_box button{float:left;border:1px solid #666;border-top:1px solid #eee;border-left:1px solid #eee;background-color:#fff;height:25px;line-height:25px;}
+.editor_tb .editor_box label input{border:0px;}
+.editor_tb span{position:relative;float:left;margin-right:1px;border:1px solid #ccc;bottom:-3px;*bottom:-4px;height:20px;}
+.editor_tb .editor_tb_right{float:right;margin-right:0px;margin-left:3px;padding-top:3px;bottom:-3px;*bottom:-4px;margin-bottom:0px;height:21px;}
+.editor_tb .editor_tb_right.on{border-bottom:1px solid #F7F7F7;font-weight:bold;background-color:#F7F7F7;}
+.editor_upload_image_view_box {position:relative;height:78px;overflow:hidden;}
+.editor_upload_image_view_box_block {border:1px solid #ccc;float:left;height:68px;margin:5px 4px 0px 0px;overflow:hidden; background-position:center;background-repeat:no-repeat;cursor:pointer;}
+.editor_face_bar img{cursor:pointer;margin:5px 0px 0px 0px;}
+.editor_area{background-color:#F7F7F7;}
+.foucs_border {border:1px solid red;}

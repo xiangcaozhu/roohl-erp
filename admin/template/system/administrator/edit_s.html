@@ -1,0 +1,76 @@
+
+<div class="HY-content-header clearfix">
+	<h3>修改密码</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post">
+<div class="HY-form-table">
+	<div class="HY-form-table-header">
+		修改密码
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>用户名<span class="required">*</span></label></td>
+					<td class="value">{user.user_name}&nbsp;&nbsp;{user.user_real_name}</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>登录密码<span class="required">*</span></label></td>
+					<td class="value"><input name="user_password" id="user_password" value="" class="input-text" type="password" style=""/></td>
+					<td class="note">不更改请留空</td>
+				</tr>
+				<tr>
+					<td class="label"><label>确认密码<span class="required">*</span></label></td>
+					<td class="value"><input name="user_password_confirm" id="user_password_confirm" value="" class="input-text" type="password" style=""/></td>
+					<td class="note">不更改请留空</td>
+				</tr>
+				<tr style="display:none">
+					<td class="label"><label>真实姓名<span class="required"></span></label></td>
+					<td class="value"><input name="user_real_name" id="user_real_name" value="{user.user_real_name}" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr style="display:none">
+					<td class="label"><label>管理组<span class="required"></span></label></td>
+					<td class="value">
+						<select name="user_group[]" style="width:300px;">
+							<!-- BEGIN group_list AS group -->
+							<option value="{group.id}" {group.selected}>{group.name}</option>
+							<!-- END group_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr style="display:none">
+					<td class="label"><label>上级产品经理<span class="required"></span></label></td>
+					<td class="value">
+						<select name="user_product_1" style="width:300px;">
+						     <option value="0">不设置</option>
+							<!-- BEGIN jl_list AS jlgroup -->
+							<option value="{jlgroup.user_id}" {jlgroup.selected}>{jlgroup.user_real_name}→{jlgroup.user_real_name_1}</option>
+							<!-- END jl_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr style="display:none">
+					<td class="label"><label>上级产品总监<span class="required"></span></label></td>
+					<td class="value">
+						<select name="user_product" style="width:300px;">
+						     <option value="0">不是产品经理</option>
+							<!-- BEGIN zj_list AS zjgroup -->
+							<option value="{zjgroup.user_id}" {zjgroup.selected}>{zjgroup.user_real_name}</option>
+							<!-- END zj_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

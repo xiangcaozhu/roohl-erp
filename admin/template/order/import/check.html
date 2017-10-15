@@ -1,0 +1,99 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>导入订单</h3>
+	<div class="right">
+		<button type="button" class="scalable back" onclick="location='?mod=order.import&file={file_name}&channel_parent_id={_POST.channel_parent_id}'" style=""><span>确定导入</span></button>
+	</div>
+</div>
+
+<form method="post" id="main_form">
+
+<div class="clearfix">
+	<div class="input-field">
+		<select name="channel_parent_id">
+			<!-- BEGIN channel_parent_list AS val -->
+			<option value="{val.id}" <!-- IF val.id==_POST.channel_parent_id  -->selected<!-- ENDIF -->>{val.name}</option>
+			<!-- END channel_parent_list -->
+		</select>
+	</div>
+	<div class="right">
+	</div>
+</div>
+<div class="block5"></div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		列表
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="120">渠道订单号</th>
+				<th width="80">销售对应关系</th>
+				<th width="40"><div align="center">分期数</div></th>
+				<th width=""><nobr>商品名称<nobr></th>
+				<th width="100">价格</th>
+				<th width="40"><div align="center">优惠券</div></th>
+				<th width="40"><div align="center">数量</div></th>
+				<th width="200">配送</th>
+				<th width="100">备注</th>
+				<th width="40"><div align="center">状态</div></th>
+			</tr>
+		</thead>
+		<tbody id="purchase_row">
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td>{val.data.target_id}<br><br />下单时间：<br>{val.timeing}</td>
+			<td>{val.product_data.target_id}<br />
+			<!-- IF val.product_data.collate_error -->
+			<font color="#FF0000">{val.product_data.collate_error}</font>
+			<!-- ELSE -->
+			↓<br />ID:{val.sku_info.product.id}<br />{val.sku_info.sku}
+			<!-- ENDIF -->
+			</td>
+				<td align="center">{val.data.order_instalment_times}<br /><br />费率<br />{val.product_data.payout_rate}</td>
+				<td>
+					<!-- IF val.sku_info -->
+					{val.sku_info.product.name}<br>
+					<!-- IF val.sku_info.attribute --><b>属性：</b>{val.sku_info.attribute}<br><!-- ENDIF -->
+					<!-- ENDIF -->
+					<font color="#999999"><b>银行名称：</b>{val.product_data.extra_name}</font>
+					
+				</td>
+				<td>提报：{val.product_data.price}<br />销售：{val.product_data.sale_price}<br />支付：{val.product_data.total_pay_money_one}
+				<!-- IF !val.product_data.collate_error -->
+				<br /><font color="#FF0000">{val.product_data.price_error}</font>
+				<!-- ENDIF -->
+				</td>
+				<td align="center">{val.product_data.coupon_price}</td>
+				<td align="center">{val.product_data.quantity}</td>
+				<td>
+					<b>收货人：</b>{val.data.order_shipping_name}<br />
+					<b>电　话：</b>{val.data.order_shipping_phone}
+					<!-- IF val.data.order_shipping_phone && val.data.order_shipping_mobile --> / <!-- ENDIF -->
+					{val.data.order_shipping_mobile}<br />
+					<b>邮　编：</b>{val.data.order_shipping_zip}<br />
+					<b>地　址：</b>{val.data.order_shipping_address}<br />
+				</td>
+				<td>{val.product_data.comment}</td>
+				<td align="center">
+				<!-- IF val.error -->
+				<font color="red">错误</font>
+				<!-- ELSEIF !val.product_data.price -->
+				<font color="red">错误</font>
+				<!-- ELSEIF val.product_data.price_error -->
+				<font color="red">错误</font>
+				<!-- ELSEIF val.exists -->
+				<font color="pink">已经<br />导入</font>
+				<!-- ELSE -->
+				<font color="green">正确</font>
+				<!-- ENDIF -->
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

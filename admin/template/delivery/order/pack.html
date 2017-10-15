@@ -1,0 +1,183 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">整理待发订单 → {warehouse_info.name}　　　<a href="?mod=purchase.gomast">调库过账</a></h3>
+	<div class="right">
+		<button type="button" class="scalable save" onclick="SubmitForm();"><span>保存数据</span></button>
+	</div>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		整理待发订单 总共{total}条记录
+	<span style="float:right;">
+<script>
+function DoPLP(key){
+$("input.ISD_"+key).click();
+
+}
+
+function Doselectw(key){
+$("#product_nameaa").val(key)
+
+}
+
+</script>	
+<a style="float:left;margin-right:15px; cursor:pointer;" onclick="DoPLP('未指定');">未指定</a>
+	<!-- BEGIN logistics_list AS num => logisticsVal -->
+	<a style="float:left;margin-right:15px; cursor:pointer;" onclick="DoPLP('{logisticsVal}');">{logisticsVal}</a>
+<!-- END logistics_list -->
+
+
+</span>
+</div>
+	</div>
+
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="60">订单号</th>
+				<th width="150">渠道信息</th>
+				<th width="">订单信息</th>
+				<th width="300">发货信息</th>
+				<th width="100">物流公司</th>
+				<th width="70">操作</th>
+			</tr>
+			<tr class="filter">
+				<form method="get" id="search_form">
+				<th>
+					<div class="input-field">
+						<input type="hidden" name="mod" value="{_GET.mod}">
+						<input type="hidden" name="warehouse_id" value="{_GET.warehouse_id}">
+						<input type="text" name="id" id="id" value="{_GET.id}">
+					</div>
+				</th>
+				<th>
+				<select name="channel_id"  style="height:22px;line-height:22px;width:96px;">
+<option value="">全部渠道</option>
+<!-- BEGIN channelList AS channel -->
+<option value="{channel.id}" <!-- IF _GET.channel_id==channel.id  -->selected<!-- ENDIF -->>{channel.name}</option>
+<!-- END logistics_list -->
+</select>
+</th>
+				<th><div style="float:left; padding-top:3px;">产品名称:</div><div style="float:left;width:250px;" class="input-field"><input type="text" id="product_nameaa" name="product_name" value="{_GET.product_name}"></div><a style="float:left; margin:0px 10px 0px 2px;" onclick="Doselectw('')">X</a>
+	<div style="float:left; padding-left:20px;" >			
+		<select name="logistics_companyssaa"  style="height:22px;line-height:22px;width:300px;" onchange="Doselectw(this.options[this.selectedIndex].value);">
+<option value="">全部</option>
+<!-- BEGIN ppList AS key => val -->
+<option value="{val.productName}" <!-- IF _GET.logistics_company==logisticsVal  -->selected<!-- ENDIF -->>[{val.productQuantity}] {val.productName}</option>
+<!-- END ppList -->
+</select>
+	</div>	
+				
+				</th>
+				<th>&nbsp;</th>
+				<th>
+<select name="logistics_companyaa"  style="height:22px;line-height:22px;width:96px;">
+<option value="">全部</option>
+<!-- BEGIN logistics_list AS num => logisticsVal -->
+<option value="{logisticsVal}" <!-- IF _GET.logistics_company==logisticsVal  -->selected<!-- ENDIF -->>{logisticsVal}</option>
+<!-- END logistics_list -->
+</select>
+				</th>
+				<th><button type="button" onclick="$('#search_form').submit();">过滤</button></th>
+				</form>	
+			</tr>
+		</thead>
+		<tbody>
+			<form method="post" id="main_form" onsubmit="return false;">
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td align="center"><small>{val.id}</small></td>
+				<td align="left">{val.channel_name}<br>{val.target_id}<br>{val.add_time}</td>
+				<td >
+				<div class="clearfix">
+						<span style="float:left; padding:3px 0px;">
+						
+					</div>
+
+					<div class="HY-grid">
+						<table cellspacing="0" class="data" id="grid_table">
+							<thead>
+								<tr class="header">
+									<th width="40"><div align="center">SKU</div></th>
+									<th width="">产品信息</th>
+									<th width="40"><div align="center">数量</div></th>
+									<th width="50"><div align="center">价格</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- BEGIN val.list AS row -->
+								<tr>
+									<td align="center">{row.sku}</td>
+									<td align="">{row.sku_info.product.name}
+									<!-- IF row.sku_info.attribute --> ← <font color="#66CC00"><b>{row.sku_info.attribute}</b></font><!-- ENDIF --></td>
+									<td align="center">{row.quantity}</td>
+									<td align="center">{row.price}</td>
+								</tr>
+								<!-- END va.list -->
+							</tbody>
+						</table>
+					</div>
+				</td>
+<td>
+<b>收货人：</b>{val.order_shipping_name}<br />
+<b>电　话：</b>
+<!-- IF trim(val.order_shipping_phone) -->{val.order_shipping_phone}　<!-- ENDIF -->
+<!-- IF trim(val.order_shipping_mobile) -->{val.order_shipping_mobile}<!-- ENDIF -->
+<br />
+<b>地　址：</b>{val.order_shipping_address}<br />
+</td>
+<td align="left" style="line-height:2">
+　　　<input class="ISD_未指定" name="logistics_company[{val.id}]" id="L_A_C_{val.id}" type="radio" value=""  <!-- IF !val.logistics_company  -->checked="checked"<!-- ENDIF -->  />
+<label style="cursor:pointer;" for="L_A_C_{val.id}">未指定</label>
+<!-- BEGIN logistics_list AS num => logisticsVal -->
+<br />　<input class="ISD_{logisticsVal}" type="radio" id="L_{num}_C_{val.id}" <!-- IF val.logistics_company==logisticsVal  -->checked="checked"<!-- ENDIF -->  name="logistics_company[{val.id}]" value="{logisticsVal}" />
+<label style="cursor:pointer;" for="L_{num}_C_{val.id}">{logisticsVal}</label>
+<!-- END logistics_list -->
+
+				</td>
+<td>
+<b>发票：</b><br />
+<!-- IF val.order_invoice --><font color="red">需要</font><!-- ELSE -->不需要<!-- ENDIF --><br />
+<b>抬头：</b><br />
+{val.order_invoice_header}
+</td>
+			</tr>
+			<!-- END list -->
+			</form>
+		</tbody>
+	</table>
+</div>
+
+<script language="JavaScript">
+$(document).ready(function(){
+	$('a[ctype=expand]').click(function(){
+		$(this).parents('td').eq(0).find('.HY-grid').toggle();
+	});
+});
+
+function SubmitForm(){
+	var post = $('#main_form').serialize();
+	Loading();
+	$.ajax({
+		url: '?mod=delivery.order.pack.save&rand=' + Math.random(),
+		type:'POST',
+		data:post,
+		success: function(info){
+			if (info=='200' || info==200){
+				Loading('处理成功', '正在跳转到列表页面...');
+				window.location='?mod=delivery.pack&warehouse_id={_GET.warehouse_id}';
+			}else{
+				alert(info);
+				UnLoading();
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+			UnLoading();
+		}
+	});
+}
+
+
+</script>

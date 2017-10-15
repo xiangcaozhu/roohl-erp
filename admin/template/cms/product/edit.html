@@ -1,0 +1,73 @@
+<script type="text/javascript" src="script/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="script/uploader.js"></script>
+<script type="text/javascript" src="script/cms-block.js"></script>
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>
+		编辑展示产品
+	</h3>
+	<div class="right">
+		<button type="button" class="scalable " onclick="$('form').reset();"><span>重置</span></button>
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</div>
+</div>
+<ul class="HY-h-tab clearfix2">
+	<li>
+		<a href="#" onclick="TabSelect(this,'base');" class="tab-item-link active"><span>基本信息</span></a>
+	</li>
+	<!-- BEGIN block_list AS block -->
+	<li>
+		<a href="#" onclick="TabSelect(this,'block_{block.id}');" class="tab-item-link"><span>块:{block.name}</span></a>
+	</li>
+	<!-- END block_list -->
+</ul>
+<form method="post">
+<div class="HY-form-table" id="base">
+	<div class="HY-form-table-header">
+		基本信息
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>产品名称</label></td>
+					<td class="">{product.name}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- BEGIN block_list AS block -->
+<div class="HY-form-table" id="block_{block.id}" style="display:none;">
+	<div class="HY-form-table-header clearfix2">
+		<div class="al-left">
+			{block.name}
+		</div>
+		<div class="al-right">
+			<!-- IF block.type='list' -->
+			<button type="button" class="append" onclick="BlockListAddRow($(this).parents('.HY-form-table').eq(0).find('*[name=tpl_block_main_input_form]')[0], 'main');"><span>添加行</span></button>
+			<!-- ENDIF -->
+		</div>
+	</div>
+	{block.html}
+</div>
+<!-- END block_list -->
+</form>
+
+
+<script language="JavaScript">
+<!--
+
+function TabSelect(obj,id){
+	$('.HY-form-table').hide();
+	$('#'+id).show();
+	$('li').find('a').removeClass('active');
+	$(obj).addClass('active');
+}
+//-->
+</script>
+
+
+<link rel="stylesheet" type="text/css" href="css/fileTree/fileTree.css" />
+<script type="text/javascript" src="script/fileTree.js"></script>

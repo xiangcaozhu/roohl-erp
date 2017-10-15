@@ -1,0 +1,52 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>订单批量签收</h3>
+	<div class="right">
+		<button type="button" class="scalable back" onclick="location='?mod=order.check.import.upload_f&file={file_name}&channel_parent_id={_POST.channel_parent_id}'" style=""><span>确定导入</span></button>
+	</div>
+</div>
+
+<form method="post" id="main_form">
+<div class="clearfix">
+	<div class="input-field">
+		<select name="channel_parent_id">
+			<!-- BEGIN channel_parent_list AS val -->
+			<option value="{val.id}" <!-- IF val.id==_POST.channel_parent_id  -->selected<!-- ENDIF -->>{val.name}</option>
+			<!-- END channel_parent_list -->
+		</select>
+	</div>
+	<div class="right">
+	</div>
+</div>
+<div class="block5"></div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		列表
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="80">订单号</th>
+				<th width="150">渠道订单号</th>
+				<th width="150">渠道</th>
+				<th width="150">到款时间</th>
+				<th width="120">状态</th>
+			</tr>
+		</thead>
+		<tbody id="purchase_row">
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td><small>{val.order_id}</small></td>
+				<td><small>{val.target_id}</small></td>
+				<td>{val.channel_name}</td>
+				<td><small>{val.finance_recieve_time}</small></td>
+				<td><!-- IF val.error --><font color="red">订单已付款:{val.error}</font><!-- ELSEIF val.notexist --><font color="red">订单不存在</font><!-- ELSE --><font color="green">正确</font><!-- ENDIF --></td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

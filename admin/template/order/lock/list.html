@@ -1,0 +1,91 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">配货管理 </h3>
+	<div class="right">
+		<button type="button" onclick="$('#excel').val(1);$('#search_form').submit();$('#excel').val(0);">导出Excel</button>
+	</div>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="120">订单编号</th>
+				<th width="120">渠道订单号</th>
+				<th width="120">下单时间</th>
+				<th width="70">配货状态</th>
+				<th width="70">满足情况</th>
+				<th width="70">发货状态</th>
+				<th width="">操作</th>
+			</tr>
+			<tr class="filter">
+				<form method="get" id="search_form">
+				<th>
+					<div class="input-field">
+						<input type="hidden" name="mod" value="{_GET.mod}">
+						<input type="text" name="id" id="id" value="{_GET.id}">
+						<input type="hidden" name="excel" id="excel" value="0">
+					</div>
+				</th>
+				<th>
+					<div class="input-field">
+						<input type="text" name="target_id" value="{_GET.target_id}">
+					</div>
+				</th>
+				<th>&nbsp;</th>
+				<th>
+					<div class="input-field">
+						<select name="lock_status">
+							<option value=""></option>
+							<!-- BEGIN lock_status_list AS key => val -->
+							<option value="{key}" <!-- IF key==_GET.lock_status && _GET.lock_status!='' -->selected<!-- ENDIF -->>{val}</option>
+							<!-- END lock_status_list -->
+						</select>
+					</div>
+				</th>
+				<th>
+					<div class="input-field">
+						<select name="delivery_type">
+							<option value=""></option>
+							<!-- BEGIN delivery_type_list AS key => val -->
+							<option value="{key}" <!-- IF key==_GET.delivery_type && _GET.delivery_type!='' -->selected<!-- ENDIF -->>{val}</option>
+							<!-- END delivery_type_list -->
+						</select>
+					</div>
+				</th>
+				<th>
+					<div class="input-field">
+						<select name="delivery_status">
+							<option value=""></option>
+							<!-- BEGIN delivery_status_list AS key => val -->
+							<option value="{key}" <!-- IF key==_GET.delivery_status && _GET.delivery_status!='' -->selected<!-- ENDIF -->>{val}</option>
+							<!-- END delivery_status_list -->
+						</select>
+					</div>
+				</th>
+				<th><button type="button" onclick="$('#search_form').submit();">过滤</button></th>
+				</form>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td >&nbsp;{info.id}</td>
+				<td >&nbsp;{info.target_id}</td>
+				<td >&nbsp;{info.order_time}</td>
+				<td >&nbsp;{info.lock_status_name}</td>
+				<td >&nbsp;{info.delivery_type_name}</td>
+				<td >&nbsp;{info.delivery_status_name}</td>
+				<td >
+					<a  target="_blank" href="?mod=order.lock.detail&id={info.id}">配货详细</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>
+

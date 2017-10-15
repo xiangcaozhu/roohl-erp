@@ -1,0 +1,25 @@
+
+<div class="HY-main-columns clearfix">
+	<div class="HY-main-columns-left">
+		<h3>添加内容</h3>
+		<ul class="HY-v-tab">
+			<li ><a href="javascript:void(0);" class="active"><span>选择内容模型</span></a></li>
+		</ul>
+	</div>
+	<div class="HY-main-columns-right">
+		<div class="HY-content-header clearfix2">
+			<h3>添加内容 - 选择内容模型</h3>
+			<div class="right">
+				<button type="button" class="save" onclick="window.location='?mod=cms.content.add&site={site_id}&cid={channel_info.id}&pattern='+$('#pattern').val();"><span>下一步</span></button>
+			</div>
+		</div>
+
+		<div style="margin-right:10px;">
+			<select style="width:220px;" id="pattern">
+				<!-- BEGIN config_list AS key => info -->
+				<option value="{key}">{info.name}</option>
+				<!-- END config_list -->
+			</select>
+		</div>
+	</div>
+</div>

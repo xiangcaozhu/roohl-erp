@@ -1,0 +1,178 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">产品销售毛利表 </h3>
+</div>
+
+
+<form method="POST" id="main_form">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td align="left" width="170">
+						日期开始：<input name="begin_date" id="begin_date" value="{_POST.begin_date}" class="input-text" type="text" style="width:70px;"/><img src="image/grid-cal.gif" id="begin_date_btn" align="absmiddle"/>
+					</td>
+					<td align="left" width="170">
+						日期结束：<input name="end_date" id="end_date" value="{_POST.end_date}" class="input-text" type="text" style="width:70px;"/><img src="image/grid-cal.gif" id="end_date_btn" align="absmiddle"/>
+					</td>
+					<td align="left" width="90">
+						<select name="board">
+							<option value="0">商品类型</option>
+							<option value="1" <!-- IF 1==_POST.board  -->selected<!-- ENDIF -->>　3C</option>
+							<option value="2" <!-- IF 2==_POST.board  -->selected<!-- ENDIF -->>　非3C</option>
+						</select>
+					</td>
+					<td align="left" width="170">
+						<select name="channel_id">
+							<option value="0">销售渠道</option>
+							<!-- BEGIN channel_list AS val -->
+							<option value="{val.id}" <!-- IF val.id==_POST.channel_id  -->selected<!-- ENDIF -->>　{val.name}</option>
+							<!-- END channel_list -->
+						</select>
+					</td>
+					<td align="left" width="110">
+						<select name="warehouse_id">
+							<option value="0">发货方式</option>
+							<option value="5" <!-- IF 5==_POST.warehouse_id  -->selected<!-- ENDIF -->>　★代发货</option>
+							<option value="6" <!-- IF 6==_POST.warehouse_id  -->selected<!-- ENDIF -->>　库房发货</option>
+						</select>
+					</td>
+					<td align="left">
+<var id="supplierSID_var"  class="MSearch_box" init="0" py="1" style="float:left;height:24px;border:#000000 1px solid; text-align:left;background:#FFFFFF url(image/Ajax.radio.png) no-repeat right 4px;" MSname="">
+<select style="display:none" name="supplier_id" id="supplier_id">
+<option value="0" <!-- IF 0==_POST.supplier_id  -->selected<!-- ENDIF --> >供货商</option>
+<!-- BEGIN Supplier_list AS val -->
+<option op="{val.name_op}" <!-- IF val.id==_POST.supplier_id  -->selected<!-- ENDIF --> value="{val.id}">{val.name}</option>
+<!-- END Supplier_list -->
+</select>
+</var>
+					</td>					<td width="150" align="left">
+						<button type="button" onclick="$('#excel').val(0);$('#main_form').submit();">确定查询</button>
+					</td>
+					<td><input type="hidden" name="excel" id="excel" value="0">
+					<button style="display:none1" type="button" onclick="$('#excel').val(1);$('#main_form').submit();">导出Excel</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+
+<link href="css/cal/zpcal.css" rel="stylesheet" type="text/css">
+<link href="css/cal/template.css" rel="stylesheet" type="text/css">
+<link href="css/cal/maroon.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src='script/zapatec.js'></script>
+<script type="text/javascript" src="script/calendar.js"></script>
+<script type="text/javascript" src="script/calendar-zh.js"></script>
+
+<script language="JavaScript">
+
+$(document).ready(function(){
+	$('#add-btn').click(function(){
+		AddProductToRow();
+	});
+});
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "begin_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "begin_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "end_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "end_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+</script>
+
+
+<div class="HY-grid">
+<table cellspacing="0" class="data" id="grid_table">
+<thead>
+			<tr class="header">
+				<td align="left" >
+				<!-- IF channel_name -->
+				渠道名称：{channel_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<!-- ENDIF -->
+				{nowday}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+			</tr>
+	</thead>
+</table>
+<table cellspacing="0" class="data" id="grid_table">
+		<tbody>
+			<tr>
+				<!-- IF _POST.channel_id>0  --><td width="70" align="center" bgcolor="#FFFFFF">银行编号</td><!-- ENDIF -->
+				<td width="30" align="center" bgcolor="#FFFFFF">ID</td>
+				<td width="30" align="center" bgcolor="#FFFFFF">类型</td>
+				<td align="left" bgcolor="#FFFFFF"><div align="left">商品名称</div></td>
+				<!-- IF _POST.channel_id>0  --><td width="50" align="center" bgcolor="#FFFFFF"><div align="center">单价</div></td><!-- ENDIF -->
+				<td width="30" align="center" bgcolor="#FFFFFF"><div align="center">采购</div></td>
+				<td width="30" align="center" bgcolor="#FFFFFF"><div align="center">销售</div></td>
+				<td width="80" align="center" bgcolor="#FFFFFF"><div align="center">总销售</div></td>
+				<td width="80" align="center" bgcolor="#FFFFCC"><div align="center">总成本</div></td>
+				<td width="60" align="center" bgcolor="#FFFFFF"><div align="center">总佣金</div></td>
+				<td width="60" align="center" bgcolor="#FFFFFF"><div align="center">总运费</div></td>
+				<td width="60" align="center" bgcolor="#FFFFFF"><div align="center">总税金</div></td>
+				<td width="70" align="center" bgcolor="#FFFFFF"><div align="center">总运营费</div></td>
+				<td width="80" bgcolor="#993366"><div align="center" style="color:#FFFFFF;">毛利润</div></td>
+			</tr>
+		</tbody>
+			<tr style="color:#006600; font-weight:bold;" >
+				<!-- IF _POST.channel_id>0  --><td align="center" ></td><!-- ENDIF -->
+				<td align="center"></td>
+				<td align="center"></td>
+				<td align="center"></td>
+				<!-- IF _POST.channel_id>0  --><td align="center"></td><!-- ENDIF -->
+				<td align="center" ></td>
+				<td align="center" ></td>
+				<td align="center">{#FormatMoney(M_1)}</td>
+				<td align="center" bgcolor="#FFFFCC">{#FormatMoney(M_2)}</td>
+				<td align="center">{#FormatMoney(M_3)}</td>
+				<td align="center">{#FormatMoney(M_4)}</td>
+				<td align="center">{#FormatMoney(M_5)}</td>
+				<td align="center">{#FormatMoney(M_6)}</td>
+				<td width="70" bgcolor="#993366"><div align="center" style="color:#FFFFFF;">{#FormatMoney(M_7)}</div></td>
+			</tr>
+
+		<tbody>
+			<!-- BEGIN list.product_data AS product -->
+			<tr style="<!-- IF product.profit<0 -->color:#FF0000;<!-- ENDIF -->" >
+			<!-- IF _POST.channel_id>0  --><td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.targetId}</td> <!-- ENDIF -->
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.id}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.board}</td>
+				<td align="left" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.nameing}</td>
+			<!-- IF _POST.channel_id>0  --><td align="center">{#FormatMoney(product.salePrice)}</td><!-- ENDIF -->
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.purchaseQuantity}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.saleQuantity}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{product.totalSalePrice}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ELSE -->background:#FFFFCC;<!-- ENDIF -->">{#FormatMoney(product.totalstockPrice)}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{#FormatMoney(product.totalPayout)}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{#FormatMoney(product.totalKdf)}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{#FormatMoney(product.totalSj)}</td>
+				<td align="center" style="<!-- IF product.quantity_error>0 -->background:#666666;<!-- ENDIF -->">{#FormatMoney(product.totalYyf)}</td>
+				<td width="70" bgcolor="#993366"><div align="center" style="color:#FFFFFF;"><b>{#FormatMoney(product.profit)}</b></div></td>
+			</tr>
+			<!-- END list.product_data -->
+		</tbody>
+
+	</table>
+	</div>
+    <script type="text/javascript" src='script/search.js'></script>

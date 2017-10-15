@@ -1,0 +1,2197 @@
+﻿<?php
+/*
+//建设银行 →龙卡商城
+function ImportJianShe( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	$PHPReader = new PHPExcel_Reader_Excel5();
+	if( !$PHPReader->canRead( $filePath ) ){exit( '错误的Excel文件' );}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	$k=0;
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		$data['AA'] = $Sheet->getCell( 'AA' . "{$i}" )->getValue();
+		$data['AB'] = $Sheet->getCell( 'AB' . "{$i}" )->getValue();
+		$data['AE'] = $Sheet->getCell( 'AE' . "{$i}" )->getValue();
+		$data['AC'] = $Sheet->getCell( 'AC' . "{$i}" )->getValue();
+		
+		$data['AD'] = $Sheet->getCell( 'AD' . "{$i}" )->getValue();
+		$data['AF'] = $Sheet->getCell( 'AF' . "{$i}" )->getValue();
+		$data['AG'] = $Sheet->getCell( 'AG' . "{$i}" )->getValue();
+		$data['AH'] = $Sheet->getCell( 'AH' . "{$i}" )->getValue();
+		$data['AI'] = $Sheet->getCell( 'AI' . "{$i}" )->getValue();
+		$data['AJ'] = $Sheet->getCell( 'AJ' . "{$i}" )->getValue();
+		$data['AK'] = $Sheet->getCell( 'AK' . "{$i}" )->getValue();
+		$data['AL'] = $Sheet->getCell( 'AL' . "{$i}" )->getValue();
+		
+		if($data['A']==$TT_order_id)
+		{
+		$k++;
+		$T_order_id = $TT_order_id .'-'.$k;
+		$T_order_user_name = $TT_order_user_name;
+		$T_shipping_user_name = $TT_shipping_user_name;
+		$T_shipping_address = $TT_shipping_address;
+		$T_shipping_phone = $TT_shipping_phone;
+		$T_shipping_phone2 = $TT_shipping_phone2;
+		$T_shipping_zip = $TT_shipping_zip;
+		$T_comment =$TT_comment ;
+		$T_shipping_order_time =$TT_shipping_order_time ;
+		}
+		else
+		{
+		$k=0;
+		$T_order_id = $data['A'];
+		$TT_order_id = $data['A'];
+		
+		$T_order_user_name = $data['J'];
+		$TT_order_user_name = $data['J'];
+		$T_shipping_user_name = $data['J'];
+		$TT_shipping_user_name = $data['J'];
+
+		$T_shipping_address = $data['K'] . "-" . $data['L'] . "-" . $data['M'] . "-" . $data['O'];
+		$TT_shipping_address = $data['K'] . "-" . $data['L'] . "-" . $data['M'] . "-" . $data['O'];
+		
+		$T_shipping_phone ='';
+		$TT_shipping_phone = '';
+		
+		$T_shipping_phone2 = $data['P'];
+		$TT_shipping_phone2 = $data['P'];
+		
+		$T_shipping_zip = $data['N'];
+		$TT_shipping_zip = $data['N'];
+		
+		$T_comment = $data['Q'];
+		$TT_comment = $data['Q'];
+		
+		$T_shipping_order_time =substr($data['A'],0,4).'-'.substr($data['A'],4,2).'-'.substr($data['A'],6,2).' 08:00:00';
+		$TT_shipping_order_time =substr($data['A'],0,4).'-'.substr($data['A'],4,2).'-'.substr($data['A'],6,2).' 08:00:00';
+		}
+				//$invoice_header = trim($data['AE']);
+				//if($invoice_header==''){$invoice_header = $T_shipping_user_name;}
+		
+			$list[] = array(
+				//'no' => $data['A'],
+				'order_id' => $T_order_id,
+				'pid' => $data['B'],
+				'num' => $data['S'],
+				'price' => $data['F'],
+				'coupon_price' => $data['E'],
+				'plan_times' => trim( $data['G'] ),
+				'invoice_header' => $data['V'],
+				'order_user_name' => $T_order_user_name,
+				'shipping_user_name' => $T_shipping_user_name,
+				'shipping_user_sn' => '',
+				'shipping_phone' => $T_shipping_phone,
+				'shipping_phone2' => $T_shipping_phone2,
+				'shipping_address' => $T_shipping_address,
+				'shipping_zip' => $T_shipping_zip,
+				'comment' => $T_comment,
+				'shipping_order_time' => $T_shipping_order_time,
+				
+				'order_invoice_header' => $invoice_header,
+				'total_pay_money' => $data['Q'],
+				'total_pay_num' => $data['AK'],
+				'extra_name' => $data['C'],
+				'shipping_pssj' => $data['U'],
+				'buy_type' => $data['H'],
+
+				'data' => $data,
+			);
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 10;
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+		
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+		
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],60 );
+		
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = $priceInfo['price'];
+		$orderProductData['sale_price'] = $val['price'];
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['price']-$val['coupon_price']);
+		$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+	return $orderList;
+}
+*/
+//建设银行 →龙卡商城
+function ImportJianShe( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	$PHPReader = new PHPExcel_Reader_Excel5();
+	if( !$PHPReader->canRead( $filePath ) ){exit( '错误的Excel文件' );}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+	//echo $rowNum;
+
+	$list = array();
+	$k=0;
+	$TT_order_id='';
+	for ( $i = 3; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		$data['AA'] = $Sheet->getCell( 'AA' . "{$i}" )->getValue();
+		$data['AB'] = $Sheet->getCell( 'AB' . "{$i}" )->getValue();
+		$data['AE'] = $Sheet->getCell( 'AE' . "{$i}" )->getValue();
+		$data['AC'] = $Sheet->getCell( 'AC' . "{$i}" )->getValue();
+		
+		$data['AD'] = $Sheet->getCell( 'AD' . "{$i}" )->getValue();
+		$data['AF'] = $Sheet->getCell( 'AF' . "{$i}" )->getValue();
+		$data['AG'] = $Sheet->getCell( 'AG' . "{$i}" )->getValue();
+		$data['AH'] = $Sheet->getCell( 'AH' . "{$i}" )->getValue();
+		$data['AI'] = $Sheet->getCell( 'AI' . "{$i}" )->getValue();
+		$data['AJ'] = $Sheet->getCell( 'AJ' . "{$i}" )->getValue();
+		$data['AK'] = $Sheet->getCell( 'AK' . "{$i}" )->getValue();
+		$data['AL'] = $Sheet->getCell( 'AL' . "{$i}" )->getValue();
+		$data['AM'] = $Sheet->getCell( 'AM' . "{$i}" )->getValue();
+		$data['AN'] = $Sheet->getCell( 'AN' . "{$i}" )->getValue();
+		$data['AO'] = $Sheet->getCell( 'AO' . "{$i}" )->getValue();
+		$data['AP'] = $Sheet->getCell( 'AP' . "{$i}" )->getValue();
+		$data['AQ'] = $Sheet->getCell( 'AQ' . "{$i}" )->getValue();
+		$data['AR'] = $Sheet->getCell( 'AR' . "{$i}" )->getValue();
+
+		$data['AS'] = $Sheet->getCell( 'AS' . "{$i}" )->getValue();
+		$data['AT'] = $Sheet->getCell( 'AT' . "{$i}" )->getValue();
+		$data['AU'] = $Sheet->getCell( 'AU' . "{$i}" )->getValue();
+		$data['AV'] = $Sheet->getCell( 'AV' . "{$i}" )->getValue();
+		$data['AW'] = $Sheet->getCell( 'AW' . "{$i}" )->getValue();
+		$data['AX'] = $Sheet->getCell( 'AX' . "{$i}" )->getValue();
+		$data['AY'] = $Sheet->getCell( 'AY' . "{$i}" )->getValue();
+		$data['AZ'] = $Sheet->getCell( 'AZ' . "{$i}" )->getValue();
+		
+		
+		
+		if($data['A']===$TT_order_id || $data['A']=='')
+		{
+		$k++;
+		$T_order_id = $TT_order_id .'-'.$k;
+		$T_order_user_name = $TT_order_user_name;
+		$T_shipping_user_name = $TT_shipping_user_name;
+		$T_shipping_address = $TT_shipping_address;
+		$T_shipping_phone = $TT_shipping_phone;
+		$T_shipping_phone2 = $TT_shipping_phone2;
+		$T_shipping_zip = $TT_shipping_zip;
+		$T_comment =$TT_comment ;
+		$T_shipping_order_time =$TT_shipping_order_time ;
+		}
+		else
+		{
+		$k=0;
+		$T_order_id = $data['A'];
+		$TT_order_id = $data['A'];
+		
+		$T_order_user_name = $data['V'];
+		$TT_order_user_name = $data['V'];
+		$T_shipping_user_name = $data['V'];
+		$TT_shipping_user_name = $data['V'];
+
+		$T_shipping_address = $data['W'] . "-" . $data['X'] ;
+		$TT_shipping_address = $data['W'] . "-" . $data['X'] ;
+		
+		$T_shipping_phone =$data['Y'];
+		$TT_shipping_phone = $data['Y'];
+		
+		$T_shipping_phone2 = $data['Z'];
+		$TT_shipping_phone2 = $data['Z'];
+		
+		$T_shipping_zip = $data['AB'];
+		$TT_shipping_zip = $data['AB'];
+		
+		$T_comment = $data['M'];
+		$TT_comment = $data['M'];
+		
+		$T_shipping_order_time =$data['K'];
+		$TT_shipping_order_time =$data['K'];
+		}
+				//$invoice_header = trim($data['AE']);
+				//if($invoice_header==''){$invoice_header = $T_shipping_user_name;}
+		
+			
+			if(($data['C']=='特价订单') || ($data['C']=='团购订单'))
+			{
+			$coupon_price='';
+			}
+			else
+			{
+			$coupon_price= $data['Q']-$data['T'];
+			}
+			
+			$list[] = array(
+				//'no' => $data['A'],
+				'order_id' => $T_order_id,
+				'pid' => $data['AJ'],
+				'num' => $data['AN'],
+				'price' => $data['AL'],
+				'coupon_price' => $coupon_price,
+				'plan_times' => trim( $data['AQ'] ),
+				'invoice_header' => $data['AH'],
+				'order_user_name' => $T_order_user_name,
+				'shipping_user_name' => $T_shipping_user_name,
+				'shipping_user_sn' => '',
+				'shipping_phone' => $T_shipping_phone,
+				'shipping_phone2' => $T_shipping_phone2,
+				'shipping_address' => $T_shipping_address,
+				'shipping_zip' => $T_shipping_zip,
+				'comment' => $T_comment,
+				'shipping_order_time' => $T_shipping_order_time,
+				
+				'order_invoice_header' =>$data['AH'],
+				'total_pay_money' => $data['T'],
+				'total_pay_num' => $data['AN'],
+				'extra_name' => $data['AK'],
+				'shipping_pssj' => '',
+				'buy_type' => '',
+				//'buy_type' => $data['H'],
+
+				'data' => $data,
+			);
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 10;
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		//$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+		
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+		
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],60 );
+		
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = $priceInfo['price'];
+		$orderProductData['sale_price'] = $val['price'];
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['price']-$val['coupon_price']);
+		$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+	return $orderList;
+}
+
+
+
+
+
+// 交通银行
+function ImportJiaoTong( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	$k=0;
+	$TT_order_id='';
+
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+				//$invoice_header = trim($data['G']);
+				//if($invoice_header==''){$invoice_header = $data['C'];}
+		
+		if ( intval( $data['A'] ) > 0 )
+		{
+			
+			$T_phone = $data['D'];
+			$T_phone =str_replace('手机：','',$T_phone);
+			$T_phone =str_replace('电话：','',$T_phone);
+			$T_phones=explode("，",$T_phone);
+			
+			
+	if($data['A']===$TT_order_id || $data['A']=='')
+		{
+		$k++;
+		$T_order_id = $TT_order_id .'-'.$k;
+		}
+		else
+		{
+		$k=0;
+		$T_order_id = $data['A'];
+		$TT_order_id = $data['A'];
+		}
+		
+		
+		$list[] = array(
+				'no' => $T_order_id,
+				'order_id' => $T_order_id,
+				'pid' => $data['H'],
+				'num' => $data['M'],
+				'price' => $data['L'],
+				'plan_times' => trim( $data['K'] ),
+				'invoice_header' => $data['G'],
+				'order_user_name' => $data['C'],
+				'shipping_user_name' => $data['C'],
+				'coupon_price' => $data['Q'],
+				//'shipping_user_sn' => $data['L'],
+				'shipping_phone' => $T_phones[1],
+				'shipping_phone2' => $T_phones[0],
+				'shipping_address' => $data['E'],
+				'shipping_zip' => $data['F'],
+				'comment' => $data['Z'],
+				'shipping_order_time' => $data['B'],
+				
+				'order_invoice_header' => $invoice_header,
+				'total_pay_money' => $data['P'],
+				'total_pay_num' => $data['M'],
+				'extra_name' => $data['I'],
+				'buy_type' => '',
+
+
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 11;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = '';
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],61 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = $priceInfo['price'];
+		$orderProductData['sale_price'] = $val['price'];
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = $priceInfo['price'];
+		$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['I'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+
+
+
+
+// 广发银行
+function ImportGuangFa( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 5; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if (  $data['B'] )
+		{
+			$planTimes = (int)trim( $data['I'] );
+			if($planTimes==9){$planTimes=12;}
+			$list[] = array(
+				'no' => $data['B'],
+				'order_id' => $data['B'],
+				'pid' => $data['C'],
+				'num' => $data['H'],
+				'price' => $data['E'],
+				'plan_times' => $planTimes,
+				'invoice_header' => $data['R'],
+				'order_user_name' => $data['S'],
+				'shipping_user_name' => $data['S'],
+				//'coupon_price' => 0,
+				'coupon_price' => $data['E']-$data['J'],
+				//'shipping_user_sn' => $data['L'],
+				'shipping_phone' => $data['T'],
+				'shipping_phone2' => $data['U'],
+				'shipping_address' => $data['V'],
+				'shipping_zip' => $data['W'],
+				'shipping_pssj' => $data['AA'],
+				'comment' => $data['Y'].'|'.$data['Z'],
+				'shipping_order_time' => substr($data['B'],0,4).'-'.substr($data['B'],4,2).'-'.substr($data['B'],6,2).' 08:00:00',
+				
+				'order_invoice_header' => $data['R'],
+				'total_pay_money' => $data['J'],
+				'total_pay_num' => $data['H'],
+				'extra_name' => $data['D'],
+				//'buy_type' => $data['X'],
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 12;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],62 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['C'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+// 银联数据
+function ImportYinLian( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 3; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if (  $data['A']  )
+		{
+			$T_phone = $data['O'];
+			$T_phones=explode("，",$T_phone);
+			$list[] = array(
+				'no' => $data['A'],
+				'order_id' => $data['D'],
+				'pid' => $data['N'],
+				'num' => $data['P'],
+				'price' => $data['U']/$data['P'],
+				'plan_times' => 1,
+				'invoice_header' => '',
+				'order_user_name' => $data['G'],
+				'shipping_user_name' => $data['G'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				'shipping_phone' =>$data['H'],
+				'shipping_phone2' => $data['I'],
+				'shipping_address' => $data['J'],
+				'shipping_zip' => '',
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => $data['F'],
+				
+				'order_invoice_header' => '',//2014030711390112170-1
+				'total_pay_money' => $data['E']*$data['U'],
+				'total_pay_num' => $data['E'],
+				'extra_name' => $data['O'],
+				'buy_type' => '',
+
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 2;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],69 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['F'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+
+
+
+// 工行融E购
+function ImportRongEGou( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	$k=0;
+	$TT_order_id='';
+
+	for ( $i = 3; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		$data['AA'] = $Sheet->getCell( 'AA' . "{$i}" )->getValue();
+		$data['AB'] = $Sheet->getCell( 'AB' . "{$i}" )->getValue();
+		$data['AC'] = $Sheet->getCell( 'AC' . "{$i}" )->getValue();
+		$data['AD'] = $Sheet->getCell( 'AD' . "{$i}" )->getValue();
+		$data['AE'] = $Sheet->getCell( 'AE' . "{$i}" )->getValue();
+		$data['AF'] = $Sheet->getCell( 'AF' . "{$i}" )->getValue();
+		$data['AG'] = $Sheet->getCell( 'AG' . "{$i}" )->getValue();
+		$data['AH'] = $Sheet->getCell( 'AH' . "{$i}" )->getValue();
+		$data['AI'] = $Sheet->getCell( 'AI' . "{$i}" )->getValue();
+		$data['AJ'] = $Sheet->getCell( 'AJ' . "{$i}" )->getValue();
+		$data['AK'] = $Sheet->getCell( 'AK' . "{$i}" )->getValue();
+		$data['AL'] = $Sheet->getCell( 'AL' . "{$i}" )->getValue();
+		$data['AM'] = $Sheet->getCell( 'AM' . "{$i}" )->getValue();
+		$data['AN'] = $Sheet->getCell( 'AN' . "{$i}" )->getValue();
+		$data['AO'] = $Sheet->getCell( 'AO' . "{$i}" )->getValue();
+		$data['AP'] = $Sheet->getCell( 'AP' . "{$i}" )->getValue();
+		$data['AQ'] = $Sheet->getCell( 'AQ' . "{$i}" )->getValue();
+		$data['AR'] = $Sheet->getCell( 'AR' . "{$i}" )->getValue();
+		$data['AS'] = $Sheet->getCell( 'AS' . "{$i}" )->getValue();
+		$data['AT'] = $Sheet->getCell( 'AT' . "{$i}" )->getValue();
+		$data['AU'] = $Sheet->getCell( 'AU' . "{$i}" )->getValue();
+		$data['AV'] = $Sheet->getCell( 'AV' . "{$i}" )->getValue();
+		$data['AW'] = $Sheet->getCell( 'AW' . "{$i}" )->getValue();
+		$data['AX'] = $Sheet->getCell( 'AX' . "{$i}" )->getValue();
+		$data['AY'] = $Sheet->getCell( 'AY' . "{$i}" )->getValue();
+		$data['AZ'] = $Sheet->getCell( 'AZ' . "{$i}" )->getValue();
+		$data['BA'] = $Sheet->getCell( 'BA' . "{$i}" )->getValue();
+		$data['BB'] = $Sheet->getCell( 'BB' . "{$i}" )->getValue();
+		$data['BC'] = $Sheet->getCell( 'BC' . "{$i}" )->getValue();
+		$data['BD'] = $Sheet->getCell( 'BD' . "{$i}" )->getValue();
+		$data['BE'] = $Sheet->getCell( 'BE' . "{$i}" )->getValue();
+		$data['BF'] = $Sheet->getCell( 'BF' . "{$i}" )->getValue();
+		$data['BG'] = $Sheet->getCell( 'BG' . "{$i}" )->getValue();
+		$data['BH'] = $Sheet->getCell( 'BH' . "{$i}" )->getValue();
+		$data['BI'] = $Sheet->getCell( 'BI' . "{$i}" )->getValue();
+		$data['BJ'] = $Sheet->getCell( 'BJ' . "{$i}" )->getValue();
+		$data['BK'] = $Sheet->getCell( 'BK' . "{$i}" )->getValue();
+		$data['BL'] = $Sheet->getCell( 'BL' . "{$i}" )->getValue();
+		$data['BM'] = $Sheet->getCell( 'BM' . "{$i}" )->getValue();
+		$data['BN'] = $Sheet->getCell( 'BN' . "{$i}" )->getValue();
+		$data['BO'] = $Sheet->getCell( 'BO' . "{$i}" )->getValue();
+		$data['BP'] = $Sheet->getCell( 'BP' . "{$i}" )->getValue();
+		$data['BQ'] = $Sheet->getCell( 'BQ' . "{$i}" )->getValue();
+
+
+
+
+//////////////////////////////////////////////////////////
+		if($data['B']===$TT_order_id || $data['B']=='')
+		{
+		$k++;
+		$T_order_id = $TT_order_id .'-'.$k;
+		$T_order_user_name = $TT_order_user_name;
+		$T_shipping_user_name = $TT_shipping_user_name;
+		$T_shipping_address = $TT_shipping_address;
+		$T_shipping_phone = $TT_shipping_phone;
+		$T_shipping_phone2 = $TT_shipping_phone2;
+		$T_shipping_zip = $TT_shipping_zip;
+		$T_comment =$TT_comment ;
+		$T_shipping_order_time =$TT_shipping_order_time ;
+		}
+		else
+		{
+		$k=0;
+		$T_order_id = $data['B'];
+		$TT_order_id = $data['B'];
+		
+		$T_order_user_name = $data['AF'];
+		$TT_order_user_name = $data['AF'];
+		$T_shipping_user_name = $data['AF'];
+		$TT_shipping_user_name = $data['AF'];
+
+		$T_shipping_address = $data['AG'] . "-" . $data['AH'] ;
+		$TT_shipping_address = $data['AG'] . "-" . $data['AH'] ;
+		
+		$T_shipping_phone =$data['AL'];
+		$TT_shipping_phone = $data['AL'];
+		
+		$T_shipping_phone2 = $data['AM'];
+		$TT_shipping_phone2 = $data['AM'];
+		
+		$T_shipping_zip = $data['AN'];
+		$TT_shipping_zip = $data['AN'];
+		
+		$T_comment = $data['K'] . "-" .$data['L'];
+		$TT_comment = $data['K'] . "-" .$data['L'];
+		
+		$T_shipping_order_time =$data['F'];
+		$TT_shipping_order_time =$data['F'];
+		}
+//////////////////////////////////////////////////////		
+		//if (  $data['A']  )
+		//{
+			$list[] = array(
+				'no' => $T_order_id,
+				'order_id' => $T_order_id,
+				'order_user_name' => $T_order_user_name,
+				'shipping_user_name' => $T_order_user_name,
+				'shipping_address' => $T_shipping_address,
+				'shipping_phone' =>$T_shipping_phone,
+				'shipping_phone2' => $T_shipping_phone2,
+				'shipping_order_time' => $T_shipping_order_time,
+
+				'pid' => $data['AX'],
+				'num' => $data['BB'],
+				'price' => $data['BA']-$data['S'],
+				'plan_times' => 1,
+				'invoice_header' =>  $data['AP'],
+				//'coupon_price' => 0,
+				'coupon_price' => $data['O']-$data['X'],
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_zip' => $T_shipping_zip,
+				'shipping_pssj' => '',
+				'comment' => '',
+				
+				'order_invoice_header' => $data['AP'],//2014030711390112170-1
+				'total_pay_money' => $data['X'],
+				'total_pay_num' => $data['BB'],
+				'extra_name' => $data['AZ'],
+				'buy_type' => '',
+
+
+				'data' => $data,
+			);
+	//	}
+/////////////////////////////////////////////
+}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 2;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		//$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],70 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['AL'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+
+//中信银行
+function ImportZhongXin( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+
+	$list = array();
+	for ( $i = 5; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		$data['AA'] = $Sheet->getCell( 'AA' . "{$i}" )->getValue();
+		$data['AB'] = $Sheet->getCell( 'AB' . "{$i}" )->getValue();
+
+		
+		if ( intval( $data['A'] ) > 0 )
+		{
+			$list[] = array(
+				'no' => $data['B'],
+				'order_id' => $data['B'],
+				'pid' => $data['C'],
+				'num' => $data['E'],
+				'price' => $data['F'],
+				'plan_times' => $data['G'],
+				'invoice_header' => $data['O'],
+				'order_user_name' => $data['R'],
+				'shipping_user_name' => $data['R'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				'shipping_phone' => $data['T'],
+				'shipping_phone2' => $data['U'],
+				'shipping_address' => $data['V'],
+				'shipping_zip' => $data['W'],
+				//'shipping_pssj' => $data['AA'],
+				'comment' => $data['M'].'|'.$data['Y'],
+				'shipping_order_time' => substr($data['B'],0,4).'-'.substr($data['B'],4,2).'-'.substr($data['B'],6,2).' 08:00:00',
+				
+				'order_invoice_header' => $data['O'],
+				'total_pay_money' => $data['F']*$data['E'],
+				'total_pay_num' => $data['E'],
+				'extra_name' => $data['D'],
+				//'buy_type' => $data['X'],
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 2;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		//$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],55 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['AL'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+	return $orderList;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 通联支付
+function ImportTongLian( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 3; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if (  $data['B']  )
+		{
+			$T_phone = $data['Y'];
+			$T_phones=explode("/",$T_phone);
+			//if($data['K']==0){
+			//$Tprice = $data['L']/1000;
+			//$total_pay_money = $data['L']/1000;
+			//}else{
+			$Tprice = $data['M'];
+			$total_pay_money = $data['O'];
+			//}
+			
+			
+			
+			$list[] = array(
+				'no' => $data['B'],
+				'order_id' => $data['B'],
+				'pid' => $data['D'],
+				'num' => $data['L'],
+				'price' => $Tprice,
+				'plan_times' => 1,
+				'invoice_header' => $data['AA'],
+				'order_user_name' => $data['X'],
+				'shipping_user_name' => $data['X'],
+				//'coupon_price' => 0,
+				'coupon_price' => $Tprice-$total_pay_money,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$T_phones[0],
+				'shipping_phone2' => $T_phones[1],
+				'shipping_address' => $data['Z'],
+				'shipping_zip' => '',
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => $data['Q'],
+				
+				'order_invoice_header' => $data['AA'],
+				'total_pay_money' => $total_pay_money,
+				'total_pay_num' => $data['L'],
+				'extra_name' => $data['E'],
+				'buy_type' => '',
+
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 14;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],71 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+//民生
+function ImportMinSheng( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 4; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data['A' . chr( $c )] = $Sheet->getCell( 'A' . chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if ( intval( $data['A'] ) )
+		{
+			
+			
+		if($data['A']===$TT_order_id )
+		{
+		$k++;
+		$T_order_id = $TT_order_id .'-'.$k;
+		}
+		else
+		{
+		$k=0;
+		$T_order_id = $data['A'];
+		$TT_order_id = $data['A'];
+		}
+			
+			
+			
+			$list[] = array(
+				'no' => $T_order_id,
+				'order_id' => $T_order_id,
+				'pid' => $data['Q'],
+				'num' => $data['F'],
+				'price' => $data['E'],
+				'plan_times' => $data['P'],
+				'invoice_header' => $data['R'],
+				'order_user_name' => $data['L'],
+				'shipping_user_name' => $data['L'],
+				//'coupon_price' => 0,
+				'coupon_price' => $data['E']*$data['F']-$data['I'],
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$data['M'],
+				'shipping_phone2' => '',
+				'shipping_address' => $data['N'],
+				'shipping_zip' => $data['O'],
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => $data['B'],
+				
+				'order_invoice_header' => $data['R'],
+				'total_pay_money' => $data['I'],
+				'total_pay_num' => $data['F'],
+				'extra_name' => $data['C'],
+				'buy_type' => '',
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 4;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],72 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+// 易礼网
+function ImportYiLiWang( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if (  $data['D']  )
+		{
+			$T_phone = $data['O'];
+			$T_phones=explode("，",$T_phone);
+			$list[] = array(
+				'no' => $data['D'],
+				'order_id' => $data['D'],
+				'pid' => $data['E'],
+				'num' => $data['I'],
+				'price' => $data['T'],
+				'plan_times' => trim( $data['U'] ),
+				'invoice_header' => '',
+				'order_user_name' => $data['M'],
+				'shipping_user_name' => $data['M'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$T_phones[0],
+				'shipping_phone2' => $T_phones[1],
+				'shipping_address' => $data['N'],
+				'shipping_zip' => '',
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => substr($data['D'],0,4).'-'.substr($data['D'],4,2).'-'.substr($data['D'],6,2).' '.substr($data['D'],8,2).':'.substr($data['D'],10,2).':00',
+				
+				'order_invoice_header' => '',//2014030711390112170-1
+				'total_pay_money' => $data['I']*$data['T'],
+				'total_pay_num' => $data['I'],
+				'extra_name' => $data['F'],
+				'buy_type' => '',
+
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 15;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],73 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['F'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+// 平安
+function ImportPingAn( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data['A' . chr( $c )] = $Sheet->getCell( 'A' . chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if ( intval( $data['B'] ) )
+		{
+			$list[] = array(
+				'no' => $data['B'],
+				'order_id' => $data['B'],
+				'pid' => trim($data['D']),
+				'num' => 1,
+				'price' => $data['W'],
+				'plan_times' => (int)$data['U'],
+				'invoice_header' => $data['AD'],
+				'order_user_name' => $data['P'],
+				'shipping_user_name' => $data['P'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$data['Q'],
+				'shipping_phone2' => $data['R'],
+				'shipping_address' => $data['S'],
+				'shipping_zip' => '',
+				'shipping_pssj' => '',
+				'comment' => $data['AF'].$data['K'].$data['L'],
+				'shipping_order_time' => $data['G'],
+				
+				'order_invoice_header' => $data['AD'],
+				'total_pay_money' => $data['W'],
+				'total_pay_num' => 1,
+				'extra_name' => $data['F'],
+				'buy_type' => '',
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 18;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],58 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+// 平安
+function ImportNongShang( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data['A' . chr( $c )] = $Sheet->getCell( 'A' . chr( $c ) . "{$i}" )->getValue();
+		}
+		
+		if ( intval( $data['C'] ) )
+		{
+			$list[] = array(
+				'no' => $data['C'],
+				'order_id' => $data['C'],
+				'pid' => trim($data['N']),
+				'num' => $data['T'],
+				'price' => $data['S'],
+				'plan_times' => 1,
+				'invoice_header' => '',
+				'order_user_name' => $data['H'],
+				'shipping_user_name' => $data['H'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$data['I'],
+				'shipping_phone2' => $data['I'],
+				'shipping_address' => $data['K'].'-'.$data['K'],
+				'shipping_zip' => $data['J'],
+				'shipping_pssj' => '',
+				'comment' => $data['AB'],
+				'shipping_order_time' => $data['D'],
+				
+				'order_invoice_header' => '',
+				'total_pay_money' => $data['E'],
+				'total_pay_num' => $data['T'],
+				'extra_name' => $data['O'],
+				'buy_type' => '',
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 16;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],74 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+
+
+// 邮乐
+function ImportYouLe( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+
+		//for ( $c = 65; $c < 91; $c++ )
+		//{
+			//$data['A' . chr( $c )] = $Sheet->getCell( 'A' . chr( $c ) . "{$i}" )->getValue();
+	//	}
+		
+		if ( intval( $data['A'] ) )
+		{
+			$list[] = array(
+				'no' => $data['A'],
+				'order_id' => $data['A'],
+				'pid' => trim($data['S']),
+				'num' => $data['P'],
+				'price' => $data['Q'],
+				'plan_times' => 1,
+				'invoice_header' => '',
+				'order_user_name' => $data['E'],
+				'shipping_user_name' => $data['E'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$data['F'],
+				'shipping_phone2' => $data['G'],
+				'shipping_address' => $data['H'],
+				'shipping_zip' => $data['I'],
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => substr($data['A'],0,4).'-'.substr($data['A'],4,2).'-'.substr($data['A'],6,2).' 08:00:00',
+				
+				'order_invoice_header' => '',
+				'total_pay_money' => $data['J'],
+				'total_pay_num' => $data['P'],
+				'extra_name' => $data['O'],
+				'buy_type' => '',
+
+				'data' => $data,
+			);
+		}
+	}
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 16;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],77 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+// 邮乐
+
+
+// 邮储
+function ImportYouChu( $filePath )
+{
+	Core::LoadLib( 'PHPExcel/Reader/Excel5.php' );
+
+	$ProductCollateModel = Core::ImportModel( 'ProductCollate' );
+	
+	$PHPReader = new PHPExcel_Reader_Excel5();
+
+	if( !$PHPReader->canRead( $filePath ) )
+	{
+		exit( '错误的Excel文件' );
+	}
+
+	$PHPExcel = $PHPReader->load( $filePath );
+	$Sheet = $PHPExcel->getSheet(0);
+	$rowNum = $Sheet->getHighestRow();
+
+	$list = array();
+	for ( $i = 2; $i <= $rowNum; $i++ )
+	{
+		$data = array();
+
+		for ( $c = 65; $c < 91; $c++ )
+		{
+			$data[chr( $c )] = $Sheet->getCell( chr( $c ) . "{$i}" )->getValue();
+		}
+
+		//for ( $c = 65; $c < 91; $c++ )
+		//{
+			//$data['A' . chr( $c )] = $Sheet->getCell( 'A' . chr( $c ) . "{$i}" )->getValue();
+	//	}
+		
+		if ( intval( $data['A'] ) )
+		{
+			$list[] = array(
+				'no' => $data['A'],
+				'order_id' => $data['A'],
+				'pid' => trim($data['S']),
+				'num' => $data['P'],
+				'price' => $data['Q'],
+				'plan_times' => 1,
+				'invoice_header' => '',
+				'order_user_name' => $data['E'],
+				'shipping_user_name' => $data['E'],
+				//'coupon_price' => 0,
+				'coupon_price' => 0,
+				//'shipping_user_sn' => $data['L'],
+				
+
+				'shipping_phone' =>$data['F'],
+				'shipping_phone2' => $data['G'],
+				'shipping_address' => $data['H'],
+				'shipping_zip' => $data['I'],
+				'shipping_pssj' => '',
+				'comment' => '',
+				'shipping_order_time' => substr($data['A'],0,4).'-'.substr($data['A'],4,2).'-'.substr($data['A'],6,2).' 08:00:00',
+				
+				'order_invoice_header' => '',
+				'total_pay_money' => $data['J'],
+				'total_pay_num' => $data['P'],
+				'extra_name' => $data['O'],
+				'buy_type' => '',
+
+				'data' => $data,
+			);
+		}
+	}
+
+
+	$orderList = array();
+	foreach ( $list as $val )
+	{
+		$orderData = array();
+		$orderData['target_id'] = $val['order_id'];
+		$orderData['channel_id'] = 16;
+		//$orderData['order_time'] = time();
+		$orderData['order_time'] = strtotime($val['shipping_order_time']);
+		$orderData['order_sell_type'] = 0;
+		$orderData['order_invoice_header'] = $val['invoice_header'];
+		$orderData['order_customer_name'] = $val['order_user_name'];
+		$orderData['order_shipping_name'] = $val['shipping_user_name'];
+		$orderData['order_shipping_phone'] = $val['shipping_phone'];
+		$orderData['order_shipping_mobile'] = $val['shipping_phone2'];
+		$orderData['order_shipping_card'] = $val['shipping_user_sn'];
+		$orderData['order_shipping_zip'] = $val['shipping_zip'];
+		$orderData['order_shipping_address'] = $val['shipping_address'];
+		$orderData['order_shipping_pssj'] = $val['shipping_pssj'];
+		$orderData['order_comment'] = $val['comment'];
+		$orderData['order_instalment_times'] = $val['plan_times'];
+		
+		$orderData['order_invoice_header'] = $val['order_invoice_header'];
+		$orderData['total_pay_money'] = $val['total_pay_money'];
+		$orderData['total_pay_num'] = $val['total_pay_num'];
+
+
+		$orderProductData = array();
+		$orderProductData['target_id'] = $val['pid'];
+		$orderProductData['quantity'] = $val['num'];
+		$orderProductData['comment'] = $val['comment'];
+		$orderProductData['import_data'] = serialize( $val['data'] );
+		$orderProductData['extra_name'] = $val['extra_name'];
+		$orderProductData['buy_type'] = $val['buy_type'];
+
+
+		$collateInfo = $ProductCollateModel->GetUnique( $val['pid'],78 );
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+
+		if ( !$collateInfo )
+			$orderProductData['collate_error'] = '对照表不存在';
+		
+		$priceInfo = $ProductCollateModel->GetPrice( $collateInfo['id'], $val['plan_times'] );
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['sale_price'] = FormatMoney($val['price']);
+		
+		if($priceInfo['price'] != $val['price'])
+		  $orderProductData['price_error'] = '提报价格和销售价格不符合！';
+		
+		$orderProductData['coupon_price'] = $val['coupon_price'];
+		$orderProductData['total_pay_money_one'] = FormatMoney($val['total_pay_money']/$val['total_pay_num']);
+		//$orderProductData['payout_rate'] = $priceInfo['payout_rate'];
+
+
+		$orderProductData['price'] = FormatMoney($priceInfo['price']);
+		$orderProductData['payout_rate'] = FormatMoney($priceInfo['payout_rate']);
+
+		$orderList[] = array(
+			'data' => $orderData,
+			'product_data' => $orderProductData,
+			'product_extra' => array( 'name' => $val['data']['E'] ),
+			'timeing' => $val['shipping_order_time'],
+		);
+	}
+
+	return $orderList;
+}
+// 邮储
+?>

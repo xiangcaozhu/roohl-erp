@@ -1,0 +1,36 @@
+
+
+<div class="thisplace center w960">
+	<span class="crumb">
+		<a href="http://www.wlivecn.com">Wlivecn.com</a> &gt; {content.title}
+	</span>
+</div>
+
+<div class="center w960 mt6">
+	<div class="uleft">
+		<div class="user-menu">
+			<dl>
+				<dt>Wlivecn.com</dt>
+				<dd>
+					<ul>
+						<!-- CmsChannelConentList(content.cid) AS list -->
+						<!-- BEGIN list AS info -->
+						<li <!-- IF info.id==content.id -->class="thisclass"<!-- ENDIF -->><a href="{info.link}">{info.sort_title}</a></li>
+						<!-- END list -->
+					</ul>
+				</dd>
+			</dl>
+		</div>
+	</div>
+	
+	<div class="uright otherpage">
+		<div class="op-nt"></div>
+		<div class="op-box">
+			<div class="op-box-title">{content.title}</div>
+			<div class="op-box-cnt">
+				{#html_entity_decode(content.content)}
+			</div>
+		</div>
+	</div>
+</div>
+

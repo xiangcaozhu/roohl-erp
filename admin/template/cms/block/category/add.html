@@ -1,0 +1,39 @@
+
+
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule"><!-- IF edit -->编辑<!-- ELSE -->新建<!-- ENDIF -->块分类</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		<!-- IF edit -->编辑<!-- ELSE -->新建<!-- ENDIF -->块分类
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>名称<span class="required">*</span></label></td>
+					<td class="value"><input name="name" id="name" value="{info.name}" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>上级分类<span class="required"></span></label></td>
+					<td class="value">
+						<select name="pid">
+							<option value="0">---- 根 ----</option>
+							<!-- BEGIN category_list AS category -->
+							<option value="{category.id}" <!-- IF category.id==pid -->selected<!-- ENDIF -->>{category.name}</option>
+							<!-- END category_list -->
+						</select>
+					</td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

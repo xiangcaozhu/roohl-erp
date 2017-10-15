@@ -1,0 +1,54 @@
+
+
+<div class="HY-content-header clearfix-overflow">
+	<h3>导入产品信息</h3>
+	<div class="right">
+		<button type="button" class="scalable back" onclick="location='?mod=product.import.upload_collate&file={file_name}'" style=""><span>确定导入</span></button>
+	</div>
+</div>
+
+<form method="post" id="main_form">
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		列表
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="40">渠道ID</th>
+				<th width="150">渠道名称</th>
+				<th width="60">渠道编号</th>
+				<th width="">商品ID-SKU-名称</th>
+				<th width="60"><div align="center">一期</div></th>
+				<th width="60"><div align="center">三期</div></th>
+				<th width="60"><div align="center">六期</div></th>
+				<th width="60"><div align="center">十二期</div></th>
+				<th width="60"><div align="center">十五期</div></th>
+				<th width="60"><div align="center">十八期</div></th>
+				<th width="60"><div align="center">二十四</div></th>
+				<th width="120">状态</th>
+			</tr>
+		</thead>
+		<tbody id="purchase_row">
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td><!-- IF !val.channel_id --><font color="red">渠道ID不能为空</font><!-- ELSE --><small>{val.channel_id}</small><!-- ENDIF --></td>
+				<td>{val.channel_name}</td>
+				<td>{val.target_id}</td>
+				<td>{val.product_id}-{val.sku}→{val.product_name}<br />{val.bank_link}</td>
+				<td align="center">￥{val.M1}<br />（{val.C1})</td>
+				<td align="center">￥{val.M3}<br />（{val.C3})</td>
+				<td align="center">￥{val.M6}<br />（{val.C6})</td>
+				<td align="center">￥{val.M12}<br />（{val.C12})</td>
+				<td align="center">￥{val.M15}<br />（{val.C15})</td>
+				<td align="center">￥{val.M18}<br />（{val.C18})</td>
+				<td align="center">￥{val.M24}<br />（{val.C24})</td>
+				<td><!-- IF val.exists --><font color="red">记录已经存在，错误！</font><!-- ELSE --><font color="#006600">正确</font><!-- ENDIF --></td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>

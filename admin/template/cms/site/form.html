@@ -1,0 +1,60 @@
+<div class="HY-content-header clearfix">
+	<h3>
+		<!-- IF !edit -->
+		编辑站点
+		<!-- ELSE -->
+		添加站点
+		<!-- ENDIF -->
+	</h3>
+	<p class="right">
+		<button type="button" class="scalable save" onclick="$('form').submit();"><span>保存数据</span></button>
+	</p>
+</div>
+
+<form method="post">
+<div class="HY-form-table" id="price_tab">
+	<div class="HY-form-table-header">
+		<!-- IF !edit -->
+		编辑站点
+		<!-- ELSE -->
+		添加站点
+		<!-- ENDIF -->
+	</div>
+	<div class="HY-form-table-main">
+		<table cellspacing="0" class="HY-form-table-table">
+			<tbody>
+				<tr>
+					<td class="label"><label>名称<span class="required">*</span></label></td>
+					<td class="value"><input name="name" value="{info.name}" class="input-text" type="text" style=""/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>域名<span class="required">*</span></label></td>
+					<td class="value"><input name="domain" value="{info.domain}" class="input-text" type="text" style="width:300px"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>根URL<span class="required">*</span></label></td>
+					<td class="value"><input name="publish_url" value="{info.publish_url}" class="input-text" type="text" style="width:300px"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>发布路径<span class="required">*</span></label></td>
+					<td class="value"><input name="publish_path" value="{info.publish_path}" class="input-text" type="text" style="width:200px"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>图库 根URL<span class="required">*</span></label></td>
+					<td class="value"><input name="image_publish_url" value="{info.image_publish_url}" class="input-text" type="text" style="width:200px"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+				<tr>
+					<td class="label"><label>图库发布路径<span class="required">*</span></label></td>
+					<td class="value"><input name="image_publish_path" value="{info.image_publish_path}" class="input-text" type="text" style="width:200px"/></td>
+					<td><small>&nbsp;</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>

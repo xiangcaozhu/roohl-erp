@@ -1,0 +1,31 @@
+
+
+<div class="HY-content-header clearfix">
+	<h3>{user.user_name}积分记录 </h3>
+</div>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		总共{total}记录
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="40">时间</th>
+				<th>获得积分</th>
+				<th align="">积分明细</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN log_list AS log -->
+			<tr>
+				<td>{log.add_time}</td>
+				<td><strong>{log.point}</strong></td>
+				<td>购买商品 <a href="{SITE_URL}product/detail-{log.object_id}.html" target="_blank">{log.title}</a> 获得</td>
+			</tr>
+			<!-- END log_list -->
+		</tbody>
+	</table>
+</div>

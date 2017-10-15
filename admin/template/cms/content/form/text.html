@@ -1,0 +1,29 @@
+
+		<tr>
+			<td class="label"><label>内容</label></td>
+			<td class="">
+				<textarea name="content" id="content" style="width:800px;height:500px;border:1px solid #ccc;overflow-x:auto;overflow-y:auto;">{content.content}</textarea>
+			</td>
+		</tr>
+
+<link rel="stylesheet" href="css/htmleditor.css" type="text/css" media="screen" />
+<script language="javascript" type="text/javascript" src="script/htmleditor.js"></script>
+
+<script language="JavaScript">
+var textEditor;
+
+$(document).ready(function(){
+	textEditor = new HtmlEditor('content');
+	textEditor.AddBotton('split', '|');
+	textEditor.AddBotton('cms_media_image', {
+		image : '../image/editor/photos.png',
+		text : '从图片库插入/上传',
+		handler:function(){
+			MediaImageBox({site_id}, '{site_info.name}', function(url){
+				textEditor.Insert('<br /><img src="{0}" /><br />'.format(url), textEditor.__sel);
+			});
+		}
+	});
+	textEditor.Init();
+});
+</script>

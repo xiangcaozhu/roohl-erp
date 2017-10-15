@@ -1,0 +1,4 @@
+<?php
+Common::PageOut( 'frame.html', $tpl, false, false );
+
+?>

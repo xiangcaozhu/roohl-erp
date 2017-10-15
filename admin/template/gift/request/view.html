@@ -1,0 +1,60 @@
+<h3>编辑/查看换购请求</h3>
+<table class="datalist">
+	<thead>
+		<tr>
+			<td colspan="4">基本信息</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td align="right" width="15%"><b>ID:</b></td>
+			<td width="30%">{request.id}</td>
+			<td align="right" width="15%"><b>请求时间:</b></td>
+			<td width="30%">{request.add_time}</td>
+		</tr>
+		<tr>
+			<td align="right" width="15%"><b>状态:</b></td>
+			<td>{request.status_name}</td>
+			<td  align="right" width="15%"><b>花费积分:</b></td>
+			<td align="">
+				{request.point}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" width="15%"><b>操作:</b></td>
+			<td colspan="3" align="">
+				<!-- IF request.status==1 -->
+				<input type="button" value="发货" onclick="$('#confirm_do').val('ship');$('#confirm_form').submit();">
+				<input type="button" value="取消请求" onclick="$('#confirm_do').val('cancel');$('#confirm_form').submit();">
+				<!-- ENDIF -->
+
+				<form method="post" action="?mod=gift.request.confirm&id={request.id}" id="confirm_form">
+					<input type="hidden" value="" name="do" id="confirm_do">
+				</form>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+<table class="datalist">
+	<thead>
+		<tr>
+			<td colspan="4">配送信息</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td align="right" width="15%"><b>收货人:</b></td>
+			<td width="30%">{request.ship_accepter}</td>
+			<td align="right" width="15%"><b>电话:</b></td>
+			<td width="30%">{request.ship_phone}</td>
+		</tr>
+		<tr>
+			<td align="right" width="15%"><b>地址:</b></td>
+			<td width="30%">{request.ship_first_area} {request.ship_second_area} {request.ship_third_area} {request.ship_address}</td>
+			<td align="right" width="15%"><b>邮编:</b></td>
+			<td width="30%">{request.ship_zip_code}</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,800 @@
+<link href="css/cal/zpcal.css" rel="stylesheet" type="text/css">
+<link href="css/cal/template.css" rel="stylesheet" type="text/css">
+<link href="css/cal/maroon.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src='script/zapatec.js'></script>
+<script type="text/javascript" src="script/calendar.js"></script>
+<script type="text/javascript" src="script/calendar-zh.js"></script>
+<style>
+.xiao_1 input{border:#999999 1px solid;height:16px;}
+.xiao_1 select{border:#999999 1px solid;height:20px;}
+.xiao_2{float:left;width:20px;height:20px; text-align:center;border:#666666 1px solid;margin-right:6px;}
+.xiao_3{float:left;width:20px;height:20px; text-align:center;border:#666666 1px solid;margin-right:6px;color:#FFFFFF; background:#000000;}
+.xiao_21{float:left;width:20px;height:20px; text-align:center;border:#666666 1px solid;margin-right:25px;}
+.xiao_22{float:right;width:20px;height:20px; text-align:center;border:#666666 1px solid;}
+</style>
+
+<div style="margin:0px auto;width:100%; padding:0px;">
+<ul style="float:right;width:950px;">
+<!-- BEGIN list AS info -->
+<dl id="one_line_{info.id}" style="float:left;width:928px;margin:0px;padding:10px;margin-bottom:20px;border:#999999 1px solid; background:#FFFFFF;">
+<dt style="float:left;width:740px;border-right:#999999 1px solid;padding-right:10px;">
+<div style="float:left;width:740px; padding-bottom:5px;">
+<span style="float:left;">订单号：<b>{info.id}</b>　　导入时间：{info.add_time}</span>
+<span style="float:right;">{info.channel_name}&nbsp;→&nbsp;[{info.order_time}]&nbsp;→&nbsp;<b>{info.target_id}</b></span>
+</div>
+<div style="float:left;width:740px;">
+<table width="740" border="0" cellpadding="0" cellspacing="1" bgcolor="#999999">
+  <tr style=" background:url(image/sort_row_bg.gif) repeat-x left top;line-height:25px; font-weight:bold;">
+    <td width="70"><div align="center">渠道编号</div></td>
+    <td><div align="left">&nbsp;商品名称</div></td>
+	<td width="80"><div align="center">银行属性</div></td>
+	<td width="80"><div align="center">系统属性</div></td>
+    <td width="40"><div align="center">数量</div></td>
+	<td width="70"><div align="center">单价</div></td>
+  </tr>
+<!-- BEGIN info.list AS row -->
+<tr style="line-height:25px;">
+    <td bgcolor="#FFFFFF" align="center" >
+	<!-- IF trim(row.target_id) && row.price>0 -->
+<!-- IF info.frontChange>0  -->
+{row.target_id}
+<!-- ELSE -->	
+	<!-- IF C_UID==88 || C_UID==68 -->
+	<a href="?mod=order.edit.check_service&productID={row.sku_info.product.id}&channel_id={info.channel_id}" target="_blank">{row.target_id}</a>
+	<!-- ELSE -->
+	{row.target_id}
+	<!-- ENDIF -->
+<!-- ENDIF -->	
+	
+	
+	<!-- ELSE --><font color="red">赠品</font><!-- ENDIF --></td>
+    <td bgcolor="#FFFFFF"><div style="float:left; padding:6px 5px;line-height:1.4;"><!-- IF trim(row.target_id) && row.price>0 -->
+	银行：{row.extra_name}<br />
+	系统：[{row.sku_info.product.id}]&nbsp;{row.sku_info.product.name}
+<!-- ELSE -->[{row.sku_info.product.id}]&nbsp;{row.sku_info.product.name}<!-- ENDIF --></div></td>
+	<td bgcolor="#FFFFFF" align="center"><!-- IF row.buy_type --><font color="red">{row.buy_type}</font><!-- ENDIF --></td>
+	<td bgcolor="#FFFFFF" align="center">	
+	<!-- IF row.sku_info.attribute --><font color="green" id="A_{info.id}_{row.id}">{row.sku_info.attribute}</font><br /><!-- ENDIF -->
+<a href="javascript:void(0);" onclick="AttributeEdit({row.sku_info.product.id},{row.id},{info.id});">修改属性</a>
+
+	</td>
+    <td bgcolor="#FFFFFF" align="center" >{row.quantity}</td>
+	<td bgcolor="#FFFFFF" align="center" ><font color="red"><b>{row.price}</b></td>
+  </tr>
+
+<!-- END info.list -->
+</table>
+</div>
+<div style="float:left;width:740px;margin-top:20px;">
+<fieldset style="float:left;width:420px; padding:10px;border:#0066CC 2px dashed;">
+<legend style="color:#0066CC;">
+<b>客户信息</b>　　
+<a id="e_a_{info.id}" style="cursor:pointer;" onclick="$('#one_user_e_{info.id}').css('display','');$('#one_user_{info.id}').css('display','none');$('#e_b_{info.id}').css('display','');$('#e_a_{info.id}').css('display','none');">编辑客户信息</a>
+<a id="e_b_{info.id}" style="cursor:pointer; display:none;" onclick="$('#one_user_e_{info.id}').css('display','none');$('#one_user_{info.id}').css('display','');$('#e_a_{info.id}').css('display','');$('#e_b_{info.id}').css('display','none');">取消编辑</a>
+</legend>
+<table width="420" cellspacing="0" id="one_user_{info.id}">
+<tr><td align="right" width="50">收货人：</td><td id="one_user_{info.id}_1">{info.order_shipping_name}</td></tr>
+<!-- IF info.order_shipping_phone -->
+<tr><td align="right">电　话：</td><td id="one_user_{info.id}_2"><b>{info.order_shipping_phone}</b><a style="padding-left:20px; display:none" href="http://211.151.35.110/app?Action=Dialout&ActionID={info.id}&Account=Q000000004831&Exten={info.order_shipping_phone}&FromExten={user_call}&PBX=10.1.1.142" target="a_frame">呼叫</a></td></tr>
+<!-- ENDIF -->
+<!-- IF info.order_shipping_mobile -->
+<tr><td align="right">手　机：</td><td id="one_user_{info.id}_3"><b>{info.order_shipping_mobile}</b><a style="padding-left:20px;display:none" href="http://211.151.35.110/app?Action=Dialout&ActionID={info.id}&Account=Q000000004831&Exten={info.order_shipping_mobile}&FromExten={user_call}&PBX=10.1.1.142" target="a_frame">呼叫</a></td></tr>
+<!-- ENDIF -->
+<tr><td align="right">地　址：</td><td id="one_user_{info.id}_4">{info.order_shipping_address}</td></tr>
+<tr><td align="right">邮　编：</td><td id="one_user_{info.id}_5">{info.order_shipping_zip}</td></tr>
+</table>
+<table cellspacing="0" width="420" id="one_user_e_{info.id}">
+<tr><td align="right" width="50" height="25">收货人：</td><td ><input style="width:100px;" type="text" id="order_shipping_name_{info.id}" value="{info.order_shipping_name}" /></td></tr>
+<tr><td align="right" height="25">电　话：</td><td ><input style="width:130px;" type="text" id="order_shipping_phone_{info.id}" value="{info.order_shipping_phone}" /></td></tr>
+<tr><td align="right" height="25">手　机：</td><td ><input style="width:130px;" type="text" id="order_shipping_mobile_{info.id}" value="{info.order_shipping_mobile}" /></td></tr>
+<tr><td align="right" height="25">地　址：</td><td ><input style="width:360px;" type="text" id="order_shipping_address_{info.id}" value="{info.order_shipping_address}" /></td></tr>
+<tr><td align="right" height="25">邮　编：</td><td ><input style="width:80px;" type="text" id="order_shipping_zip_{info.id}" value="{info.order_shipping_zip}" /></td></tr>
+<tr><td align="right">&nbsp;</td><td >
+<button style="float:left;margin:2px;" type="button" onclick="up_order_user({info.id});">确认修改</button>
+<button style="float:left;margin:2px;margin-left:30px;" type="button" onclick="$('#one_user_e_{info.id}').css('display','none');$('#one_user_{info.id}').css('display','');$('#e_a_{info.id}').css('display','');$('#e_b_{info.id}').css('display','none');">取消修改</button>
+</td></tr>
+</table>
+<table cellspacing="0" width="420" style="border-top:#993333 1px solid;margin-top:10px;">
+<!-- BEGIN info.serviceEditUserList AS row -->
+<tr><td align="left" style="color:#666666;">[{row.user_name_zh}/{#DateFormat(row.add_time,'m-d H:i')}]→{row.comment}</td></tr>
+<!-- END info.serviceEditUserList -->
+</table>
+
+</fieldset>
+<script>
+$('#one_user_e_{info.id}').css('display','none');
+</script>
+
+
+
+<fieldset style="float:right;width:250px; padding:10px;border:#CC3366 2px dashed;">
+<legend style="color:#CC3366;">
+<b>发票信息</b>　
+<label style=" cursor:pointer;margin-left:5px;"><input onclick="$('#order_invoice_{info.id}').val(0);$('#one_invoice_{info.id}').css('display','none');" type="radio" name="t_order_invoice_{info.id}" value="0" <!-- IF info.order_invoice==0 -->checked<!-- ENDIF -->>不需要</label>
+<label style=" cursor:pointer;margin-left:5px;"><input onclick="$('#order_invoice_{info.id}').val(1);$('#one_invoice_{info.id}').css('display','block');" type="radio" name="t_order_invoice_{info.id}" value="1" <!-- IF info.order_invoice==1 -->checked<!-- ENDIF -->>开发票</label>
+<label style=" cursor:pointer;margin-left:5px;"><input onclick="$('#order_invoice_{info.id}').val(2);$('#one_invoice_{info.id}').css('display','block');" type="radio" name="t_order_invoice_{info.id}" value="2" <!-- IF info.order_invoice==2 -->checked<!-- ENDIF -->>开收据</label>
+</legend>
+
+
+<table cellspacing="0" width="250" id="one_invoice_{info.id}" style="display:<!-- IF info.order_invoice>0 --><!-- ELSEIF info.channel_id==62 && info.order_invoice_header!='' --><!-- ELSE -->none<!-- ENDIF -->;">
+<tr><td align="right" width="50" height="25">抬头：</td><td ><input type="text" id="order_invoice_header_{info.id}" value="{info.order_invoice_header}" class="input-text" style="width:180px;"></td></tr>
+<tr><td align="right" height="25">内容：</td><td >
+<label style=" cursor:pointer;">
+<input onclick="$('#order_invoice_type_{info.id}').val(1);$('#order_invoice_product_{info.id}_tr').css('display','none');" type="radio" name="t_order_invoice_type_{info.id}" value="1" <!-- IF info.order_invoice_type==1 -->checked<!-- ENDIF -->>办公用品</label>
+<label style=" cursor:pointer;margin-left:5px;">
+<input onclick="$('#order_invoice_type_{info.id}').val(2);$('#order_invoice_product_{info.id}_tr').css('display','none');" type="radio" name="t_order_invoice_type_{info.id}" value="2" <!-- IF info.order_invoice_type==2 -->checked<!-- ENDIF -->>礼品</label>
+<label style=" cursor:pointer;margin-left:5px;">
+<input onclick="$('#order_invoice_type_{info.id}').val(3);$('#order_invoice_product_{info.id}_tr').css('display','');" type="radio" name="t_order_invoice_type_{info.id}" value="3" <!-- IF info.order_invoice_type==3 -->checked<!-- ENDIF -->>产品名称</label>
+</td></tr>
+<tr id="order_invoice_product_{info.id}_tr" style="display:<!-- IF info.order_invoice_type==3 --><!-- ELSE -->none<!-- ENDIF -->;"><td align="right">&nbsp;</td><td >
+<textarea rows="3" id="order_invoice_product_{info.id}" style="width:180px;"><!-- IF info.order_invoice_product -->{info.order_invoice_product}<!-- ELSE -->{info.order_invoice_product_m}<!-- ENDIF --></textarea>
+</td></tr>
+</table>
+<table cellspacing="0" width="250">
+<tr><td align="right"><button style="float:left;margin:5px; background:#FFFFFF;color:#CC0000" type="button" onclick="up_order_invoice({info.id});">现金：{info.coupon_price}</button></td><td >
+<input type="hidden" id="order_invoice_type_{info.id}" value="{info.order_invoice_type}" />
+<input type="hidden" id="order_invoice_{info.id}" value="{info.order_invoice}" />
+<button style="float:right;margin:5px;" type="button" onclick="up_order_invoice({info.id});">更新发票信息</button>
+</td></tr>
+</table>
+</fieldset>
+
+
+</div>
+
+</dt>		
+				
+<dd style="float:right;margin:0px;width:160px;">
+<!-- IF info.order_comment && info.order_comment!='|' -->
+<fieldset style="float:left;width:136px; padding:5px 10px;border:#0066CC 2px dashed;margin-bottom:10px;">
+<legend style="color:#0066CC;">客户备注</legend>
+<span style="float:left;width:136px; text-align:left;">{info.order_comment}</span>
+</fieldset>
+<!-- ENDIF -->
+
+
+<div style="float:left; padding:5px 10px;width:140px;border:#999999 1px dashed; background:#F1F1F1;">
+产品部：{info.purchase_check_name}<br />
+<!-- IF info.ceA.real_name -->
+{info.ceA.real_name}：{#DateFormat(info.ceA.add_time,'m-d H:i')}<!-- IF info.ceA.comment --><br /><font color="#666666">{info.ceA.comment}</font><!-- ENDIF -->
+<!-- ENDIF -->
+</div>
+<div style="float:left; padding:5px 10px;width:140px;border:#999999 1px dashed; background:#F1F1F1;margin-top:10px;">
+客服部：{info.service_check_name}<br />
+<!-- IF info.ceB.real_name -->
+{info.ceB.real_name}：{#DateFormat(info.ceB.add_time,'m-d H:i')}<!-- IF info.ceB.comment --><br /><font color="#666666">{info.ceB.comment}</font><!-- ENDIF -->
+<!-- ENDIF -->
+</div>
+<div style="float:left; padding:5px;width:150px;border:#999999 1px dashed; background:#F1F1F1;margin-top:10px;">
+<!-- IF info.purchase_check ==2 -->
+<button style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="ActionLog_1({info.id}, 2, 0);">取消</button>
+<!-- ELSE -->
+
+<!-- IF info.service_check == 2 -->
+<button style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="fastOK({info.id});">直接<br />确认</button>
+<button style="float:left;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="ActionLog_1({info.id}, 1, 0);">备注<br />确认</button>
+<!-- ENDIF -->
+
+<!-- IF info.service_check == 0 -->
+<!-- IF info.frontChange>0  -->
+<font class="SHM_{info.id}" color="#663399" style="display:block;">此订单有产品需要确认<br />购买属性</font>
+<button class="SHK_{info.id}" style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold; display:none;" type="button" onclick="fastOK({info.id});">直接<br />确认</button>
+<button class="SHK_{info.id}" style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;display:none;" type="button" onclick="ActionLog_1({info.id}, 1, 0);">备注<br />确认</button>
+<button class="SHK_{info.id}" style="float:left;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;display:none;" type="button" onclick="ActionLog_1({info.id}, 2, 0);">取消</button>
+<!-- ELSE -->
+<button class="SHK_{info.id}" style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="fastOK({info.id});">直接<br />确认</button>
+<button class="SHK_{info.id}" style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="ActionLog_1({info.id}, 1, 0);">备注<br />确认</button>
+<button class="SHK_{info.id}" style="float:left;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="ActionLog_1({info.id}, 2, 0);">取消</button>
+<!-- ENDIF -->
+<!-- ENDIF -->
+
+<!-- IF info.service_check == 1 -->
+<!-- IF info.NoEdit==1 -->
+<font color="#FF0000">此订单已有后续操作<br />无法更改</font>
+<!-- ELSE -->
+<button style="float:left;margin-right:5px;width:45px;height:45px;color:#000000;line-height:1.3; font-weight:bold;" type="button" onclick="ActionLog({info.id}, 2, 0);">取消</button>
+<!-- ENDIF -->
+<!-- ENDIF -->
+
+<!-- ENDIF -->
+</div>
+<div style="float:left; padding:5px;width:150px;border:#999999 1px dashed; background:#F1F1F1;margin-top:10px;">
+<div style="float:left;" id="call_line_{info.id}">
+<!-- BEGIN info.service_call_list AS row -->
+<ul style="float:left;width:140px; padding:5px;border-bottom:#D8D8D8 1px solid;" title="操作员：{row.user_name_zh}">
+<span style="float:left;">{row.comment}</span>
+<span style="float:right;">{#DateFormat(row.add_time,'m-d H:i')}</span>
+</ul>
+<!-- END info.service_call_list -->
+</div>
+<button style="float:left;margin-left:5px;margin-top:10px;" type="button" onclick="fastcall({info.id},1,'无人接听');">无人接听</button>
+<button style="float:left;margin-left:12px;margin-top:10px;" type="button" onclick="fastcall({info.id},2,'客户关机');">客户关机</button>
+<button style="float:left;margin-left:5px;margin-top:10px;" type="button" onclick="fastcall({info.id},3,'客户挂断');">客户挂断</button>
+<button style="float:left;margin-left:12px;margin-top:10px;" type="button" onclick="fastcall({info.id},4,'来电提醒');">来电提醒</button>
+<button style="float:left;margin-left:5px;margin-top:10px;" type="button" onclick="fastcall({info.id},5,'无法接通');">无法接通</button>			
+<button style="float:left;margin-left:12px;margin-top:10px;" type="button" onclick="ActionLog_2({info.id}, 1, 1);">其他情况</button>
+</div>
+
+
+</dd>
+</dl>
+<!-- END list -->
+</ul>
+<ul style=" position:fixed;top:40px;left:20px;width:250px;margin:0px; padding:0px;" class="xiao_1">
+<span style="float:left;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<div style="float:left;">总共 <b>{total}</b> 条{onePage}</b>。</div>
+<!-- IF page_num>1 --><div style="float:left;width:228px; padding:10px 0px 0px 0px;">{page_bar_b}</div><!-- ENDIF -->
+</span>
+<form method="get" id="search_form">
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<input type="hidden" name="mod" value="{_GET.mod}"><input type="hidden" name="excel" id="excel" value="0">
+
+<div style="float:left;width:228px;height:25px;">
+订单编号：<input style="width:60px;" type="text" name="id" id="id" value="{_GET.id}">
+</div>
+<div style="float:left;width:228px;height:25px;">
+销售渠道：<select name="channel_id" style="width:150px">
+<option value=""></option>
+<!-- BEGIN channel_list AS val -->
+<option value="{val.id}" <!-- IF val.id==_GET.channel_id  -->selected<!-- ENDIF -->>{val.name}</option>
+<!-- END channel_list -->
+</select>
+</div>
+<div style="float:left;width:228px;height:25px;">
+渠道单号：<input style="width:150px;" type="text" name="target_id" value="{_GET.target_id}">
+</div>
+</span>
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<dl style="float:left;width:228px;margin:0px;padding:0px;">
+<dt style="float:left;width:228px;height:25px;margin:0px;padding:0px;">银行下单时间</dt>
+<dd style="float:left;width:94px;height:22px;margin:0px;padding:0px; position:relative;">
+<input style="width:76px;" type="text" name="begin_date" id="begin_date" value="{_GET.begin_date}">
+<img src="image/grid-cal.gif" width="18" height="18" id="begin_date_btn" style="position:absolute;top:2px;right:0px;" />
+</dd>
+<dd style="float:left;width:30px;height:22px;margin:0px;padding:0px; text-align:right;line-height:25px; font-size:20px; position:relative;">=></dd>
+<dd style="float:right;width:94px;height:22px;margin:0px;padding:0px; position:relative;">
+<input style="width:76px;" type="text" name="end_date" id="end_date" value="{_GET.end_date}">
+<img src="image/grid-cal.gif" width="18" height="18" id="end_date_btn" style="position:absolute;top:2px;right:0px;" />
+</dd>
+</dl>
+</span>
+
+
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<div style="float:left;width:114px;height:28px;">
+<select name="purchase_check" style="width:93px;">
+<option value="">产品部</option>
+<option value="1" <!-- IF 1==_GET.purchase_check && _GET.purchase_check!='' -->selected<!-- ENDIF -->>产品-已确认</option>
+<option value="2" <!-- IF 2==_GET.purchase_check && _GET.purchase_check!='' -->selected<!-- ENDIF -->>产品-已取消</option>
+<option value="0" <!-- IF 0==_GET.purchase_check && _GET.purchase_check!='' -->selected<!-- ENDIF -->>产品-未操作</option>
+</select>
+</div>
+<div style="float:right;width:105px;height:28px;">
+<select name="service_check" style="width:93px">
+<option value="1" <!-- IF 1==_GET.service_check && _GET.service_check!='' -->selected<!-- ENDIF -->>客服-已确认</option>
+<option value="2" <!-- IF 2==_GET.service_check && _GET.service_check!='' -->selected<!-- ENDIF -->>客服-已取消</option>
+<option value="0" <!-- IF 0==_GET.service_check && _GET.service_check!='' -->selected<!-- ENDIF -->>客服-未操作</option>
+</select>
+</div>
+</span>
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<div style="float:left;width:114px;height:22px;">
+<select name="order_invoice" style="width:93px">
+<option value="">发票 / 收据</option>
+<option value="0"  <!-- IF _GET.order_invoice==0  && _GET.order_invoice!='' -->selected<!-- ENDIF --> >不需要</option>
+<option value="1"  <!-- IF _GET.order_invoice==1  && _GET.order_invoice!='' -->selected<!-- ENDIF --> >开发票</option>
+<option value="2"  <!-- IF _GET.order_invoice==2  && _GET.order_invoice!='' -->selected<!-- ENDIF --> >开收据</option>
+</select>
+</div>
+<div style="float:right;width:105px;height:22px;">
+<select name="order_invoice_status" style="width:93px">
+<option value="">开票状态</option>
+<option value="0" <!-- IF 0==_GET.order_invoice_status  && _GET.order_invoice_status!='' -->selected<!-- ENDIF -->>未开票据</option>
+<option value="1" <!-- IF 1==_GET.order_invoice_status  && _GET.order_invoice_status!='' -->selected<!-- ENDIF -->>已开票据</option>
+</select>
+</div>
+</span>
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<div style="float:left;width:228px;height:22px;">
+产品名称：
+<input type="text" name="product_name" value="{_GET.product_name}">
+</div>
+<div style="float:left;width:228px;height:25px;">
+　收货人：
+<input type="text"  style="width:150px;" name="order_shipping_name" value="{_GET.order_shipping_name}">
+</div>
+<div style="float:left;width:228px;height:22px;">
+　　电话：
+<input type="text" style="width:150px;" name="phone" value="{_GET.phone}">
+</div>
+
+</span>
+<span style="float:left;margin-top:10px;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
+<button  style="float:right;" type="button" onclick="$('#search_form').submit();">筛选订单</button>
+</span>
+</form>
+</ul>
+</div>
+
+
+
+
+<script language="JavaScript">
+$(document).ready(function(){
+	$('a[ctype=expand]').click(function(){
+		$(this).parents('td').eq(0).find('div').toggle();
+	});
+});
+
+var isSubmit = false;
+var isSubmit_a = false;
+var isSubmit_b = false;
+function ActionLog(orderId, type, call){
+isSubmit = false;
+	var html = $('#tpl_action').html().replace(/-_-/ig, '');
+	html = $(html);
+
+	if (call==1){
+		html.find('form').attr('action', '?mod=order.edit.call&id='+orderId);
+		title = '呼叫记录';
+	}else{
+		html.find('form').attr('action', '?mod=order.edit.check&id='+orderId+'&do=service&type='+type);
+		title = type==1?'确认':'取消';
+	}
+
+	Dialog(title,html,function(){
+		if (isSubmit){
+			return false;
+		}
+
+		if((type==2) && html.find('form').find('.input-text').val()=="")
+		{
+		alert('必须有取消理由')
+		isSubmit = false;
+		}
+		else
+		{
+		html.find('form').submit();
+		isSubmit = true;
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//UnDialog();
+
+function ActionLog_1(orderId, type, call){
+isSubmit_a = false;
+	var html = $('#tpl_action').html().replace(/-_-/ig, '');
+	html = $(html);
+
+	if (call==1){
+		html.find('form').attr('action', '?mod=order.edit.call&id='+orderId);
+		title = '呼叫记录';
+	}else{
+		html.find('form').attr('action', '?mod=order.edit.check&id='+orderId+'&do=service&type='+type);
+		title = type==1?'备注确认':'取消';
+	}
+
+	Dialog(title,html,function(){
+		if (isSubmit_a){
+			return false;
+		}
+
+		if((type==2) && html.find('form').find('.input-text').val()=="")
+		{
+		alert('必须有取消理由')
+		isSubmit_a = false;
+		}
+		else
+		{
+		comment=html.find('form').find('.input-text').val();
+		$.ajax({
+		url:'?mod=order.edit.check_f&id='+orderId+'&comment='+comment+'&do=service&type='+type+'&rand=' + Math.random(),
+		type:'GET',
+		success: function(info){
+			if (info=='200' || info==200){
+			UnDialog();
+			alert('操作成功！');
+
+	var obj = $('#one_line_'+orderId+'');
+	obj.fadeTo(1,0.2,function(){obj.slideUp(400,function(){
+			obj.remove();
+		});
+	});
+	
+				//$('#one_line_'+orderId+'').css('display','none');
+			}else{
+				alert(info);
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+		}
+	});
+
+
+
+
+
+		isSubmit_a = true;
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ActionLog_2(orderId, type, call){
+isSubmit_b = false;
+	var html = $('#tpl_action').html().replace(/-_-/ig, '');
+	html = $(html);
+
+	if (call==1){
+		html.find('form').attr('action', '?mod=order.edit.call&id='+orderId);
+		title = '呼叫记录';
+	}else{
+		html.find('form').attr('action', '?mod=order.edit.check&id='+orderId+'&do=service&type='+type);
+		title = type==1?'确认':'取消';
+	}
+
+	Dialog(title,html,function(){
+		if (isSubmit_b){
+			return false;
+		}
+
+		if((type==2) && html.find('form').find('.input-text').val()=="")
+		{
+		alert('必须有取消理由')
+		isSubmit_b = false;
+		}
+		else
+		{
+		comment=html.find('form').find('.input-text').val();
+		$.ajax({
+		//url:'?mod=order.edit.check_f&id='+orderId+'&do=service&comment='+comment+'&type='+type+'&rand=' + Math.random(),
+		url: '?mod=order.edit.call_h&id='+orderId+'&comment='+comment+'&rand=' + Math.random(),
+		type:'GET',
+		success: function(info){
+			if (info=='200' || info==200){
+			//$('#one_line_'+orderId+'').css('display','none');
+			
+			$('#call_line_'+orderId+'').append('<ul style="float:left;width:140px; padding:5px;border-bottom:#D8D8D8 1px solid;" title="操作员：{session.user_real_name}"><span style="float:left;">'+comment+'</span><span style="float:right;">{#DateFormat(time(),"m-d H:i")}</span></ul>');
+
+			UnDialog();
+			alert('操作成功！');
+			}else{
+				alert(info);
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+		}
+	});
+
+
+
+
+
+		isSubmit_b = true;
+		}
+	});
+}
+
+
+
+
+
+function fastOK(orderId){
+	$.ajax({
+		url:'?mod=order.edit.check_f&id='+orderId+'&do=service&type=1&rand=' + Math.random(),
+		type:'GET',
+		//data:post,
+		success: function(info){
+			if (info=='200' || info==200){
+			alert('操作成功！');
+			//$('#one_line_'+orderId+'').css('display','none');
+
+	var obj = $('#one_line_'+orderId+'');
+	obj.fadeTo(1,0.2,function(){obj.slideUp(400,function(){
+			obj.remove();
+		});
+	});
+
+
+
+
+			}else{
+				alert(info);
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+		}
+	});
+
+
+
+
+
+
+}
+
+
+
+
+function fastcall(orderId,comments,title){
+	//Loading();
+	$.ajax({
+		url: '?mod=order.edit.call_h&id='+orderId+'&comment='+comments+'&rand=' + Math.random(),
+		type:'GET',
+		//data:post,
+		success: function(info){
+			if (info=='200' || info==200){
+				//Loading('处理成功', '正在跳转到列表页面...');
+				//window.location='?mod=order.check.service&service_check={_GET.service_check}';
+
+	$('#call_line_'+orderId+'').append('<ul style="float:left;width:140px; padding:5px;border-bottom:#D8D8D8 1px solid;" title="操作员：{session.user_real_name}"><span style="float:left;">'+title+'</span><span style="float:right;">{#DateFormat(time(),"m-d H:i")}</span></ul>');
+	
+	alert('处理成功');
+
+
+		
+				
+				
+			}else{
+				alert(info);
+				//UnLoading();
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+			//UnLoading();
+		}
+	});
+}
+
+
+
+
+function up_order_invoice(orderId){
+	//Loading();
+	var order_invoice=$('#order_invoice_'+orderId+'').val();
+	var order_invoice_header=$('#order_invoice_header_'+orderId+'').val();
+	
+	var order_invoice_type=$('#order_invoice_type_'+orderId+'').val();
+	var order_invoice_product=$('#order_invoice_product_'+orderId+'').val();
+	
+	
+	var T_url ='?mod=order.edit.up_order_invoice&id='+orderId+'&order_invoice='+order_invoice+'&order_invoice_header='+order_invoice_header+'&order_invoice_type='+order_invoice_type+'&order_invoice_product='+order_invoice_product+'&rand=' + Math.random();
+	//window.location=T_url;
+	$.ajax({
+		url: T_url,
+		type:'GET',
+		//data:post,
+		success: function(info){
+			if (info==200 || info=='200'){
+				alert('处理成功');
+				//window.location='?mod=order.check.service&service_check={_GET.service_check}';
+			}else{
+				alert(info);
+				//UnLoading();
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+			//UnLoading();
+		}
+	});
+}
+
+
+
+
+function up_order_user(orderId){
+var reg=new RegExp("#","g"); //创建正则RegExp对象    
+
+	//Loading();
+	var order_shipping_name=$('#order_shipping_name_'+orderId+'').val().replace(reg,"/"); 
+	var order_shipping_phone=$('#order_shipping_phone_'+orderId+'').val().replace(reg,"/"); 
+	var order_shipping_mobile=$('#order_shipping_mobile_'+orderId+'').val().replace(reg,"/"); 
+	var order_shipping_address=$('#order_shipping_address_'+orderId+'').val().replace(reg,"/"); 
+	var order_shipping_zip=$('#order_shipping_zip_'+orderId+'').val().replace(reg,"/"); 
+	var T_url ='?mod=order.edit.up_order_user&id='+orderId+'&order_shipping_name='+order_shipping_name+'&order_shipping_phone='+order_shipping_phone+'&order_shipping_mobile='+order_shipping_mobile+'&order_shipping_address='+order_shipping_address+'&order_shipping_zip='+order_shipping_zip+'&rand=' + Math.random();
+	//window.location=T_url;
+	$.ajax({
+		url: T_url,
+		type:'GET',
+		//data:post,
+		success: function(info){
+			if (info==200 || info=='200'){
+			$('#one_user_e_'+orderId+'').css('display','none');
+			$('#one_user_'+orderId+'').css('display','');
+			$('#e_a_'+orderId+'}').css('display','');
+			$('#e_b_'+orderId+'').css('display','none');
+			$('#one_user_'+orderId+'_1').text(order_shipping_name);
+			$('#one_user_'+orderId+'_2').text(order_shipping_phone);
+			$('#one_user_'+orderId+'_3').text(order_shipping_mobile);
+			$('#one_user_'+orderId+'_4').text(order_shipping_address);
+			$('#one_user_'+orderId+'_5').text(order_shipping_zip);
+				alert('处理成功');
+				//window.location='?mod=order.check.service&service_check={_GET.service_check}';
+			}else{
+				alert(info);
+				//UnLoading();
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+			//UnLoading();
+		}
+	});
+}
+
+
+
+</script>
+
+<div id="tpl_action" style="display:none">
+	<div>
+		<form method="post" action="">
+			<table width="100%">
+				<tr>
+					<td align="right" width="90">备注:</td>
+					<td><textarea type="text" name="comment" style="width:220px;height:50px;" class="input-text"/></textarea></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script>
+function AttributeEdit(pid,id,oID){
+	productId = pid;
+	orderProductId = id;
+	orderID = oID;
+	$.ajax({
+		url: '?mod=product.ajax.sku&pid='+pid+'&type=get_product&rand=' + Math.random(),
+		processData: true,
+		dataType:'json',
+		success: function(info){
+			if (!info.product||!info.product.id){
+				alert('没有找到指定的商品');
+				return;
+			}
+
+			productId = pid;
+			orderID = oID;
+
+			if (info.have_attribute==1){
+				var html = info.attribute_html;
+				Dialog('选择属性',html,AttributeEditSku,false,function(){AttributeEventNoLimit();});
+			}else{
+				alert('没有待选属性');
+			}
+		},
+		error:function(info){
+			alert("网络传输错误,请重试...");
+			return false;
+		}
+	});
+}
+
+
+
+function AttributeEditSku(){
+	var postData = $('#dialog-attribute-form').serialize();
+	$.ajax({
+		url: '?mod=product.ajax.sku&pid='+productId+'&type=get_sku&rand=' + Math.random(),
+		processData: true,
+		type:"POST",
+		dataType:'json',
+		data:postData,
+		success: function(info){
+			if (!info.product||!info.product.id){
+				alert('没有找到指定的商品');
+				return;
+			}
+
+			if (!info.sku){
+				alert('没有查询到SKU');
+				return;
+			}
+
+			if ($('#sku-'+orderProductId).text()==info.sku){
+				UnDialog();
+				return;
+			}
+
+			//window.location='?mod=order.fastEdit&e_sku='+info.sku+'&e_id='+orderProductId+'&rand=' + Math.random();
+			fastEdit(orderProductId,info.sku,orderID,info.sku_info);
+			//$('#sku-'+orderProductId).html('<font color="red">'+info.sku+'</font>');
+			//$('#sku-input-'+orderProductId).val(info.sku);
+			//$('#attribute-info-'+orderProductId).html('<font color="red">'+info.sku_info.attribute+'</font>');
+
+			UnDialog();
+		},
+		error:function(info){
+			alert("网络传输错误,请重试...");
+			return false;
+		}
+	});
+}
+
+
+function fastEdit(e_id,e_sku,orderID,sku_info){
+	//Loading();
+	$.ajax({
+		url: '?mod=order.fastEdit&e_sku='+e_sku+'&e_id='+e_id+'&rand=' + Math.random(),
+		type:'GET',
+		//data:post,
+		success: function(info){
+			if (info=='200' || info==200){
+			$(".SHK_"+orderID).show();
+			$(".SHM_"+orderID).hide();
+			$("#A_"+orderID+"_"+e_id).html(sku_info.attribute)
+			
+			
+			
+			//SHM_
+				//Loading('处理成功', '正在跳转到列表页面...');
+				//window.location='?mod=order.check.service_1&service_check={_GET.service_check}';
+				//window.location='?mod=order.check.service&service_check={_GET.service_check}';
+			}else{
+				alert(info);
+				UnLoading();
+			}
+		},
+		error:function(info){
+			alert('网络错误,请重试');
+			UnLoading();
+		}
+	});
+}
+
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "begin_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "begin_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "end_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d",     // format of the input field
+	showsTime      :     false,
+	button         :    "end_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+</script>
+<iframe style="display:none" id="a_frame" name="a_frame" marginwidth=0 marginheight=0 width=1 height="1" src="#" frameborder=0 scrolling="no"></iframe>

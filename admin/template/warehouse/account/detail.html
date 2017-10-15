@@ -1,0 +1,71 @@
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">{warehouse_info.name} 库存商品帐 </h3>
+	<p class="right">
+		<button type="button" onclick="$('#excel_form').submit();">导出Excel</button>
+	</p>
+</div>
+
+<form method="post" id="excel_form">
+	<input type="hidden" name="excel" value="1">
+</form>
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		{warehouse_info.name} 库存商品帐
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="100">SKU</th>
+				<th width="100">产品ID</th>
+				<th width="">产品名称</th>
+				<th width="100">库房名称</th>
+				<th width="100">货位</th>
+				<th width="150">时间</th>
+				<th width="60">类型</th>
+				<th width="60">业务</th>
+				<th width="60">操作人</th>
+				<th width="60">数量</th>
+				<th width="60">价格</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS val -->
+			<tr>
+				<td align="center">{val.sku}</td>
+				<td align="center">{val.product_id}</td>
+				<td>
+					<b>名称：</b>{val.sku_info.product.name}
+					<!-- IF val.sku_info.attribute --><b>属性：</b>{val.sku_info.attribute}<!-- ENDIF -->
+				</td>
+				<td align="center">{val.warehouse_name}</td>
+				<td align="center">{val.place_name}</td>
+				<td align="center">{val.add_time}</td>
+				<td align="center"><!-- IF val.type==1 --><font color="green"><b>入库</b></font><!-- ELSE --><font color="red"><b>出库</b></font><!-- ENDIF --></td>
+				<td align="center"><!-- IF val.type==1 --><font color="green">{val.type2_name}</font><!-- ELSE --><font color="red">{val.type2_name}</font><!-- ENDIF --></td>
+				<td align="center">
+					{val.user_name_zh}
+				</td>
+				<td align="center">
+					<!-- IF val.type==1 -->
+					<font color="green"><b>+{val.quantity}</b></font>
+					<!-- ELSE -->
+					<font color="red"><b>-{val.quantity}</b></font>
+					<!-- ENDIF -->
+				</td>
+				<td align="center">
+					&yen; {val.price}
+				</td>
+			</tr>
+			<!-- END list -->
+			<tr>
+				<td align="right" colspan="8"><b>结存：</b></td>
+				<td align="center"><b>{leave}</b></td>
+				<td align="center">&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+

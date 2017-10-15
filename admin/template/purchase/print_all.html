@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<style type="text/css">
+
+body{
+	padding:0px 0px;
+}
+
+*{
+	padding:0px;
+	margin:0px;
+	font-family:tahoma,"Lucida Grande","Lucida Sans",sans,Hei;
+	font-size:12px;
+}
+
+a{
+	color:#0066CC;
+	text-decoration:underline;
+}
+
+a:hover{
+	color:#FF7031;
+	text-decoration:none;
+}
+
+h3{
+	font-size:14px;
+	font-weight:bold;
+	color:#444;
+	margin-bottom:10px;
+}
+
+input {
+	vertical-align:middle;
+	padding:3px;
+}
+
+input.in{
+	padding:2px;
+	width:220px;
+	border:1px solid #ccc;
+	height:20px;
+	padding-top:10px;
+}
+
+select{
+	padding:3px;
+	/*font-size:11px;*/
+}
+
+input.btn {
+	cursor:pointer;
+	height:28px;
+}
+
+.img{
+	border:1px solid #ccc;
+	padding:2px;
+}
+
+ul {list-style-image:none;list-style-position:none;list-style-type:none;}
+
+#tab{
+	width:960px;
+}
+
+#tab td{
+	padding:4px;
+}
+
+#tab th{
+	padding:2px;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+<!-- #0 AS line -->
+
+<!-- #1 AS timer -->
+<!-- #count(purchase_all) AS total -->
+
+<!-- BEGIN purchase_all AS purchase_val -->
+<div style="margin:0px auto;width:800px;height:545px;border:#999999 1px solid;">
+<table border="0" width="750" align="center" style="margin:10px auto 10px;">
+	<tr>
+		<td width="" style="line-height:1.6;">
+采购单号：{purchase_val.id}<br />
+制单日期：{#DateFormat(purchase_val.info.add_time)}<br />
+制单人员：{purchase_val.info.user_name}
+		</td>
+		<td align="center">
+			<h1 style="font-size:25px;">{company_name}采购单</h1>
+		</td>
+		<td width="" align="right" style="line-height:1.6;">
+供应商：{purchase_val.info.supplier_name}<br />
+开户行：{purchase_val.info.supplier_account_bank}<br />
+帐号：{purchase_val.info.supplier_account_number}</td>
+	</tr>
+</table>
+<table width="750"  border="1" align="center" cellpadding="0" cellspacing="0" bgcolor="#333333" style="margin:0 auto 0px;">
+	<thead>
+		<tr>
+			<th width="180" bgcolor="#FFFFFF">
+		<table cellspacing="0" width="180" >
+								<tr>
+									<th width="80">销售渠道</th>
+									<th width="30"><div align="center">数量</div></th>
+									<th width="70"><div align="center">售价</div></th>
+								</tr>
+			</table>
+		</th>
+			<th width="" height="25" bgcolor="#FFFFFF"><nobr>名称<nobr></th>
+			<th width="40" bgcolor="#FFFFFF">数量</th>
+			<th width="70" bgcolor="#FFFFFF">采购单价</th>
+			<th width="70" bgcolor="#FFFFFF">代发运费</th>
+			<th width="70" bgcolor="#FFFFFF">合计/元</th>
+		</tr>
+	</thead>
+		<!-- BEGIN purchase_val.list AS val -->
+		<tr>
+		<td align="center" bgcolor="#FFFFFF">
+
+<!-- IF val.relation_list  -->
+						<table cellspacing="0" width="180" >
+								<!-- BEGIN val.relation_list AS row -->
+								<tr>
+									<td align="center"  width="80" height="22">{row.channel_name}</td>
+									<td align="center" width="30" >{row.totalnum}</td>
+									<td align="center" width="70">{row.price}</td>
+								</tr>
+								<!-- END va.relation_list -->
+						</table>
+					<!-- ENDIF -->
+
+
+</td>
+			<td bgcolor="#FFFFFF" style="padding:5px;line-height:1.6;">{val.product_id} / {val.sku} / {val.sku_info.product.name}
+			<!-- IF val.sku_info.attribute --> / {val.sku_info.attribute}<!-- ENDIF -->
+			<!-- IF val.comment --><br />备注：{val.comment}<!-- ENDIF -->
+			</td>
+			<td align="center" bgcolor="#FFFFFF">
+				{val.quantity}&nbsp;			</td>
+			<td align="center" bgcolor="#FFFFFF">
+				&yen;{val.price}			</td>
+			<td align="center" bgcolor="#FFFFFF">
+				&yen;{val.help_cost}			</td>
+			<td align="center" bgcolor="#FFFFFF">
+				&yen;{val.all_money}			</td>
+		</tr>
+		<!-- END purchase_val.list -->
+		<tr>
+			<td colspan="6" align="right" bgcolor="#FFFFFF" style="padding:5px;"><b>合计(人民币大写)：{#CapsMoney(purchase_val.info.all_money)}</b>　　　　<b>合计：￥{purchase_val.info.all_money}</b></td>
+		</tr>
+		<!-- IF purchase_val.info.comment -->
+		<tr>
+		  <td colspan="6" bgcolor="#FFFFFF" style="padding:5px;" align="left">
+		  备注：{purchase_val.info.comment}
+		  </td>
+		</tr>
+		<!-- ENDIF -->
+		<tr>
+		  <td colspan="6" bgcolor="#FFFFFF" style="padding:5px;" align="LEFT">
+		  采购审核{purchase_val.workflow.sign_pro_mg}{purchase_val.workflow.sign_ope_mj}{purchase_val.workflow.sign_ope_vc}{purchase_val.workflow.pay_lock_user}{purchase_val.workflow.pay_user}
+		  </td>
+		</tr>
+</table>
+<table border="0" width="800" align="center" style="margin:0px auto 0px;">
+	<tr>
+		<td width="" align="left">
+		</td>
+		<td width="" align="right">
+		</td>
+	</tr>
+</table>
+</div>
+<!-- #timer+1 AS timer -->
+<!-- #line+1 AS line -->
+
+
+<!-- IF timer <= total && line==2 -->
+<hr style="page-break-after:always;"/>
+<!-- ENDIF -->
+
+<!-- IF timer <= total && line==1 -->
+<BR /><BR /><BR />
+<!-- ENDIF -->
+
+<!-- IF line == 2 -->
+<!-- #0 AS line -->
+<!-- ENDIF -->
+
+<!-- END purchase -->
+</body>
+</html>

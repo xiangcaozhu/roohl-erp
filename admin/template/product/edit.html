@@ -1,0 +1,844 @@
+
+
+<script type="text/javascript" src="script/jquery-ui-1.7.1.js"></script>
+<script type="text/javascript" src="script/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="script/uploader.js"></script>
+
+<link rel="stylesheet" href="css/htmleditor.css" type="text/css" media="screen" />
+<script language="javascript" type="text/javascript" src="script/htmleditor.js"></script>
+
+<div class="HY-main-columns clearfix">
+	<div class="HY-main-columns-left">
+		<h3>产品信息</h3>
+		<ul class="HY-v-tab">
+			<li ><a href="#0" class="active" onclick="TabSelect(this,'base_tab');"><span>基本信息</span></a></li>
+			<li ><a href="#1" class="" onclick="TabSelect(this,'price_tab');"><span>价格相关</span></a></li>
+			<li ><a href="#7" class="" onclick="TabSelect(this,'category_tab');"><span>CMS分类</span></a></li>
+			<li ><a href="#2" class="" onclick="TabSelect(this,'description_tab');"><span>详细描述</span></a></li>
+			<li ><a href="#3" class="" onclick="TabSelect(this,'attribute_index_tab');"><span>索引属性</span></a></li>
+			<li ><a href="#4" class="" onclick="TabSelect(this,'attribute_buy_tab');"><span>购买属性</span></a></li>
+			<li ><a href="#5" class="" onclick="TabSelect(this,'supplier_tab');"><span>供应信息</span></a></li>
+			<li ><a href="#6" class="" onclick="TabSelect(this,'commend_tab');"><span>推荐和关键字</span></a></li>
+		</ul>
+	</div>
+	<div class="HY-main-columns-right">
+		<div class="main-col-inner">
+			<div class="HY-content-header clearfix-overflow">
+				<h3>编辑产品:{product.name} 所属分类:{category.name}</h3>
+				<div class="right">
+					<button type="button" class="scalable " onclick="$('form').reset();"><span>重置</span></button>
+					<button type="button" class="scalable save" onclick="if (OnSubmit()){$('#main_form').attr('action', '?mod=product.preview');$('#main_form').attr('target', '_blank');$('#main_form').submit();}"><span>预览</span></button>
+					<button type="button" class="scalable save" onclick="if (OnSubmit()){$('#main_form').attr('action', '');$('#main_form').attr('target', '');$('#main_form').submit();}"><span>保存数据</span></button>
+				</div>
+			</div>
+
+			<form method="post" enctype="multipart/form-data" id="main_form">
+			<div class="HY-form-table" id="base_tab">
+				<div class="HY-form-table-header">
+					基本信息
+				</div>
+				<div class="HY-form-table-main">
+					<table cellspacing="0" class="HY-form-table-table">
+						<tbody>
+							<tr>
+								<td class="label"><label>商品名称<span class="required">*</span></label></td>
+								<td class="value"><input name="name" id="name" value="{product.name}" class="input-text" type="text"/>
+								<input name="referer" value="{_SERVER.HTTP_REFERER}" type="hidden"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>重量<span class="required">*</span></label></td>
+								<td class="value"><input name="weight" id="weight" value="{product.weight}" class="input-text" type="text" style="width:150px;"/>(千克)</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>库房编号</label></td>
+								<td class="value"><input name="warehouse" id="warehouse" value="{description.warehouse}" class="input-text" type="text" style="width:150px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>库存数量<span class="required">*</span></label></td>
+								<td class="value"><input name="warehouse_num" id="warehouse_num" value="{product.warehouse_num}" class="input-text" type="text" style="width:150px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>品牌</label></td>
+								<td class="value">
+									<select name="brand_id" style="width:200px;">
+										<option value="0">------无------</option>
+										<!-- BEGIN brand_list AS brand -->
+										<option value="{brand.id}" <!-- IF product.brand_id==brand.id -->selected<!-- ENDIF -->>{brand.name}</option>
+										<!-- END brand_list -->
+									</select>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>列表图片</label></td>
+								<td class="value clearfix">
+									<div id="swfuploader_list_review">
+										<img src="{product.image_list_url}" class="HY-img">
+										<input type="hidden" name="image_list_file" id="image_list_file">
+									</div>
+									<div style="float:left;height:20px;">
+										<span id="swfuploader_list"></span>
+									</div>
+									<div id="swfuploader_list_bar" style="height:20px;line-height:20px;float:left;display:none;">
+										<span id="swfuploader_list_file"></span>&nbsp;&nbsp;&nbsp;
+										<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+										<span style="font-size:11px;"><span id="swfuploader_list_bar_per">0</span>%</span>
+									</div>
+								</td>
+								<td class=""></td>
+							</tr>
+							<tr>
+								<td class="label"><label>介绍图片</label></td>
+								<td class="value clearfix">
+									<div id="image_detail_list" style="margin-top:5px;" class="clearfix">
+										<!-- BEGIN detail_picture_list AS picture -->
+										<div class="picture" pid="{picture.id}"><img src="{picture.thumb3_url}" align="absmiddle"><span class="dellink"></span></div>
+										<!-- END detail_picture_list -->
+									</div>
+
+									<div class="clear"></div>
+									
+									<div style="float:left;height:20px;">
+										<span id="swfuploader_detail"></span>
+									</div>
+									<div id="swfuploader_detail_bar" style="height:20px;line-height:20px;float:left;display:none;">
+										<span id="swfuploader_detail_file"></span>&nbsp;&nbsp;&nbsp;
+										<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+										<span style="font-size:11px;"><span id="swfuploader_detail_bar_per">0</span>%</span>
+									</div>
+									<div class="clear"></div>
+
+									<input type="hidden" name="image_detail_order" id="image_detail_order" value="">
+								</td>
+								<td class="note">如果不上传,将使用列表图片作为第一张介绍图</td>
+							</tr>
+							<tr>
+								<td class="label"><label>选项<span class="required"></span></label></td>
+								<td class="value">
+									<label><input type="checkbox" name="is_on_sale" value="1" <!-- IF product.is_on_sale -->checked<!-- ENDIF -->>上架</label>
+									<label><input type="checkbox" name="is_free_shipping" value="1" <!-- IF product.is_free_shipping -->checked<!-- ENDIF -->>免费送货</label>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>简单描述<span class="required">*</span></label></td>
+								<td class="value"><textarea name="summary" id="summary" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{product.summary}</textarea></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="price_tab" style="display:none">
+				<div class="HY-form-table-header">
+					价格相关
+				</div>
+				<div class="HY-form-table-main">
+					<table cellspacing="0" class="HY-form-table-table">
+						<tbody>
+							<tr>
+								<td class="label"><label>商城价格<span class="required">*</span></label></td>
+								<td class="value"><input name="price" id="price" value="{product.price}" class="input-text" type="text" style="width:100px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>市场价格</label></td>
+								<td class="value"><input name="market_price" id="market_price" value="{product.market_price}" class="input-text" type="text" style="width:100px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>VIP价格<span class="required"></span></label></td>
+								<td class="value"><input name="vip_price" id="vip_price" value="{product.vip_price}" class="input-text" type="text" style="width:100px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="category_tab" style="display:none">
+				<div class="HY-form-table-header">
+					关联分类
+				</div>
+				<div class="HY-form-table-main">
+					<div style="width:230px;">
+						<div style="margin-bottom:2px;margin-right:10px;" class="clearfix2">
+							<div class="left">
+								<input name="tree_search" id="tree_search" value="" class="input-text" type="text" style="width:100px;"/>
+							</div>
+							<div class="right">
+								<button type="button" class="" onclick="ExpandAll();"><span>展开</span></button>
+								<button type="button" class="" onclick="CollapseAll();"><span>收起</span></button>
+							</div>
+						</div>
+						<div id="tree-list" style="margin-right:10px;"></div>
+						<input type="hidden" name="cms_category" value="{cms_category_id}" />
+					</div>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="description_tab" style="display:none">
+				<div class="HY-form-table-header">
+					详细描述
+				</div>
+				<div class="HY-form-table-main">
+					<div>
+						<textarea name="description" id="description" style="width:630px;height:280px;border:1px solid #ccc;overflow-x:auto;overflow-y:auto;">{description.description}</textarea>
+					</div>
+					<div>
+						<div style="float:left;height:20px;">
+							描述图片:&nbsp;
+						</div>
+						<div style="float:left;height:20px;">
+							<span id="swfuploader_desc_btn"></span>
+						</div>
+						<div id="swfuploader_desc_bar" style="height:20px;line-height:20px;float:left;display:none;">
+							<span id="swfuploader_detail_file"></span>&nbsp;&nbsp;&nbsp;
+							<img src="image/rule-ajax-loader.gif" align="absmiddle">上传中...
+							<span style="font-size:11px;"><span id="swfuploader_desc_bar_per">0</span>%</span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div id="picture_list" style="margin-top:5px;" class="clearfix">
+						<!-- BEGIN picture_list AS picture -->
+						<div class="picture2" pid="{picture.id}"><img src="{picture.thumb3_url}" onclick="InsertPicture('{picture.full_url}', '{picture.thumb3_url}');" align="absmiddle"><span class="dellink2"></span></div>
+						<!-- END picture_list -->
+					</div>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="attribute_index_tab" style="display:none">
+				<div class="HY-form-table-header">
+					索引属性
+				</div>
+				<div class="HY-form-table-main ">
+					<!-- BEGIN attribute_list AS attribute -->
+					<div>
+						<fieldset style="width:510px;padding:10px;">
+							<legend>{attribute.name}</legend>
+							<!-- BEGIN attribute.setting AS value -->
+							<label style="float:left;width:120px;"><input type="<!-- IF attribute.type==1 -->radio<!-- ELSEIF attribute.type==2 -->checkbox<!-- ENDIF -->" <!-- IF value.selected -->checked<!-- ENDIF --> name="attribute[{attribute.id}][]" value="{value.id}">{value.name}</label>
+							<!-- END attribute.setting -->
+
+							<!-- IF attribute.type==1 -->
+							<label style="float:left;width:120px;"><input type="radio" name="attribute[{attribute.id}][]" value="0"><font color="#FF3300">无此属性</font></label>
+							<!-- ENDIF -->
+						</fieldset>
+					</div>
+					<!-- END attribute_list -->
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="attribute_buy_tab" style="display:none">
+				<div class="HY-form-table-header clearfix2">
+					<div class="left">购买属性</div>
+					<div class="right">
+					</div>
+				</div>
+				<div class="HY-form-table-main ">
+					<div>
+						<label><input type="radio" name="buy_attribute_type" value="0" onclick="if(this.checked){$('#user_define_buy_attr').hide(100);}" <!-- IF product.buy_attribute_template_id!=-1 -->checked<!-- ENDIF -->>使用模板</label>
+					</div>
+					<div>
+						<select name="buy_attribute_template_id" style="margin-right:10px;width:300px;">
+							<option value="0">------- 不使用购买属性 -------</option>
+							<!-- BEGIN buy_attribute_template_list AS info -->
+							<option value="{info.id}" <!-- IF product.buy_attribute_template_id==info.id -->selected<!-- ENDIF -->>{info.name}</option>
+							<!-- END buy_attribute_template_list -->
+						</select>
+						<button type="button" class="append" onclick="var id = $('select[name=buy_attribute_template_id]').val();if (id>0){PreviewAttributeTemplate(id,1);}else{alert('请选择一个模板');}"><span>预览所选模板</span></button>
+					</div>
+
+					<div class="block20"></div>
+
+					<div>
+						<label><input type="radio" name="buy_attribute_type" value="-1" onclick="if(this.checked){$('#user_define_buy_attr').show(100);}" <!-- IF product.buy_attribute_template_id==-1 -->checked<!-- ENDIF -->>自定义属性</label>
+					</div>
+					<div style="<!-- IF product.buy_attribute_template_id!=-1 -->display:none<!-- ENDIF -->;padding-top:10px;" id="user_define_buy_attr">
+						<button type="button" class="append" onclick="AddProductAttribute();"><span>添加属性</span></button>
+						<button type="button" class="preview" onclick="PreviewAttribute($('#main_form').serialize())"><span>预览</span></button>
+						<div class="block10"></div>
+						<div id="pattr_box" style="margin-bottom:20px;">{attribute_form}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="supplier_tab" style="display:none">
+				<div class="HY-form-table-header">
+					供应信息
+				</div>
+				<div class="HY-form-table-main ">
+					<table cellspacing="0" class="form-list">
+						<tbody>
+							<tr>
+								<td class="label"><label>进货价格<span class="required"></span></label></td>
+								<td class="value"><input name="supplier_price" id="supplier_price" value="{description.supplier_price}" class="input-text" type="text" style="width:100px;"/></td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>供货方式<span class="required"></span></label></td>
+								<td class="value">
+									<select name="supplier_supply_type">
+										<option value="1" <!-- IF description.supplier_supply_type==1 -->selected<!-- ENDIF -->>现货</option>
+										<option value="2" <!-- IF description.supplier_supply_type==2 -->selected<!-- ENDIF -->>铺货</option>
+									</select>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>配送方式<span class="required"></span></label></td>
+								<td class="value">
+									<select name="supplier_carry_type">
+										<option value="1" <!-- IF description.supplier_carry_type==1 -->selected<!-- ENDIF -->>送货</option>
+										<option value="2" <!-- IF description.supplier_carry_type==2 -->selected<!-- ENDIF -->>自提</option>
+									</select>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>结算方式<span class="required"></span></label></td>
+								<td class="value">
+									<select name="supplier_balance_type">
+										<option value="1" <!-- IF description.supplier_balance_type==1 -->selected<!-- ENDIF -->>现结</option>
+										<option value="2" <!-- IF description.supplier_balance_type==2 -->selected<!-- ENDIF -->>月结</option>
+										<option value="3" <!-- IF description.supplier_balance_type==3 -->selected<!-- ENDIF -->>批结</option>
+									</select>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+							<tr>
+								<td class="label"><label>供应商<span class="required"></span></label></td>
+								<td class="value">
+									<select name="supplier_id" style="width:280px;">
+										<option value="0">------</option>
+										<!-- BEGIN supplier_list AS supplier -->
+										<option value="{supplier.id}" <!-- IF product.supplier_id==supplier.id -->selected<!-- ENDIF -->>{supplier.name}</option>
+										<!-- END supplier_list -->
+									</select>
+								</td>
+								<td><small>&nbsp;</small></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="HY-form-table" id="commend_tab" style="display:none">
+				<div class="HY-form-table-header">
+					推荐和关键字
+				</div>
+				<div class="HY-form-table-main ">
+					<table cellspacing="0" class="form-list">
+						<tbody>
+							<tr>
+								<td class="label"><label>推荐商品<span class="required">*</span></label></td>
+								<td class="value"><textarea name="commend_product" id="commend_product" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{description.commend_product}</textarea></td>
+								<td class="note">
+									一行一个产品,格式如下"123|奥迪"<br>
+									前一个参数是产品ID,后面是重命名的标题(可以省略)
+								</td>
+							</tr>
+							<tr>
+								<td class="label"><label>商品关键字<span class="required">*</span></label></td>
+								<td class="value"><textarea name="key_word" id="key_word" class="textarea" rows="2" cols="10" style="width:400px;height:80px;">{description.key_word}</textarea></td>
+								<td class=""></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+var swfuList;
+var swfuListConfig = clone(swfConfig);
+
+swfuListConfig.upload_url = "?mod=tool.upload";
+swfuListConfig.file_post_name = "file";
+swfuListConfig.file_queued_handler = function(file){
+	$('#swfuploader_list_file').html(file.name);
+};
+swfuListConfig.file_dialog_complete_handler = function(numFilesSelected, numFilesQueued){
+	if (numFilesQueued>0){
+		this.startUpload();
+		$('#swfuploader_list_bar').show();
+	}
+};
+swfuListConfig.upload_progress_handler = function(file, bytesLoaded, bytesTotal){
+	var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+	$('#swfuploader_list_bar_per').html(percent);
+};
+swfuListConfig.upload_success_handler =  function(file, serverData){
+	if (serverData!="0"){
+		this.addPostParam('old', serverData);
+		$('#swfuploader_list_review').show();
+		$('#image_list_file').val(serverData);
+		$('#swfuploader_list_review img').attr('src', '?mod=tool.image&thumb=auto&width=64&height=64&file='+serverData );
+
+	}else{
+		$('#swfuploader_list_bar').hide();
+		$('#swfuploader_list_bar_per').html(0);
+		$('#swfuploader_list_file').html('');
+		alert('上传失败');
+	}
+};
+
+swfuListConfig.upload_complete_handler = function(){
+	$('#swfuploader_list_bar').hide();
+	$('#swfuploader_list_bar_per').html(0);
+	$('#swfuploader_list_file').html('');
+};
+
+swfuListConfig.button_placeholder_id = 'swfuploader_list';
+
+
+
+/********  ********/
+
+
+
+var swfuDetail;
+var swfuDetailConfig = clone(swfConfig);
+
+swfuDetailConfig.upload_url = "?mod=product.upload.image&type=2&pid={product.id}";
+swfuDetailConfig.file_post_name = "picture";
+swfuDetailConfig.file_queued_handler = function(file){
+	$('#swfuploader_detail_file').html(file.name);
+};
+swfuDetailConfig.file_dialog_complete_handler = function(numFilesSelected, numFilesQueued){
+	if (numFilesQueued>0){
+		this.startUpload();
+		$('#swfuploader_detail_bar').show();
+	}
+};
+swfuDetailConfig.upload_progress_handler = function(file, bytesLoaded, bytesTotal){
+	var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+	$('#swfuploader_detail_bar_per').html(percent);
+};
+swfuDetailConfig.upload_success_handler =  function(file, serverData){
+	if (serverData!="0"){
+		eval("var serverInfo = "+serverData+";");
+		if (serverInfo.error==null){
+			var info = serverInfo.data;
+			$('#image_detail_list').append('<div class="picture" pid="'+info.id+'"><img src="'+info.thumb3_url+'" align="absmiddle"><span class="dellink"></span><input type="hidden" name="picture_id[]" value="'+info.id+'"></div>');
+			DragImageDetail();
+		}
+	}else{
+		$('#swfuploader_detail_bar').hide();
+		$('#swfuploader_detail_bar_per').html(0);
+		$('#swfuploader_detail_file').html('');
+		alert('上传失败');
+	}
+};
+
+swfuDetailConfig.upload_complete_handler = function(){
+	$('#swfuploader_detail_bar').hide();
+	$('#swfuploader_detail_bar_per').html(0);
+	$('#swfuploader_detail_file').html('');
+};
+
+swfuDetailConfig.button_placeholder_id = 'swfuploader_detail';
+
+
+
+/********  ********/
+
+
+
+var swfuDesc;
+var swfuDescConfig = clone(swfConfig);
+
+swfuDescConfig.upload_url = "?mod=product.upload.image&type=1&pid={product.id}";
+swfuDescConfig.file_post_name = "picture";
+swfuDescConfig.file_queued_handler = function(file){
+	$('#swfuploader_desc_file').html(file.name);
+};
+swfuDescConfig.file_dialog_complete_handler = function(numFilesSelected, numFilesQueued){
+	if (numFilesQueued>0){
+		this.startUpload();
+		$('#swfuploader_desc_bar').show();
+	}
+};
+swfuDescConfig.upload_progress_handler = function(file, bytesLoaded, bytesTotal){
+	var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+	$('#swfuploader_desc_bar_per').html(percent);
+};
+swfuDescConfig.upload_success_handler =  function(file, serverData){
+	if (serverData!="0"){
+		eval("var serverInfo = "+serverData+";");
+		if (serverInfo.error==null){
+			var info = serverInfo.data;
+			$('#picture_list').append('<div class="picture2" pid="'+info.id+'"><img src="'+info.thumb3_url+'" onclick="InsertPicture(\''+info.full_url+'\', \''+info.thumb3_url+'\');" align="absmiddle"><input type="hidden" name="picture_id[]" value="'+info.id+'"><span class="dellink2"></span></div>');
+			DescDelLink();
+		}
+	}else{
+		$('#swfuploader_desc_bar').hide();
+		$('#swfuploader_desc_bar_per').html(0);
+		$('#swfuploader_desc_file').html('');
+		alert('上传失败');
+	}
+};
+
+swfuDescConfig.upload_complete_handler = function(){
+	$('#swfuploader_desc_bar').hide();
+	$('#swfuploader_desc_bar_per').html(0);
+	$('#swfuploader_desc_file').html('');
+};
+
+swfuDescConfig.button_placeholder_id = 'swfuploader_desc_btn';
+
+window.onload = function () {
+	swfuList = new SWFUpload(swfuListConfig);
+	swfuDetail = new SWFUpload(swfuDetailConfig);
+	swfuDesc = new SWFUpload(swfuDescConfig);
+};
+
+
+</script>
+
+{attribute_template}
+
+
+<script language="JavaScript">
+
+var globalAttributeId = -10000;
+var globalAttributeValueId = -10000;
+
+</script>
+
+<script language="javascript" type="text/javascript" src="script/attribute.js"></script>
+
+
+
+<script language="JavaScript">
+
+function NextTab(){
+	if($('li[class="active"]').next('li').find('a').length){
+		TabSelect($('li[class="active"]').next('li').find('a')[0], $('li[class="active"]').next('li').find('a').attr('att'));
+	}
+}
+
+function TabSelect(obj,id){
+	$('.HY-form-table').hide();
+	$('#'+id).show();
+	$('li').find('a').removeClass('active');
+	$(obj).addClass('active');
+}
+
+function InsertPicture(url,url2){
+	textEditor.SaveFocus();
+	textEditor.AddDialog(
+	'插入图片',
+	'<div style="padding:0px 10px;" class="clearfix"><div class="picture2"><img src="{0}"></div>宽:<input type="text" class="in" id="_w" style="width:30px;" value=""/> 高:<input type="text" class="in" id="_h" style="width:30px;" value="" /><br />(可以只填写宽度,浏览器会自动调整高度)<br/ ><br/ >对齐:<select id="_al"><option value="">默认</option><option value="left">左对齐</option><option value="right">右对齐</option><option value="absmiddle">绝对区中</option></select><div class="clear"></div></div>'.format(url2),
+	function(){
+		var h = $('#_h').val() ? ' height="{0}"'.format($('#_h').val()) : "";
+		var w = $('#_w').val() ? ' width="{0}"'.format($('#_w').val()) : "";
+		var al = $('#_al').val() ? ' align="{0}"'.format($('#_al').val()) : "";
+
+		textEditor.Insert('<br /><img src="{0}"{1}{2}{3} /><br />'.format(url,h,w,al), textEditor.__sel);
+		textEditor.RemoveDialog();
+	});
+}
+
+function DragImageDetail(){
+	$('#image_detail_list').sortable();
+
+	$('.dellink').click(function(){
+		if (!window.confirm('确定删除图片吗?')){
+			return false;
+		}
+
+		var obj = this;
+		var id = $(obj).parent().attr('pid');
+
+		$.ajax({
+			url: '?mod=product.upload.del&pid={product.id}&id='+id +'&rand=' + Math.random(),
+			processData: true,
+			dataType:'json',
+			success: function(info){
+				if (info.code == '200'){
+					$(obj).parent().remove();
+				}
+			},
+			error:function(){
+				alert('错误', "网络传输错误,请重试...");
+				return false;
+			}
+		});
+	});
+}
+
+function DescDelLink(){
+	$('.dellink2').click(function(){
+		if (!window.confirm('确定删除图片吗?')){
+			return false;
+		}
+
+		$(this).parent().remove();
+
+		var obj = this;
+		var id = $(obj).parent().attr('pid');
+
+		$.ajax({
+			url: '?mod=product.upload.del&pid={product.id}&id='+id +'&rand=' + Math.random(),
+			processData: true,
+			dataType:'json',
+			success: function(info){
+				if (info.code == '200'){
+					
+				}
+			},
+			error:function(){
+				alert('错误', "网络传输错误,请重试...");
+				return false;
+			}
+		});
+	});
+}
+
+function OnSubmit(){
+
+	$('#picture').attr('disabled', true);
+	
+	var list = [];
+
+	$('#image_detail_list div').each(function(){
+		list[list.length] = $(this).attr('pid');
+	});
+
+	$('#image_detail_order').val(list.join(','));
+
+	if(!$('#name').val()){
+		alert('请填写商品名称');
+		$('#name').focus();
+		return false;
+	}
+
+	if(!$('#price').val()||$('#price').val()<0||isNaN($('#price').val())){
+		alert('请填写商品价格');
+		$('#price').focus();
+		return false;
+	}
+
+	if(!$('#weight').val()||$('#weight').val()<0||isNaN($('#weight').val())){
+		alert('请填写商品重量');
+		$('#name').focus();
+		return false;
+	}
+
+	if(!$('#summary').val()){
+		alert('请填写简单描述');
+		$('#summary').focus();
+		return false;
+	}
+
+	return true;
+}
+
+
+var textEditor;
+
+$(document).ready(function(){
+	textEditor = new HtmlEditor('description');
+	textEditor.Init();
+
+	if (window.location.hash!=''){
+		$('a[href='+window.location.hash+']').trigger('click');
+	}
+
+	DragImageDetail();
+	DescDelLink();
+});
+
+</script>
+<style>
+.picture{
+	cursor:move;
+	width:52px;height:52px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+	position:relative;
+}
+
+.picture2{
+	width:100px;height:100px;border:1px solid #ccc;float:left;text-align:center;
+	margin-right:4px;
+	margin-bottom:4px;
+	padding:5px;
+	position:relative;
+}
+
+.picture2 img{
+	cursor:pointer;
+}
+
+.dellink{
+	cursor:pointer;
+	position:absolute;
+	display:block;
+	right:1px;
+	bottom:1px;
+	width:16px;
+	height:16px;
+	border:0px solid #ccc;
+	background:url("image/delete.png");
+}
+
+.dellink2{
+	cursor:pointer;
+	position:absolute;
+	display:block;
+	right:1px;
+	bottom:1px;
+	width:16px;
+	height:16px;
+	border:0px solid #ccc;
+	background:url("image/delete.png");
+}
+
+</style>
+
+
+<link rel="stylesheet" type="text/css" href="script/ext/css/tree.css" />
+<link rel="stylesheet" type="text/css" href="script/ext/css/core.css" />
+
+<style>
+.x-tree-node,
+.x-menu-item
+{font-size:12px;}
+
+
+</style>
+
+<script type="text/javascript" src="script/ext/ext-base.js"></script>
+<script type="text/javascript" src="script/ext/ext-all.js"></script>
+
+<script language="JavaScript">
+
+Ext.BLANK_IMAGE_URL = 'script/ext/s.gif';
+
+var tree;
+
+Ext.onReady(function(){
+	tree = new Ext.tree.TreePanel({
+		el:'tree-list',
+		height: 'auto',
+		useArrows:true,
+		autoScroll:true,
+		animate:true,
+		enableDD:true,
+		containerScroll: true,
+		rootVisible: false,
+		frame: false,
+		bodyStyle: 'border:1px solid #ccc;',
+		root: new Ext.tree.AsyncTreeNode(),
+		loader: new Ext.tree.TreeLoader({
+			dataUrl: '?mod=cms.category.list.json&checkbox=1&checked={checked_list}',
+			preloadChildren: true,
+			clearOnLoad: false
+		})
+	});
+
+	tree.getLoader().on('load',function(){
+		<!-- BEGIN cms_category_list AS path -->
+			tree.expandPath('/0/{path}'.replace(/,/g, '/'));
+		<!-- END cms_category_list -->
+	});
+
+	tree.getRootNode().attributes.id = 0;
+	tree.getRootNode().attributes.name = '根分类';
+
+	tree.on('checkchange',function(node, checked){
+		var id = node.attributes.id;
+
+		if ($('input[name=cms_category]').val())
+			var checkedList = $('input[name=cms_category]').val().split(',');
+		else
+			var checkedList = [];
+
+		if(checked){
+			if($.inArray(id,checkedList)==-1){
+				checkedList.push(id);
+			}
+		}else{
+			checkedList = $.map(checkedList,function(a){return a!=id?a:null});
+		}
+
+		$('input[name=cms_category]').val(checkedList.join(','));
+	});
+
+	tree.render();
+
+	var filter = new Ext.tree.TreeFilter(tree, 
+		{
+			clearBlank: true,
+			autoClear: true
+		}
+	);
+
+	var input = Ext.get("tree_search");
+	input.on('keydown', filterTree, input, {buffer:350});
+
+	var hiddenPkgs  = [];
+	var markCount	= [];
+
+	// filter the tree for hits
+	function filterTree(e){
+		var text = e.target.value;
+		Ext.each(hiddenPkgs, function(n){
+			n.ui.show();
+		});
+		
+		markCount  = [];	
+		hiddenPkgs = [];
+		
+		if( text.trim().length > 0 ){
+			tree.expandAll();
+
+			var re = new RegExp( Ext.escapeRe(text), 'i');
+			tree.root.cascade( function( n ){
+				if( re.test(n.text) )
+					markToRoot( n, tree.root );
+			});
+
+			// hide empty packages that weren't filtered		
+			tree.root.cascade(function(n){
+				if( ( !markCount[n.id] || markCount[n.id] == 0 ) && n != tree.root ){
+					n.ui.hide();
+					hiddenPkgs.push(n);
+				}
+			});
+		}
+	}
+
+	function markToRoot( n, root ){
+		
+		if( markCount[n.id] )
+			return;
+		markCount[n.id] = 1;
+
+		if( n.parentNode != null )
+			markToRoot(n.parentNode, root);
+	}
+});
+
+function ExpandAll(){
+	tree.getRootNode().expand(true);
+}
+
+function CollapseAll(){
+	tree.getRootNode().collapseChildNodes(true);
+}
+
+</script>

@@ -1,0 +1,39 @@
+<div class="HY-content-header clearfix">
+	<h3 class="left">分类块配置列表 </h3>
+	<p class="right">
+		<button  id="" type="button" class="scalable back" onclick="window.location='?mod=cms.category.block.config.add';" style=""><span>添加块配置</span></button>
+	</p>
+</div>
+
+<div class="HY-grid">
+	<table cellspacing="0" class="data" id="grid_table">
+		<thead>
+			<tr class="header">
+				<th width="40">ID</th>
+				<th width="120">名称</th>
+				<th width="120">英文名</th>
+				<th width="150">块模型</th>
+				<th width="150" align="center">添加时间</th>
+				<th width="150" align="center">更新时间</th>
+				<th width="90" align="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN list AS info -->
+			<tr>
+				<td><small>{info.id}</small></td>
+				<td>{info.name}</td>
+				<td>{info.en_name}</td>
+				<td>{info.pattern.name}</td>
+				<td align="center"><small>{info.add_time}</small></td>
+				<td align="center"><small>{info.update_time}</small></td>
+				<td align="center">
+					<a href="?mod=cms.category.block.config.edit&id={info.id}">编辑</a>
+					<a href="?mod=cms.category.block.config.del&id={info.id}" onclick="return confirm('确定删除吗?');">删除</a>
+				</td>
+			</tr>
+			<!-- END list -->
+		</tbody>
+	</table>
+</div>
+

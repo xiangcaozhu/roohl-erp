@@ -1,0 +1,112 @@
+*{ font-family:"宋体"}
+#loading-mask {
+    color:#d85909;
+    font-size:1.1em;
+    font-weight:bold;
+    text-align:center;
+    opacity:0.80;
+	filter:alpha(opacity=80);
+    z-index:500;
+	margin:0 auto;
+}
+
+#loading-mask .loader {
+    width:120px;
+    margin-left:-60px;
+    padding:15px 60px;
+    background:#fff4e9;
+    border:2px solid #f1af73;
+    color:#d85909;
+    font-weight:bold;
+    text-align:center;
+    z-index:1000;
+	margin:100px auto 100px;;
+}
+
+/* Form Elements */
+input.input-text,textarea { border-width:1px; border-style:solid; border-color:#aaa #c8c8c8 #c8c8c8 #aaa; background:#fff;font-size:12px; }
+select { min-height:17px; /* to set the height for empty selects */ }
+select { background:#fff; font:12px arial, helvetica, sans-serif; }
+input.input-text,textarea       { padding:2px; }
+select optgroup                 { font-style:normal; }
+select optgroup option          { padding-left:10px; }
+select optgroup option.even     { background:#f6f6f6; } /* Zebra even-row */
+
+
+
+button{ border-width:1px; border-style:solid; border-color:#ed6502 #a04300 #a04300 #ed6502; padding:0 7px 1px 7px; background:#ffac47 url(../image/btn_bg.gif) repeat-x 0 100%; color:#fff; font:12px arial, helvetica, sans-serif; cursor:pointer; text-align:center !important; white-space:nowrap; 
+width:auto;  overflow:visible;height:22px;line-height:22px;
+}
+
+button:hover{ background:#f77c16 url(../image/btn_over_bg.gif) repeat-x 0 0; }
+button:active{ background:#f77c16 url(../image/btn_on_bg.gif) repeat-x 0 0; }
+button span{background-repeat:no-repeat; background-position:0 2px; line-height:18px;}
+button.delete,
+button.save,
+button.add{ padding-left:6px; }
+
+button.cancel span,
+button.delete span,
+button.save span,
+button.add span,
+button.append span,
+button.preview span,
+button.back span 
+{ padding-left:16px; }
+
+button.back,
+button.preview,
+button.append 
+{ border-color:#ccc #aaa #aaa #ccc; background-color:#fff; background-image:url(../image/btn_back_bg.gif); color:#555; }
+
+button.back span { background-image:url(../image/icon_btn_back.gif); }
+
+button.cancel,
+button.delete { border-color:#d24403 #a92000 #a92000 #d24403; background-image:url(../image/cancel_btn_bg.gif); background-color:#fcaf81; color:#fff; }
+button.cancel:hover,
+button.delete:hover { background-image:url(../image/cancel_btn_over_bg.gif); }
+button.cancel:active,
+button.delete:active { background-image:url(../image/cancel_btn_active_bg.gif); background-color:#e0612f; }
+button.cancel span,
+button.delete span { background-image:url(../image/cancel_btn_icon.gif); }
+
+button.add span{ background-image:url(../image/add_btn_icon.gif); }
+button.append span{ background-image:url(../image/icon/add.png);background-position:0 -1px;padding-left:20px; }
+button.preview span{ background-image:url(../image/icon/application_view_icons.png); }
+
+button.save span{ background-image:url(../image/save_btn_icon.gif); }
+
+button.disabled,
+button.disabled:hover,
+button.disabled:active { border-color:#777 #505050 #505050 #777; background:#919191 url(../image/btn_bg-disabled.gif) 0 0 repeat-x; color:#fff; cursor:default; opacity:.8;filter:alpha(opacity=80); }
+button.add.disabled span { background-image:url(../image/add_btn_icon-disabled.gif);}
+
+button.icon-btn { width:32px!important; width:31px; }
+button.icon-btn span { text-indent:-999em; display:block; width:16px; padding:0; overflow:hidden; }
+
+
+
+/* LAYOUT
+*******************************************************************************/
+
+.header { background:#666e73; text-align:right; }
+.footer { clear:both; background:#666e73; padding:5px 10px; font-size:12px; text-align:center;color:#FFFFFF;border:1px solid #FFFFFF; }
+
+.logo                                   { float:left; margin:5px 20px 5px 27px; height:43px; }
+.header-top                             { border-bottom:1px solid #5F767F; }
+
+/* Header right */
+.header-right                           { padding:10px 25px 0 15px; font-size:.95em; color:#fff; }
+.header-right a, .header-right a:hover  { color:#fcce77; }
+.header-right .separator                { color:#999; }
+.header-right fieldset                  { display:inline; padding-left:10px; }
+.header-right fieldset input.input-text { width:18em; }
+.header-right .super {
+    float:right;
+    line-height:1.8em;
+    margin-bottom:14px;
+    margin-left:1.3em;
+}
+/* Footer */
+.footer .bug-report                     { float:left; width:35%; text-align:left; }
+.footer .legality                       { float:right; width:35%; min-height:19px; padding-left:22px; text-align:right; }

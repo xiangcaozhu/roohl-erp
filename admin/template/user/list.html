@@ -1,0 +1,67 @@
+
+<div class="HY-content-header clearfix">
+	<h3 class="head-tax-rule">用户列表</h3>
+</div>
+
+
+<div class="HY-grid-title">
+	<div class="HY-grid-title-inner">
+		分页:{page_bar} 每页20条记录 总共{total}条记录 {page}/{page_num}
+	</div>
+</div>
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+				<th width="40">ID</th>
+				<th >用户名</th>
+				<th width="280">级别</th>
+				<th width="280" align="">Email</th>
+				<th width="80" align="">积分</th>
+				<th width="130" align="center">最后登录时间</th>
+				<th width="130" align="center">最后登录IP</th>
+				<th width="160" align="center">操作</th>
+			</tr>
+			<tr class="filter">
+				<form method="get">
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>
+					<select name="user_type">
+						<option value="0">全部</option>
+						<option <!-- IF _GET.user_type==1 -->selected<!-- ENDIF --> value="1">普通用户</option>
+						<option <!-- IF _GET.user_type==2 -->selected<!-- ENDIF --> value="2">VIP用户</option>
+					</select>
+				</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th style="text-align:right;">
+					<input type="hidden" name="mod" value="{_GET.mod}">
+					<button type="submit" onclick="$(this).parents('form').find('input[name=csv]').remove();">过滤Data</button> 
+					<button type="submit" onclick="$(this).parents('form').append('<input type=\'hidden\' value=\'1\' name=\'csv\'>').submit();">导出CSV</button>
+				</th>
+				</form>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN user_list AS user -->
+			<tr>
+				<td>{user.user_id}</td>
+				<td>{user.user_name}&nbsp;</td>
+				<td><!-- IF user.user_is_vip --><small style="color:red;font-size:10px;">VIP</small><!-- ENDIF -->&nbsp;</td>
+				<td>{user.user_email}</td>
+				<td>{user.user_point}</td>
+				<td align="center">{user.user_login_time}</td>
+				<td align="center">{user.user_login_ip}</td>
+				<td align="center">
+					<a href="?mod=user.edit&id={user.user_id}">编辑</a>
+					<a href="?mod=order.list&user_id={user.user_id}">查看订单</a>
+					<a href="?mod=user.point&user_id={user.user_id}">查看积分</a>
+				</td>
+			</tr>
+			<!-- END user_list -->
+		</tbody>
+	</table>
+</div>

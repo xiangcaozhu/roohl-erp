@@ -1,0 +1,40 @@
+<div class="HY-content-header clearfix">
+	<h3 >CMS站点列表</h3>
+	<div class="right">
+		<button type="button" class="scalable back" onclick="window.location='?mod=cms.site.add';" style=""><span>添加站点</span></button>
+	</div>
+</div>
+
+<div class="HY-grid">
+	<table cellspacing="0">
+		<thead>
+			<tr class="header">
+					<th width="40">ID</th>
+					<th width="150"><nobr>名称<nobr></th>
+					<th width="*" align="center">域名</th>
+					<th width="150" align="center">根URL</th>
+					<th width="150" align="center">发布路径</th>
+					<th width="150" align="center">添加时间</th>
+					<th width="150" align="center">更新时间</th>
+					<th width="90" align="center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- BEGIN list AS info -->
+				<tr>
+					<td><small>{info.id}</small></td>
+					<td>{info.name}</td>
+					<td>{info.domain}</td>
+					<td>{info.publish_url}</td>
+					<td>{info.publish_path}</td>
+					<td align="center"><small>{info.add_time}</small></td>
+					<td align="center"><small>{info.update_time}</small></td>
+					<td align="center">
+						<a href="?mod=cms.site.edit&id={info.id}">编辑</a>
+					</td>
+				</tr>
+				<!-- END list -->
+			</tbody>
+		</table>
+	</div>
+</div>

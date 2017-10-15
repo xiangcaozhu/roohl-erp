@@ -1,0 +1,117 @@
+<link href="css/cal/zpcal.css" rel="stylesheet" type="text/css">
+<link href="css/cal/template.css" rel="stylesheet" type="text/css">
+<link href="css/cal/greengrass.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src='script/zapatec.js'></script>
+<script type="text/javascript" src="script/calendar.js"></script>
+<script type="text/javascript" src="script/calendar-zh.js"></script>
+
+<h3>一级分类流量统计</h3>
+
+<form method=post>
+	<table class="datalist">
+	<thead>
+		<tr>
+			<td colspan="4">查询</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			
+			<td align="right" width="15%"><b>查看的分类:</b></td>
+			<td width="15%">
+				<select name="cid" style="width:150;" onchange="TopCategoryChange(this.value);">
+					<option value="0">--- 请选择一级分类 ---</option>
+					<!-- BEGIN top_category_list AS category -->
+					<option value="{category.id}" <!-- IF category.id==_POST.cid -->selected<!-- ENDIF -->>{category.indent}{category.name}</option>
+					<!-- END top_category_list -->
+				</select>
+				
+			</td>
+			<td align="right" width="10%"><b>统计时间:</b></td>
+			<td width="50%">
+				开始时间:<input type="text" name="begin_date" id="begin_date" value="{_POST.begin_date}" size="25" readonly><input type="button" id="begin_date_btn" value="...">
+				<div class="block5"></div>
+				结束时间:<input type="text" name="end_date" id="end_date" value="{_POST.end_date}" size="25" readonly><input type="button" id="end_date_btn" value="...">
+			</td>
+		</tr>
+		<tr>
+			
+			<td width="30%" colspan="4" align="center"><input type="submit" value="查看"></td>
+			
+		</tr>
+	</tbody>
+</table>
+</form>
+
+<br />
+
+<!-- IF xml -->
+<table class="datalist" style="width:700px;">
+	<thead>
+		<tr>
+			<td colspan="4">图表</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			
+			<td width="30%" colspan="4" align="center">
+				<script type="text/javascript" src="script/amline/swfobject.js"></script>
+				<div id="flashcontent">
+					<strong>You need to upgrade your Flash Player</strong>
+				</div>
+
+				<script type="text/javascript">
+					var so = new SWFObject("script/amline/amline.swf", "amline", "620", "350", "8", "#FFFFFF");
+					so.addVariable("path", "script/amline/");
+					//so.addVariable("settings_file", escape("script/amline_settings.xml"));
+					so.addVariable("chart_data", "{xml}");
+					so.addVariable("preloader_color", "#999999");
+					so.write("flashcontent");
+				</script>
+			</td>
+			
+		</tr>
+	</tbody>
+</table>
+<!-- ENDIF -->
+
+
+<script type="text/javascript">
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "begin_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d %H:%M",     // format of the input field
+	showsTime      :     true,
+	button         :    "begin_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    true,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+
+var cal = new Zapatec.Calendar.setup({
+	inputField     :    "end_date",     // id of the input field
+	ifFormat       :    "%Y-%m-%d %H:%M",     // format of the input field
+	showsTime      :     true,
+	button         :    "end_date_btn",  // trigger button (well, IMG in our case)
+	weekNumbers    :    false,  // allows user to change first day of week
+	firstDay       :    1, // first day of week will be Monday
+	align          :    "Bl"           // alignment (defaults to "Bl")
+});
+</script>
+
+
+<script language="JavaScript">
+
+var category = {category_list_js};
+
+function TopCategoryChange(id){
+
+	$('#cid').empty();
+
+	if(category[id]){
+		for (var i = 0; i < category[id].length;  i++){
+			$('#cid').append( '<option value="'+category[id][i]['id']+'">' + category[id][i]['name'] + '</option>' );
+		}
+	}
+}
+</script>
