@@ -1,7 +1,7 @@
 <?php
 /**
 * Compiled by NEATTemplate 1.0.0
-* Created on : 2013-01-07 18:03:21
+* Created on : 2017-11-18 00:09:02
 */
 ?>
 <?php if ( !defined( 'IN_NTP' ) ) exit( 'Access Denied' ); ?>
@@ -26,11 +26,11 @@
 	</div>
 </div>
 <div class="HY-grid">
-	<table cellspacing="0" class="data" id="grid_table">
+	<table cellspacing="0" class="data" id="grid_table" style="table-layout: fixed;">
 		<thead>
 			<tr class="header">
-				<th width="20">父渠道</th>
-				<th width="140">回款日期</th>
+				<th width="100" style="width: 100px;">父渠33道</th>
+				<th width="220">回款日期</th>
 				<th width="100">销售合计</th>
 				<th width="100">手续费</th>
 				<th width="100">结算金额</th>
@@ -65,13 +65,13 @@ if ( $val['id'] == $_GET['channel_parent_id'] )
 				</th>
 				<th>
 					<div class="input-from">
-						<div class="clearfix">
-							<div class="left">开始:</div>
+						<div class="clearfix" style="float: left;">
+							<div class="left" style="width: 60px;font-size: 14px;margin-top: 4px;">开始:</div>
 							<input type="text" name="begin_date" id="begin_date" value="<?php echo $_GET['begin_date']; ?>">
 							<img src="image/grid-cal.gif" alt="" class="v-middle" id="begin_date_btn" />
 						</div>
-						<div class="clearfix">
-							<div class="left">结束:</div>
+						<div class="clearfix" style="float: left;">
+							<div class="left" style="width: 60px;font-size: 14px;margin-top: 4px;">结束:</div>
 							<input type="text" name="end_date" id="end_date" value="<?php echo $_GET['end_date']; ?>">
 							<img src="image/grid-cal.gif" alt="" class="v-middle" id="end_date_btn" />
 						</div>

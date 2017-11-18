@@ -34,12 +34,12 @@ select optgroup option.even     { background:#f6f6f6; } /* Zebra even-row */
 
 
 
-button{ border-width:1px; border-style:solid; border-color:#ed6502 #a04300 #a04300 #ed6502; padding:0 7px 1px 7px; background:#ffac47 url(../image/btn_bg.gif) repeat-x 0 100%; color:#fff; font:12px arial, helvetica, sans-serif; cursor:pointer; text-align:center !important; white-space:nowrap; 
-width:auto;  overflow:visible;height:22px;line-height:22px;
+button{ border-width:1px; border-style:solid; border-color:#5fbeaa; padding:0 7px 1px 7px; background:#5fbeaa; color:#fff; font:12px arial, helvetica, sans-serif; cursor:pointer; text-align:center !important; white-space:nowrap; 
+width:auto;  overflow:visible;height:22px;;
 }
 
-button:hover{ background:#f77c16 url(../image/btn_over_bg.gif) repeat-x 0 0; }
-button:active{ background:#f77c16 url(../image/btn_on_bg.gif) repeat-x 0 0; }
+button:hover{opacity: 0.8;}
+button:active{ background:#5fbeaa; }
 button span{background-repeat:no-repeat; background-position:0 2px; line-height:18px;}
 button.delete,
 button.save,
@@ -90,7 +90,7 @@ button.icon-btn span { text-indent:-999em; display:block; width:16px; padding:0;
 *******************************************************************************/
 
 .header { background:#666e73; text-align:right; }
-.footer { clear:both; background:#666e73; padding:5px 10px; font-size:12px; text-align:center;color:#FFFFFF;border:1px solid #FFFFFF; }
+.footer { clear:both; background:#888; padding:5px 10px; font-size:12px; text-align:center;color:#FFFFFF;border:1px solid #FFFFFF; }
 
 .logo                                   { float:left; margin:5px 20px 5px 27px; height:43px; }
 .header-top                             { border-bottom:1px solid #5F767F; }

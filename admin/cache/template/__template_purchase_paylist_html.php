@@ -1,7 +1,7 @@
 <?php
 /**
 * Compiled by NEATTemplate 1.0.0
-* Created on : 2015-12-19 01:46:50
+* Created on : 2017-11-18 00:26:24
 */
 ?>
 <?php if ( !defined( 'IN_NTP' ) ) exit( 'Access Denied' ); ?>
@@ -25,7 +25,7 @@
 .xiao_21{float:left;width:20px;height:20px; text-align:center;border:#666666 1px solid;margin-right:25px;}
 .xiao_22{float:right;width:20px;height:20px; text-align:center;border:#666666 1px solid;}
 </style>
-<div style=" position:fixed;left:300px;top:40px;width:300px;">
+<div style=" position:fixed;left:300px;top:85px;width:300px;">
  <var id="supplierSID_var"  class="MSearch_box" init="0" py="1" style="float:right;height:24px;border:#000000 1px solid; text-align:left;background:#FFFFFF url(image/Ajax.radio.png) no-repeat right 4px;" MSname="">
 <select style="display:none" name="supplier_id" id="supplier_id" action="DSD()">
 <option value="0" <?php

@@ -443,7 +443,7 @@ foreach ( $info['service_call_list'] as $row )
 }
 ?>
 </ul>
-<ul style=" position:fixed;top:40px;left:20px;width:250px;margin:0px; padding:0px;" class="xiao_1">
+<ul style=" position:fixed;top:85px;left:280px;width:250px;margin:0px; padding:0px;" class="xiao_1">
 <span style="float:left;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
 <div style="float:left;">总共 <b><?php echo $total; ?></b> 条<?php echo $onePage; ?></b>。</div>
 <?php

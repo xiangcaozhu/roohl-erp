@@ -63,7 +63,7 @@
 }
 
 .HY-content-header h3 {
-	color:#EB5E00;
+	color:#5fbeaa;
 	float:left;
 	font-size:1.25em;
 	line-height:1.2em;
@@ -261,7 +261,7 @@
 }
 
 .HY-form-table-header{
-	background:#6F8992;
+	background:#5fbeaa;
 	padding:4px 10px;
 	color:#fff;
 	font-size:12px;
@@ -436,9 +436,9 @@ div#mask { position:fixed; top:0; left:0; width:100%; height:100%; background:#0
 
 .dialog {width:448px;clear:both;overflow:hidden;z-index:102;position:fixed;top:50%;left:50%;margin:0px auto;margin-left:-250px;margin-top:-150px;padding:8px;}
 * html .dialog {position:absolute;margin-top:expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');}
-.dialog-title{height:35px;border-color:#4D4A5D;border-width:1px 1px 0px 1px;border-style:solid;background:url(../image/vp-window-tbg.png) 0px 0px repeat-x;overflow:hidden;clear:both;cursor:move;}
-.dialog-title .txt{font-weight:bold;line-height:27px;padding-left:10px;letter-spacing:2px;color:#FFF;float:left;}
-.dialog-title .close{float:right;line-height:27px;padding:0px 10px;text-decoration:none;color:#FF3;}
+.dialog-title{height:35px;border-color:#5fbeaa;border-width:1px 1px 0px 1px;border-style:solid;background:#5fbeaa;overflow:hidden;clear:both;cursor:move;}
+.dialog-title .txt{font-weight:bold;line-height:35px;padding-left:10px;letter-spacing:2px;color:#FFF;float:left;}
+.dialog-title .close{float:right;line-height:27px;padding:0px 10px;text-decoration:none;color:#fff;}
 .dialog-title .close:hover{color:#FFF;}
 
 /*
@@ -451,7 +451,7 @@ div#mask { position:fixed; top:0; left:0; width:100%; height:100%; background:#0
 .dialog-main{border-color:#4D4A5D;border-width:0px 1px 1px 1px;border-style:solid;padding:10px 16px;color:#333;clear:both;background:#FFF;}
 .dialog-bottom{height:30px;line-height:30px;text-align:center;padding:5px 15px;}
 .dialog-shadow{width:468px;background:#aaa;height:32768px;position:absolute;top:0;left:0;z-index:-1;filter:alpha(opacity=40);opacity:0.4;-ms-filter:"alpha(opacity=40)";-moz-opacity:0.4;-khtml-opacity:0.4;}
-.dialog .btn-1{height:27px;line-height:21px;background:#F6C856 url(../image/btn-bg1.png) 0px 0px repeat-x;*background-position:0px -1px;color:#FFF;border:1px solid #D9880F;letter-spacing:2px;padding:0px 8px;margin-right:5px;}
+.dialog .btn-1{height:27px;line-height:21px;background:#5fbeaa;*background-position:0px -1px;color:#FFF;border:1px solid #5fbeaa;letter-spacing:2px;padding:0px 8px;margin-right:5px;}
 .dialog .btn-2{height:27px;line-height:21px;background:#ADADA1 url(../image/btn-bg2.png) 0px 0px repeat-x;*background-position:0px -1px;color:#FFF;border:1px solid #868576;letter-spacing:2px;padding:0px 8px;margin-right:5px;}
 
 div#poverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; opacity:0.5; filter:Alpha(opacity=50); z-index:100;}

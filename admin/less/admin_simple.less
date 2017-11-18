@@ -1,0 +1,228 @@
+html,body,div{
+	margin:0;
+	padding:0;
+}
+// erp后台登陆
+.admin-login{
+	position: fixed;
+	left:50%;
+	top:50%;
+	margin-top: -210px;
+	margin-left: -231px;
+	width: 378px;
+	// margin:0 auto;
+	list-style-type: none;
+	padding:20px;
+	background-color: #fff!important;
+	border:1px solid #eee;
+	border-radius: 5px;
+	input{
+		text-indent: 10px;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		background-color: #FFFFFF;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    color: #565656;
+    height: 38px;
+    max-width: 100%;
+    font-size: 14px;
+    box-shadow: none;
+    transition: all 300ms linear;
+    margin-bottom: 15px;
+	}
+	.admin-login-logo{
+		display:block;
+		padding-left: 50px;
+		margin-bottom: 30px;
+		position: relative;
+		img{
+			height: 77px;
+      width: 238px;
+		}
+
+		a{
+			text-indent: 300px;
+			display: block;
+			position: absolute;
+			top:0;
+			left: 0;
+			width: 100%;
+			height: 77px;
+			line-height: 77px;
+			color:#888;
+			font-size: 20px;
+			font-family: '微软雅黑';
+		}
+	}
+	.loginName{}
+	.loginPass{
+		margin-bottom: 40px;
+	}
+	.loginBtn{
+		cursor:pointer;
+		display: block;
+		width: 100%;
+		height: 45px;
+		border-radius: 5px;
+		text-align: center;
+		font-size: 18px;
+		color:#fff;
+		background-color: #5fbeaa !important;
+    border: 1px solid #5fbeaa !important;
+    margin-bottom: 30px;
+    font-family:'微软雅黑';
+	}
+	.admin-date{
+		font-size: 12px;
+		height: 14px;
+		color:#818181;
+		overflow: hidden;
+	}
+}
+// erp后台登陆版权
+.copyright{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	height: 80px;
+	line-height: 80px;
+	color:#fff;
+	text-shodow:1px 1px 3px #888;
+}
+// 顶部导航
+.nav-bar{
+	height: 60px;
+	line-height: 60px;
+	background-color: #0b7bc2;
+	padding:0;
+	.brand-logo{
+		display: inline-block;
+		width: 180px;
+		height: 30px;
+		float: left;
+		padding:15px 30px;
+		color:#fff;
+		h1{
+			height: 30px;
+			line-height: 30px;
+			float: left;
+			font-size: 18px;
+			font-family: "微软雅黑";
+		}
+		img{
+			float: left;
+			width: 118px;
+			height: 32px;
+			display: block;
+		}
+	}
+	#super{
+		padding:0 20px;
+	}
+}
+// 左侧菜单栏
+.admin-menu-left{
+	width: 240px;
+	text-align: center;
+	float: left;
+	background-color: #fff;
+	#nav{
+		position: fixed;
+		top:62px;
+		bottom:0px;
+		padding-bottom: 50px;
+		overflow-y: auto;
+		&>li{
+			overflow: hidden;
+			width: 240px;
+			float: none;
+	    font-weight: normal;
+	    list-style: none;
+	    position: relative;
+	    text-decoration: none;
+	    background:#fff;
+			a{
+				width: 194px;
+				padding-left:40px;
+				height:40px;
+			  line-height: 40px;
+				color: #36404a;
+		    display: block;
+		    background-color: #fff;
+		    border-left: 3px solid #ffffff;
+		    font-size: 18px;
+		    &>span{
+		    	height:40px;
+			    line-height: 40px;
+			    font-family:"微软雅黑";
+			    cursor:pointer;
+		    }
+				&:hover{
+					color:#5fbeaa;
+					background-color: #f7f7f7;
+				}
+			}
+		}
+		.active {
+			background: #f4f8fb !important;
+    	border-left: 3px solid #5fbeaa;
+    	color: #5fbeaa !important;
+		}
+		.current {
+			&>a{
+				&>span{
+					color:#5fbeaa!important;
+				}	
+			}
+			.menu-sub {
+				display: block!important;
+			}
+		}
+		.menu-sub{
+			display: none;
+			width: 240px;
+			position: static!important;
+			border-bottom:none!important;
+			border-top:none!important;
+			overflow: hidden;
+			li{
+				width: 240px;
+				&:last-child{
+		    	background:none!important;
+		    	padding-bottom: 0!important;
+		    }
+			}
+			.selected a{
+				border-left-color: #5fbeaa;
+			}
+			a{
+				font-size: 12px!important;
+				width: 194px;
+				transition:color 0.5s ease;
+				span{
+					height:30px!important;
+				  line-height: 30px!important;
+				}
+				&:hover{
+					border-left-color: #5fbeaa;
+				}
+			}
+		}
+	}
+}
+
+.admin-container{
+	margin-left: 240px;
+	padding-bottom: 50px;
+}
+
+// 底部版权声明
+.footer{
+	position: fixed;
+	bottom:0;
+	left:0;
+	right: 0;
+}

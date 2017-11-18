@@ -1,7 +1,7 @@
 <?php
 /**
 * Compiled by NEATTemplate 1.0.0
-* Created on : 2015-12-19 01:30:51
+* Created on : 2017-11-18 00:21:48
 */
 ?>
 <?php if ( !defined( 'IN_NTP' ) ) exit( 'Access Denied' ); ?>
@@ -254,7 +254,7 @@ if ( $val['type'] == 2 )
 }
 ?>
 </ul>
-<ul style=" position:fixed;top:40px;right:30px;width:250px;margin:0px; padding:0px;" class="xiao_1">
+<ul style=" position:fixed;top:270px;left:270px;width:250px;margin:0px; padding:0px;" class="xiao_1">
 <span style="float:left;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
 <div style="float:left;">总共 <b><?php echo $total; ?></b> 条，每页 <b><?php echo $onePage; ?></b> 条。</div>
 <?php

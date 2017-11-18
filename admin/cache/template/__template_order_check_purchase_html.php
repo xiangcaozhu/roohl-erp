@@ -1,7 +1,7 @@
 <?php
 /**
 * Compiled by NEATTemplate 1.0.0
-* Created on : 2015-12-19 11:18:57
+* Created on : 2017-11-17 23:56:54
 */
 ?>
 <?php if ( !defined( 'IN_NTP' ) ) exit( 'Access Denied' ); ?>
@@ -224,7 +224,7 @@ if ( $info['purchase_check'] != 2 )
 }
 ?>
 </ul>
-<ul style=" position:fixed;top:40px;right:30px;width:250px;margin:0px; padding:0px;" class="xiao_1">
+<ul style=" position:fixed;top:85px;left:280px;width:250px;margin:0px; padding:0px;" class="xiao_1">
 <span style="float:left;width:228px;border:#D8D8D8 1px solid; background:#FFFFFF;padding:10px;">
 <div style="float:left;">总共 <b><?php echo $total; ?></b> 条<?php echo $onePage; ?>。</div>
 <div style="float:left;width:228px; padding:10px 0px 0px 0px;"><?php

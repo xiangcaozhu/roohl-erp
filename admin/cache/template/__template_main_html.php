@@ -1,7 +1,7 @@
 <?php
 /**
 * Compiled by NEATTemplate 1.0.0
-* Created on : 2016-07-15 11:11:20
+* Created on : 2017-11-17 23:46:44
 */
 ?>
 <?php if ( !defined( 'IN_NTP' ) ) exit( 'Access Denied' ); ?>
@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="css/self.css">
 <link rel="stylesheet" type="text/css" href="css/attribute.css">
 <link rel="stylesheet" type="text/css" href="css/new.css">
+<link rel="stylesheet" type="text/css" href="css/admin_simple.css">
 <style>
 *{font-family:'宋体';}
 </style>
@@ -42,9 +43,18 @@
 <body>
 <div class="wrapper">
 
-<div class="header" style="height:30px;">
+<div class="header">
 	<div class="nav-bar">
-		<ul id="nav">
+		<a class="brand-logo" href="#"><img src="image/skin/logoText_ms.png" alt="erp" /><h1>ERP</h1></a>
+		<ul id="super">
+		[<?php echo $session['user_real_name']; ?> / <a href="?mod=system.administrator.edit_s&id=<?php echo $session['user_id']; ?>" class="link-logout">修改密码</a> / <a href="?mod=logout" class="link-logout">退出系统</a>]
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>
+<!-- 左侧导航 -->
+<div class="admin-menu-left clearfix">
+	<ul id="nav">
 			<?php
 if ( $menu_list )
 {
@@ -75,7 +85,7 @@ else
 if ( $item1['sub'] )
 {
 ?>
-				<ul>
+				<ul class="menu-sub">
 				<?php
 if ( $item1['sub'] )
 {
@@ -196,17 +206,9 @@ if ( $item4['end'] )
 }
 ?>
 			<li class="level0"><a href="javascript:void(0);" id="view-sku"><span>SKU查看</span></a></li>
-
-		</ul>
-<ul id="super">
-[<?php echo $session['user_real_name']; ?> / <a href="?mod=system.administrator.edit_s&id=<?php echo $session['user_id']; ?>" class="link-logout">修改密码</a> / <a href="?mod=logout" class="link-logout">退出系统</a>]
-</ul>
-
-		<div class="clear"></div>
-	</div>
+	</ul>
 </div>
-
-<div class="HY-main-page clearfix" id="main-page" style="overflow:scroll; overflow-x:hidden; background:url(image/orderBg.gif);">
+<div class="admin-container HY-main-page clearfix" id="main-page" style="overflow:scroll; overflow-x:hidden; background:url(image/orderBg.gif);">
 	<?php echo $module; ?>
 </div>
 
@@ -250,54 +252,61 @@ $(document).ready(function(){
 	$('.HY-grid tr').mouseout(function(){
 		$(this).css('background-color', '');
 	});
+  
+  $('.level0').live('click',function(){
+  	console.log($(this))
+  	$(this).addClass('current').siblings('li').removeClass('current');
+  })
+  $('.level1').live('click',function(){
+  	$(this).addClass('selected').siblings('li').removeClass('selected');
+  })
+	// $('#nav > li[parent=1]').mouseover(function(){
+	// 	$(this).addClass('over');
+	// 	$(this).attr('in', 1);
+	// });
 
-	$('#nav > li[parent=1]').mouseover(function(){
-		$(this).addClass('over');
-		$(this).attr('in', 1);
-	});
+	// $('#nav > li[parent=1]').mouseout(function(){
+	// 	var oo = this;
+	// 	$(this).attr('in', 0);
+	// 	setTimeout(function(){
+	// 		if ($(oo).attr('in')!=1){
+	// 			$(oo).removeClass('over');
+	// 			$(oo).attr('in', 0);
+	// 		}
+	// 	}, 100);
+	// });
 
-	$('#nav > li[parent=1]').mouseout(function(){
-		var oo = this;
-		$(this).attr('in', 0);
-		setTimeout(function(){
-			if ($(oo).attr('in')!=1){
-				$(oo).removeClass('over');
-				$(oo).attr('in', 0);
-			}
-		}, 100);
-	});
+	// $('#nav > li > ul > li[parent=1]').mouseover(function(){
+	// 	$(this).addClass('over');
+	// 	$(this).attr('in', 1);
+	// });
 
-	$('#nav > li > ul > li[parent=1]').mouseover(function(){
-		$(this).addClass('over');
-		$(this).attr('in', 1);
-	});
+	// $('#nav > li > ul > li[parent=1]').mouseout(function(){
+	// 	var oo = this;
+	// 	$(this).attr('in', 0);
+	// 	setTimeout(function(){
+	// 		if ($(oo).attr('in')!=1){
+	// 			$(oo).removeClass('over');
+	// 			$(oo).attr('in', 0);
+	// 		}
+	// 	}, 100);
+	// });
 
-	$('#nav > li > ul > li[parent=1]').mouseout(function(){
-		var oo = this;
-		$(this).attr('in', 0);
-		setTimeout(function(){
-			if ($(oo).attr('in')!=1){
-				$(oo).removeClass('over');
-				$(oo).attr('in', 0);
-			}
-		}, 100);
-	});
+	// $('#nav > li > ul > li > ul > li[parent=1]').mouseover(function(){
+	// 	$(this).addClass('over');
+	// 	$(this).attr('in', 1);
+	// });
 
-	$('#nav > li > ul > li > ul > li[parent=1]').mouseover(function(){
-		$(this).addClass('over');
-		$(this).attr('in', 1);
-	});
-
-	$('#nav > li > ul > li > ul > li[parent=1]').mouseout(function(){
-		var oo = this;
-		$(this).attr('in', 0);
-		setTimeout(function(){
-			if ($(oo).attr('in')!=1){
-				$(oo).removeClass('over');
-				$(oo).attr('in', 0);
-			}
-		}, 100);
-	});
+	// $('#nav > li > ul > li > ul > li[parent=1]').mouseout(function(){
+	// 	var oo = this;
+	// 	$(this).attr('in', 0);
+	// 	setTimeout(function(){
+	// 		if ($(oo).attr('in')!=1){
+	// 			$(oo).removeClass('over');
+	// 			$(oo).attr('in', 0);
+	// 		}
+	// 	}, 100);
+	// });
 
 	if (!$.browser.msie){
 		$('form,select,input').attr('autocomplete', 'off');
